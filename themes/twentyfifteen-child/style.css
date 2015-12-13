@@ -1,0 +1,462 @@
+/**
+ * Theme Name: Child Theme for twentyfifteen
+ * Template: twentyfifteen
+ */
+
+@import url('../twentyfifteen/style.css');
+
+/* (3) Добавление отступа от ссылки "добавить в избранное" */
+div.add-to-favor-wrapper {
+	display: block;
+	margin-bottom: 14px !important;
+}
+
+/* (3) Добавление отступа от ссылки "добавить в избранное" end */
+
+
+/* (9) Добавление "[+]" и "[-]" в аккордеон */
+div.accordion > h3.accordion-title:before {
+	content: '[+]';
+	margin-right: 10px;
+}
+	div.accordion > h3.open:before {
+	content: '[-]';
+	margin-right: 10px;
+}
+.accordion-title {
+    margin-bottom: 5px !important;
+}
+/* (9) Добавление "[+]" и "[-]" в аккордеон end */
+
+
+/* (8) Стилизация страницы Источники */
+div.entry-content > div.post_tags  > h2 > a {
+	text-decoration: none;
+  border-bottom: none;
+}
+div.tag > h1.entry-title > a  {
+	border-bottom: none;
+}
+.istochiniki-rubriki{
+  padding-top: 20px;
+  padding-bottom: 20px; 
+  border-bottom:  1px solid #EBEBEB;
+}
+.istochiniki-rubriki a{
+  border-bottom: none;
+  font-size: 16px;
+}
+div.istochiniki-rubriki >span.cat-links > a {
+  color: rgba(51, 51, 51, 0.7);
+}
+div.istochiniki-rubriki >span.cat-links > a:hover {
+  text-decoration: underline;
+  border-bottom: 1px solid black;
+}
+div.istochiniki-rubriki >span.cat-links:before {
+  top: 8px;
+  color: rgba(51, 51, 51, 0.7);
+}
+
+
+/* (8) Стилизация страницы Источники end */
+
+
+/* (5) Стилизация страницы Мои курсы */
+div.wpfp-span > ul > li {
+	list-style: none;
+}
+div.wpfp-span > ul > li a {
+	border-bottom: none;
+}
+a.remove-parent {
+	color: #c0392b;
+}
+.wpfp-span li {
+    margin-bottom: 10px;
+}
+
+.accordion-checkbox {
+	width: 21px;
+	height: 21px;
+	-ms-transform: scale(1.4);
+	-moz-transform: scale(1.4);
+	-webkit-transform: scale(1.4);
+	-o-transform: scale(1.4);
+}
+/* (5) Стилизация страницы Мои курсы end */
+
+/* (18) Стилизация чекбоксов */
+@-webkit-keyframes check {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  25% {
+    height: 0;
+    width: 10px;
+  }
+  50% {
+    height: 20px;
+    width: 10px;
+  }
+}
+@-moz-keyframes check {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  25% {
+    height: 0;
+    width: 10px;
+  }
+  50% {
+    height: 20px;
+    width: 10px;
+  }
+}
+@-ms-keyframes check {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  25% {
+    height: 0;
+    width: 10px;
+  }
+  50% {
+    height: 20px;
+    width: 10px;
+  }
+}
+@keyframes check {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  25% {
+    height: 0;
+    width: 10px;
+  }
+  50% {
+    height: 20px;
+    width: 10px;
+  }
+}
+
+
+.checkbox, .checkbox-alt {
+  background-color: #fff;
+  display: inline-block;
+  height: 50px;
+  margin: 0 0.25em;
+  width: 50px;
+}
+.checkbox label, .checkbox-alt label {
+    display: block;
+    height: 40px;
+    position: relative;
+    width: 50px;
+}
+.checkbox label:after, .checkbox-alt label:after {
+  /*
+  This element has a border on the right, and top. By rotating it looks like a check symbol, but the wrong way. That's why I'm flipping it with scaleX(-1)
+  */
+  -moz-transform: scaleX(-1) rotate(135deg);
+  -ms-transform: scaleX(-1) rotate(135deg);
+  -webkit-transform: scaleX(-1) rotate(135deg);
+  transform: scaleX(-1) rotate(135deg);
+  /*
+  I want to position the symbol using the left top, because when increasing the width and height of an object, it expands from the top left corner as well. That is what makes it looks like it's being drawn.
+  */
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+  /*border-right: 4px solid #cee;*/
+  /*border-top: 4px solid #cee;*/
+  border-right: 4px solid rgba(204, 51, 0, 0.3);
+  border-top: 4px solid rgba(204, 51, 0, 0.3);;
+
+  content: '';
+  display: block;
+  height: 20px;
+  /*left: 14px;*/
+  left: -14px;
+  position: absolute;
+  top: 26px;
+  width: 10px;
+}
+.checkbox label:hover:after, .checkbox-alt label:hover:after {
+  /*border-color: #bdd;*/
+  border-color: rgba(204, 51, 0, 1.0);;
+}
+.checkbox input, .checkbox-alt input {
+  display: none;
+}
+.checkbox input:checked + label:after, .checkbox-alt input:checked + label:after {
+  -webkit-animation: check 0.8s;
+      margin-top: -15px;
+  -moz-animation: check 0.8s;
+  -o-animation: check 0.8s;
+  animation: check 0.8s;
+  /*border-color: #6aa;*/
+  border-color: rgba(204, 51, 0, 1.0);
+}
+.checkbox.checkbox-alt label:hover:after, .checkbox-alt.checkbox-alt label:hover:after {
+  -webkit-animation: check 0.8s ease infinite;
+  -moz-animation: check 0.8s ease infinite;
+  -o-animation: check 0.8s ease infinite;
+  animation: check 0.8s ease infinite;
+}
+.checkbox.checkbox-alt input:checked + label:after, .checkbox-alt.checkbox-alt input:checked + label:after {
+  -webkit-animation: none;
+  -moz-animation: none;
+  -o-animation: none;
+  animation: none;
+}
+
+.checkbox-label {
+  padding-top: 8px;
+  margin-left: -41px;
+  margin-top: -16px;
+}
+.checkbox-label label{
+  /*color: #6aa;*/
+  color: rgba(204, 51, 0, 1.0);
+  border-bottom: 1px dotted #600 !important;
+}
+.checkbox-label > label:hover {
+  cursor: pointer;
+}
+/* (18) Стилизация чекбоксов end*/
+
+/* (22) Стилизация ленты комментариев в виджете "Свежие комментарии" и на странице "Мои комментарии" */
+.comment-body{
+  color: black;
+}
+div.my-comment {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+div.my-comment:not(:first-child) {
+  border-top: 1px solid #eaeaea; */
+  border-top: 1px solid rgba(51, 51, 51, 0.1);
+}
+div.my-comment-head {
+  padding-bottom: 10px;
+  text-align: center;
+}
+/* (22) Стилизация ленты комментариев в виджете "Свежие комментарии" и на странице "Мои комментарии" end*/
+
+/* (29) Глобальное. Правки мобильной версии */
+@media screen and (max-width: 767px) { 
+  .checkbox-label {
+    padding-top: 12px;
+  }
+  div.istochiniki-rubriki >span.cat-links:before {
+    top: 5px;
+    color: rgba(51, 51, 51, 0.7);
+  }
+}
+/* (29) Глобальное. Правки мобильной версии end */
+
+/* (30) Глобальное. Стилизация ссылок */
+a.link-style-1, a.link-style-1:visited {
+    color: #36f;
+    text-decoration: none;
+    border-bottom: none !important;
+}
+a.link-style-1:hover, a.link-style-1:focus, a.link-style-1:active {
+    color: #00f;
+    text-decoration: none;
+}
+
+a.link-style-2, a.link-style-2:visited {
+    color: #c30;
+    font-size: 16px;
+    border-bottom: 1px dotted #c30 !important;
+}
+a.link-style-2:hover{
+    text-decoration: none;
+}
+div.add-to-favor-wrapper .wpfp-span a {
+    color: #c30;
+    font-size: 16px;
+    border-bottom: 1px dotted #c30 !important;
+}
+div.add-to-favor-wrapper .wpfp-span a:hover {
+    color: #600;
+    border-bottom: 1px dotted #600 !important;
+    text-decoration: none !important;
+}
+
+
+.entry-title {
+    margin-bottom: .328em !important; 
+}
+
+.entry-content .more-link:after, .entry-summary .more-link:after {
+    font-size: 20px;
+    top: 2px;
+    line-height: 28px;
+}
+.entry-content .more-link, .entry-summary .more-link:after {
+    white-space: nowrap;
+    font-size: 16px;
+}
+.page-header {
+  border-left: none;
+}
+.entry-content .more-link:after, .entry-summary .more-link:after {
+    content: '...';
+    line-height: 6px !important;
+    top: 13px;
+    font-size: 15px;
+}
+/* (30) Глобальное. Стилизация ссылок end */
+
+/* Стилизация блока комментариев */
+.taxonomy-description {
+    /*padding-top: 52px;*/
+    /*padding-bottom: 10%;*/
+    margin-left: 0;
+    margin-top: 14px;
+    padding-top: 0;
+    padding-bottom: 5%;
+}
+#recentcomments {
+  font-size: 15px;
+}
+#reply-link > a {
+  color: #c30;
+  font-size: 16px;
+  border-bottom: 1px dotted #c30 !important;
+}
+#reply-link > a:hover {
+  text-decoration: none;
+}
+.comment-meta {
+  display: inline-block;
+  margin-right: 10px;
+}
+.comment-body > p {
+  margin-bottom: 0;
+}
+.comment-meta-container {
+  margin-bottom: 32px;
+}
+.comment-edit > a{
+  font-size: 16px;
+}
+.comment-author, .comment-date {
+  font-size: 16px;
+}
+ol.diductio-comment-list {
+  border: none;
+  list-style: none;
+  margin: 0;
+   list-style-type: none;
+}
+ol.diductio-comment-list  li{
+  list-style: none;
+  text-decoration: none;
+   list-style-type: none;
+}
+div.comment-body > p {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.comments-area {
+    margin-left: 4.333% !important;
+}
+.comments-area {
+    margin-top: 4.333% !important;
+    padding: 4.3333%;
+}
+.post-navigation {
+  display: none;
+}
+
+/* Стилизация блока комментариев  end  */
+
+/* (39) Стилизация нотисов (глобальный) */
+div.label {
+  display: block;
+  text-align: left;
+  font-size: 16px;
+}
+.success {
+  color: #2ecc71;
+}
+.error {
+  color: #e74c3c;
+}
+.label{
+  font-size: 14px;
+}
+.right-count {
+  display: inline-block;
+  float: right;
+  background-color: rgba(92, 184 , 92, 0.7);
+}
+.label-number {
+      margin-left: 5px;
+}
+.label-soft {
+  background-color: rgba(92, 184 , 92, 0.7);
+}
+/* (39) Стилизация нотисов (глобальный) end*/
+
+/* Стилизация сайдбара */
+.widget{
+  margin: 0 0 10%;
+  padding-right: 10% !important;
+}
+.site-header {
+  margin: 10% 0;
+}
+/* Стилизация сайдбара end */
+
+/* Стилизация контентной зоны  */
+.hentry + .hentry, .page-header + .hentry, .page-header + .page-content {
+    margin-top: 4.3333%;
+}
+.hentry {
+    padding-top: 4.3333%;
+    margin-left: 4.3%;
+}
+.entry-header {
+    padding: 0 5%;
+}
+.entry-content, .entry-summary {
+    padding: 0 5% 5%;
+}
+.main-navigation {
+  margin-right: 10%;
+  margin-bottom: 10%;
+}
+.page-header {
+    padding: 4.1666% 4.3333%;
+    margin-left: 4.333%;
+}
+.post-navigation {
+  margin-left: 4.333% !important
+}
+
+/* Стилизация контентной зоны end */
+
+/* Стилизация футера */
+.entry-footer { 
+ padding: 2% 5%;
+}
+.site-footer {
+    float: left;
+    margin: 0 0 0 32.2941%;
+    padding: 0;
+    width: 61.8235%;
+}
+.site-info {
+    padding: 2.5% 5%;
+}
+/* Стилизация футера end  */
