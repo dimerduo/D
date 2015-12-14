@@ -693,6 +693,7 @@ function categories_postcount_filter ($variable) {
 add_filter('wp_list_categories','categories_postcount_filter');
 // (45) Стилизация количества записей в виджете категорий end
 
+// (47) Связывание добавление и удаление в избранное с логикой зачётки
 add_action( 'post_updated', 'post_update_method', 10, 3 );
 function post_update_method($post_ID, $post_after, $post_before){
     global $wpdb;
@@ -755,5 +756,6 @@ function  remove_post_from_statistic ($post_id) {
 
 	$wpdb->delete( $table_name, array( 'user_id' => $user_id, 'post_id' => $post_id ) );
 }
+// (47) Связывание добавление и удаление в избранное с логикой зачётки end
 
 ?>
