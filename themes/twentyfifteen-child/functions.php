@@ -130,27 +130,32 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 					'author__in' => $user_ID
 					);
 				$comments_count = count(get_comments($comment_args));
-				$fav_count = 0;
-				$moya_zachetka_items_count  = 0 ;
-				global $wpdb;
-		        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-				foreach ($favorites_array[0] as $fav_key => $fav_value) {
-					$my_array_post_id = $fav_value;
-			        $sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_ID}' ";
-			        $sql .= "AND `post_id` = '{$my_array_post_id}'";
-			        $progress = $wpdb->get_row($sql);
-        			$lessons_count = $progress -> lessons_count;
-        			if($progress->checked_lessons != 0) {
-        				$checked_lessons = explode(',', $progress->checked_lessons);
-        				$checked_lessons_count = count($checked_lessons);
-        			} else {
-        				$checked_lessons_count = 0;
-        			}
-        			if($lessons_count  != $checked_lessons_count) {
-        				$fav_count++;
-        			} else {
-        				$moya_zachetka_items_count ++ ;
-        			}
+				if($favorites_array) {	
+					$fav_count = 0;
+					$moya_zachetka_items_count  = 0 ;
+					global $wpdb;
+			        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+					foreach ($favorites_array[0] as $fav_key => $fav_value) {
+						$my_array_post_id = $fav_value;
+				        $sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_ID}' ";
+				        $sql .= "AND `post_id` = '{$my_array_post_id}'";
+				        $progress = $wpdb->get_row($sql);
+	        			$lessons_count = $progress -> lessons_count;
+	        			if($progress->checked_lessons != 0) {
+	        				$checked_lessons = explode(',', $progress->checked_lessons);
+	        				$checked_lessons_count = count($checked_lessons);
+	        			} else {
+	        				$checked_lessons_count = 0;
+	        			}
+	        			if($lessons_count  != $checked_lessons_count) {
+	        				$fav_count++;
+	        			} else {
+	        				$moya_zachetka_items_count ++ ;
+	        			}
+					}
+				} else {
+					$fav_count = 0;
+					$moya_zachetka_items_count = 0;
 				}
 				
 				echo "<li><a href='/moi-kursy'>Мои массивы <span class='label label-success right-count'>".$fav_count."</span></a></li>";
@@ -757,5 +762,4 @@ function  remove_post_from_statistic ($post_id) {
 	$wpdb->delete( $table_name, array( 'user_id' => $user_id, 'post_id' => $post_id ) );
 }
 // (47) Связывание добавление и удаление в избранное с логикой зачётки end
-
 ?>

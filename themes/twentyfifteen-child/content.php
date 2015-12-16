@@ -72,7 +72,7 @@
 			}
 		?>
 		 <?php if(is_user_logged_in()): ?>
-			 <div class="col-md-1 col-xs-2">
+			 <div class="col-md-1 col-xs-2" style="height: 0;">
 					<div class="checkbox inline">
 						<input id="checkbox-<?=$post->ID;?>" type="checkbox" class="accordion-checkbox" data-accordion-count="1" data-post-id="<?=$post->ID;?>" <?=$checkbox_attr?> >
 					    <label for="checkbox-<?=$post->ID;?>"></label>

@@ -162,6 +162,7 @@ a.remove-parent {
   /*
   This element has a border on the right, and top. By rotating it looks like a check symbol, but the wrong way. That's why I'm flipping it with scaleX(-1)
   */
+       margin-top: -15px;
   -moz-transform: scaleX(-1) rotate(135deg);
   -ms-transform: scaleX(-1) rotate(135deg);
   -webkit-transform: scaleX(-1) rotate(135deg);
@@ -443,7 +444,10 @@ div.label {
 .post-navigation {
   margin-left: 4.333% !important
 }
-
+.entry-content > p:last-child
+{
+  margin-bottom: 0;
+}
 /* Стилизация контентной зоны end */
 
 /* Стилизация футера */
