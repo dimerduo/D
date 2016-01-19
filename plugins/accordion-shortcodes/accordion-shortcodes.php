@@ -315,7 +315,7 @@ private function get_accordion_id($id) {
    $checkbox_attr = "checked='checked' disabled='disabled'";
   }
   if(is_user_logged_in()) {
-  	$checkbox_html =  "<div class='col-md-1' style='height:0;'><div class='checkbox'>
+  	$checkbox_html =  "<div class='col-md-1' style='height:0;'><div style='height: 22px;' class='checkbox'>
    <input 
    type='checkbox'
    class='accordion-checkbox'
