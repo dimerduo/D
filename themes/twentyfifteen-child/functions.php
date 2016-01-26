@@ -763,13 +763,6 @@ function  remove_post_from_statistic ($post_id) {
 }
 // (47) Связывание добавление и удаление в избранное с логикой зачётки end
 
-//пересчет счетчика перед переносом поста в корзину
-add_action('wp_trash_post','before_trash');
-function before_trash($postid) {
-	print_r($postid);
-	exit;
-}
-
 
 //удаление поста из статистической таблицы пользователей 
 add_action( 'before_delete_post', 'course_removed' );
@@ -781,5 +774,108 @@ function course_removed($postid) {
 	$wpdb->query($sql);
 }
 
+$st = new Statistic;
+
+class Statistic  {
+ 	
+ 	public $active = 0;
+
+ 	public $done = 0;
+
+	function __construct() {
+		$this->active = 0;
+		$this->done = 0;
+		$this->count_arrays();
+	} 	
+ 	/**
+ 	*
+ 	*
+ 	**/
+	public function get_all_arrays($status = false)
+	{
+		$all_array_obj = wp_count_posts();
+		
+		if($status) {
+			return $all_array_obj->$status; 
+		} else {
+			return $all_array_obj->publish; 
+		} 
+	}
+
+	private function count_arrays() 
+	{
+		global $current_user, $wpdb;
+
+		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		$sql   = "SELECT * FROM `$table_name`";
+		$progress = $wpdb->get_results($sql);
+		$active_courses = 0;
+		$done_courses = 0;
+		foreach ($progress as $key => $value) {
+			$lessons_count = $value->lessons_count;
+
+			if($value->checked_lessons != 0) {
+				$checked_lessons = count(explode(',', $value->checked_lessons));
+			} else {
+				$checked_lessons = 0; 
+			}
+
+			if($lessons_count != $checked_lessons) {
+				$active_courses++;
+			} else {
+				$done_courses++;
+			}
+		}
+
+		$this->active = $active_courses;
+		$this->done = $done_courses;
+	}
+
+	public function get_istochiki_count() 
+	{
+		return wp_count_terms( 'post_tag');
+	}
+
+	public function get_rating($rating_type = 'global') {
+		global $current_user, $wpdb;
+
+		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		$sql   = "SELECT * FROM `$table_name`";
+		$progress = $wpdb->get_results($sql);
+		$users_statistick = array();
+		$passed_courses = 0;
+		foreach ($progress as $key => $value) {
+			
+			$lessons_count = $value->lessons_count;
+
+			if($value->checked_lessons != 0) {
+				$checked_lessons = count(explode(',', $value->checked_lessons));
+			} else {
+				$checked_lessons = 0; 
+			}
+			if($lessons_count != $checked_lessons) {
+				unset($progress[$key]);
+			} else {
+
+				$users_statistick[$value->user_id] ++;
+			} 
+		}
+		
+		$user_count  = count($users_statistick);
+		$all_div_counts = 0;
+		
+		foreach ($users_statistick as $key => $value) {
+			$massiv_counts = $value; 
+			$div_value = ($massiv_counts * 100)/ $this->get_all_arrays();
+			$all_div_counts += $div_value;
+			$users_statistick[$key]  =  array ( 'passed' => $value, 'passed_div' =>$div_value );   
+		}
+		if($rating_type =='global') {
+			return $all_div_counts/$user_count;
+		} else {
+			return $users_statistick[$current_user->id]['passed_div'];
+		}
+	}
+}
 
 ?>

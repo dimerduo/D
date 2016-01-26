@@ -464,3 +464,16 @@ div.label {
     padding: 2.5% 5%;
 }
 /* Стилизация футера end  */
+
+/*  Блок статистики */
+.public_statistic {
+  text-align: center;
+}
+#statistic {
+  padding: 5% 5% 5%;
+}
+
+div.stat-col {
+  display: inline-block;
+  margin-right: 25px;
+}
