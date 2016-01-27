@@ -774,6 +774,7 @@ function course_removed($postid) {
 	$wpdb->query($sql);
 }
 
+// (49) Блок статистики
 $st = new Statistic;
 
 class Statistic  {
@@ -877,5 +878,6 @@ class Statistic  {
 		}
 	}
 }
+// (49) Блок статистики end
 
 ?>
