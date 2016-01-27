@@ -456,12 +456,13 @@ function get_first_unchecked_lesson($post_id) {
 	global $wpdb;
 
 	$user_id = get_current_user_id();
-
+	if(!$user_id) {
+		return false;
+	}
 	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 	$sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
 	$sql .= "AND `post_id` = '{$post_id}'";
 	$progress = $wpdb->get_row($sql);
-
 	$all_lessons = range(1, $progress->lessons_count);
 	$lessons_checked = explode(',', $progress->checked_lessons);
 
@@ -846,9 +847,7 @@ class Statistic  {
 		$users_statistick = array();
 		$passed_courses = 0;
 		foreach ($progress as $key => $value) {
-			
 			$lessons_count = $value->lessons_count;
-
 			if($value->checked_lessons != 0) {
 				$checked_lessons = count(explode(',', $value->checked_lessons));
 			} else {
@@ -857,8 +856,11 @@ class Statistic  {
 			if($lessons_count != $checked_lessons) {
 				unset($progress[$key]);
 			} else {
-
-				$users_statistick[$value->user_id] ++;
+				if(isset($users_statistick[$value->user_id])) {
+					$users_statistick[$value->user_id] ++;
+				} else {
+					$users_statistick[$value->user_id]  = 1;
+				}
 			} 
 		}
 		
@@ -872,9 +874,9 @@ class Statistic  {
 			$users_statistick[$key]  =  array ( 'passed' => $value, 'passed_div' =>$div_value );   
 		}
 		if($rating_type =='global') {
-			return $all_div_counts/$user_count;
+			return round($all_div_counts/$user_count, 2);
 		} else {
-			return $users_statistick[$current_user->id]['passed_div'];
+			return round($users_statistick[$current_user->ID]['passed_div'],2);
 		}
 	}
 }
