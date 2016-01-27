@@ -17,7 +17,6 @@
 get_header(); ?>
 
 	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
 		<div id="statistic" class="hentry">
 			<div class="public_statistic row">
 				<div class="stat-col">
@@ -37,21 +36,22 @@ get_header(); ?>
 					<span class="label label-success"><?=$st->get_istochiki_count();?></span>
 				</div>
 			</div>
-			<div class="public_statistic row">
+			<div class="public_statistic row precent-row">
 				<div class="stat-col">
-					<span class="label label-success label-soft">Массивы</span>
-					<span class="label label-success"><?=$st->get_rating();?> %</span>
+					<span class="label label-important label-important-soft">Общий уровень знаний - </span>
+					<span class="label label-important"><?=$st->get_rating();?> %</span>
 				</div>
 				<div class="stat-col">
-					<?php if ( !is_user_logged_in() ): ?>
-						<span class="label label-success label-soft">Массивы</span>
-						<span class="label label-success"><?=$st->get_rating('local');?> %</span>
+					<?php if ( is_user_logged_in() ): ?>
+						<span class="label label-important label-important-soft">Ваш уровень знаний - </span>
+						<span class="label label-important"><?=$st->get_rating('local');?> %</span>
 					<?else: ?>
-						<span>Ваш уровень знаний - ?, <a href="" class="more-link link-style-1">авторизуйтесь</a></span>
+						<span><span class="label label-important label-important-soft">Ваш уровень знаний - ?</span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1">авторизуйтесь</a></span>
 					<? endif;?>
 				</div>
 			</div>
 		</div>
+		<main id="main" class="site-main homepage-main" role="main">
 		<?php if ( have_posts() ) : ?>
 
 			<?php if ( is_home() && ! is_front_page() ) : ?>

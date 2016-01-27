@@ -407,6 +407,13 @@ div.label {
 .label-soft {
   background-color: rgba(92, 184 , 92, 0.7);
 }
+.label-important{
+  background-color: #337ab7;
+  margin-right: 6px;
+}
+.label-important-soft{
+  background-color: rgba(51, 122, 183, 0.7);
+}
 /* (39) Стилизация нотисов (глобальный) end*/
 
 /* Стилизация сайдбара */
@@ -466,9 +473,6 @@ div.label {
 /* Стилизация футера end  */
 
 /*  Блок статистики */
-.public_statistic {
-  text-align: center;
-}
 #statistic {
   padding: 5% 5% 5%;
 }
@@ -476,4 +480,11 @@ div.label {
 div.stat-col {
   display: inline-block;
   margin-right: 25px;
+}
+
+div.precent-row {
+  margin-top: 15px;
+}
+.homepage-main {
+  padding: 4.3333% 0 !important;
 }
