@@ -956,10 +956,12 @@ class Statistic  {
 			}
 			
 			if($precent && $user_array_count) {
-				return $precent / $user_array_count;
+				return round($precent / $user_array_count, 2);
+			}  else {
+				return 0;
 			}
 		} else {
-			return 100;
+			return 0;
 		}
 
 	}
