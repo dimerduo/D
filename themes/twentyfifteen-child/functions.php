@@ -136,22 +136,25 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 					global $wpdb;
 			        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 					foreach ($favorites_array[0] as $fav_key => $fav_value) {
+
 						$my_array_post_id = $fav_value;
 				        $sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_ID}' ";
 				        $sql .= "AND `post_id` = '{$my_array_post_id}'";
 				        $progress = $wpdb->get_row($sql);
-	        			$lessons_count = $progress -> lessons_count;
-	        			if($progress->checked_lessons != 0) {
-	        				$checked_lessons = explode(',', $progress->checked_lessons);
-	        				$checked_lessons_count = count($checked_lessons);
-	        			} else {
-	        				$checked_lessons_count = 0;
-	        			}
-	        			if($lessons_count  != $checked_lessons_count) {
-	        				$fav_count++;
-	        			} else {
-	        				$moya_zachetka_items_count ++ ;
-	        			}
+						if($progress) {
+		        			$lessons_count = $progress -> lessons_count;
+		        			if($progress->checked_lessons != 0) {
+		        				$checked_lessons = explode(',', $progress->checked_lessons);
+		        				$checked_lessons_count = count($checked_lessons);
+		        			} else {
+		        				$checked_lessons_count = 0;
+		        			}
+		        			if($lessons_count  != $checked_lessons_count) {
+		        				$fav_count++;
+		        			} else {
+		        				$moya_zachetka_items_count ++ ;
+		        			}
+						}
 					}
 				} else {
 					$fav_count = 0;
@@ -425,7 +428,7 @@ function diductio_add_progress($post_id){
 	if($progress) {	
 		if($progress->checked_lessons != "0") {
 			$checked_count = count(explode(',', $progress->checked_lessons));
-			$percent =  (100 * $checked_count) / $progress->lessons_count;
+			$percent = round((100 * $checked_count) / $progress->lessons_count, 2);
 		} else {
 			$percent =  0;
 		}
@@ -784,6 +787,10 @@ class Statistic  {
 
  	public $done = 0;
 
+ 	public $active_studies_users = 0;
+
+ 	public $finished_study_users = 0;
+
 	function __construct() {
 		$this->active = 0;
 		$this->done = 0;
@@ -813,6 +820,7 @@ class Statistic  {
 		$progress = $wpdb->get_results($sql);
 		$active_courses = 0;
 		$done_courses = 0;
+		$users_array = array();
 		foreach ($progress as $key => $value) {
 			$lessons_count = $value->lessons_count;
 
@@ -821,16 +829,41 @@ class Statistic  {
 			} else {
 				$checked_lessons = 0; 
 			}
-
 			if($lessons_count != $checked_lessons) {
+				if(!empty($users_array[$value->user_id])) {
+					$users_array[$value->user_id]['studying'] ++;
+				} else {
+					$users_array[$value->user_id]['studying'] = 1;
+				}
 				$active_courses++;
 			} else {
+				if(!empty($users_array[$value->user_id])) {
+					$users_array[$value->user_id]['finished'] ++;
+				} else {
+					$users_array[$value->user_id]['finished'] = 1;
+				}
 				$done_courses++;
 			}
 		}
-
+		
+		//статистика по массивам 
 		$this->active = $active_courses;
 		$this->done = $done_courses;
+
+		//статистика по пользователям
+		$finished = 0;
+		$studying = 0;
+		foreach ($users_array as $key => $value) {
+			
+			if($value['finished'] ) {
+				$finished += $value['finished']; 
+			} 
+			if($value['studying'] ) {
+				$studying += $value['studying'];
+			}
+		}
+		$this->finished_study_users = $finished;
+		$this->active_studies_users = $studying;
 	}
 
 	public function get_istochiki_count() 
@@ -846,38 +879,89 @@ class Statistic  {
 		$progress = $wpdb->get_results($sql);
 		$users_statistick = array();
 		$passed_courses = 0;
-		foreach ($progress as $key => $value) {
-			$lessons_count = $value->lessons_count;
-			if($value->checked_lessons != 0) {
-				$checked_lessons = count(explode(',', $value->checked_lessons));
-			} else {
-				$checked_lessons = 0; 
-			}
-			if($lessons_count != $checked_lessons) {
-				unset($progress[$key]);
-			} else {
-				if(isset($users_statistick[$value->user_id])) {
-					$users_statistick[$value->user_id] ++;
+		if($progress) {
+
+
+			foreach ($progress as $key => $value) {
+				$lessons_count = $value->lessons_count;
+				if($value->checked_lessons != 0) {
+					$checked_lessons = count(explode(',', $value->checked_lessons));
 				} else {
-					$users_statistick[$value->user_id]  = 1;
+					$checked_lessons = 0; 
 				}
-			} 
-		}
-		
-		$user_count  = count($users_statistick);
-		$all_div_counts = 0;
-		
-		foreach ($users_statistick as $key => $value) {
-			$massiv_counts = $value; 
-			$div_value = ($massiv_counts * 100)/ $this->get_all_arrays();
-			$all_div_counts += $div_value;
-			$users_statistick[$key]  =  array ( 'passed' => $value, 'passed_div' =>$div_value );   
-		}
-		if($rating_type =='global') {
-			return round($all_div_counts/$user_count, 2);
+				if($lessons_count != $checked_lessons) {
+					unset($progress[$key]);
+				} else {
+					if(isset($users_statistick[$value->user_id])) {
+						$users_statistick[$value->user_id] ++;
+					} else {
+						$users_statistick[$value->user_id]  = 1;
+					}
+				} 
+			}
+			
+			$user_count  = count($users_statistick);
+			$all_div_counts = 0;
+			
+			foreach ($users_statistick as $key => $value) {
+				$massiv_counts = $value; 
+				$div_value = ($massiv_counts * 100)/ $this->get_all_arrays();
+				$all_div_counts += $div_value;
+				$users_statistick[$key]  =  array ( 'passed' => $value, 'passed_div' =>$div_value );   
+			}
+			if(!empty($all_div_counts)) {
+				if($rating_type =='global') {
+					return round($all_div_counts/$user_count, 2);
+				} else {
+					return round($users_statistick[$current_user->ID]['passed_div'],2);
+				}
+			} else {
+				return 0;
+			}
 		} else {
-			return round($users_statistick[$current_user->ID]['passed_div'],2);
+			return 0;
 		}
+	}
+
+	public function get_all_users() 
+	{
+		$users = get_users();
+		return count($users);
+	}
+
+	public function get_div_studying_progress()
+	{
+		global $current_user, $wpdb;
+
+		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		$sql    = "SELECT * FROM `$table_name` ";
+		$sql   .= "WHERE `user_id` = ". $current_user->id . "";
+		$progress = $wpdb->get_results($sql);
+		$user_array_count = 0;
+		
+		if($progress) {	
+			foreach ($progress as $key => $value) {
+				$lessons_count = $value->lessons_count;
+				if($lessons_count) {
+					if($value->checked_lessons != 0) {
+						$checked_lessons = count(explode(',', $value->checked_lessons));
+					} else {
+						$checked_lessons = 0; 
+					}
+					if($checked_lessons != $lessons_count) {
+						$precent += round((100 * $checked_lessons) / $lessons_count, 2);
+						$user_array_count++;
+					}
+				}
+			}
+			
+			if($precent && $user_array_count) {
+				return $precent / $user_array_count;
+			}
+		} else {
+			return 100;
+		}
+
 	}
 }
 // (49) Блок статистики end
