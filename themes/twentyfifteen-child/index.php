@@ -63,17 +63,17 @@ get_header(); ?>
 					<?php if ( is_user_logged_in() ): ?>
 						<span class="label label-important label-important-soft">Ваш уровень</span>
 						<span class="label label-important"><?=$st->get_rating('local');?> %</span>
-					<?else: ?>
+					<?php else: ?>
 						<span><span class="label label-important label-important-soft">Ваш уровень </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
-					<? endif;?>
+					<?php endif;?>
 				</div>
 				<div class="stat-col">
 					<?php if ( is_user_logged_in() ): ?>
 						<span class="label label-important label-important-soft">Ваш прогресс</span>
 						<span class="label label-important"> %</span>
-					<?else: ?>
+					<?php else: ?>
 						<span><span class="label label-important label-important-soft">Ваш уровень </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
-					<? endif;?>
+					<?php endif;?>
 				</div>
 			</div>
 		</div>
