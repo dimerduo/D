@@ -821,6 +821,15 @@ class Statistic  {
 		$active_courses = 0;
 		$done_courses = 0;
 		$users_array = array();
+		$cours_array = array();
+		$statistic_array = array();
+		// Arrays variables  
+		$finshed_array = array();
+		$inprogress_array = array();
+		// Users variables 
+		$finished_users = array();
+		$inprogress_users = array();
+
 		foreach ($progress as $key => $value) {
 			$lessons_count = $value->lessons_count;
 
@@ -829,41 +838,44 @@ class Statistic  {
 			} else {
 				$checked_lessons = 0; 
 			}
-			if($lessons_count != $checked_lessons) {
-				if(!empty($users_array[$value->user_id])) {
-					$users_array[$value->user_id]['studying'] ++;
-				} else {
-					$users_array[$value->user_id]['studying'] = 1;
-				}
-				$active_courses++;
-			} else {
-				if(!empty($users_array[$value->user_id])) {
-					$users_array[$value->user_id]['finished'] ++;
-				} else {
-					$users_array[$value->user_id]['finished'] = 1;
-				}
-				$done_courses++;
-			}
-		}
-		
-		//статистика по массивам 
-		$this->active = $active_courses;
-		$this->done = $done_courses;
-
-		//статистика по пользователям
-		$finished = 0;
-		$studying = 0;
-		foreach ($users_array as $key => $value) {
 			
-			if($value['finished'] ) {
-				$finished += $value['finished']; 
-			} 
-			if($value['studying'] ) {
-				$studying += $value['studying'];
+			if($lessons_count != $checked_lessons) {
+				$statistic_array[$key]['status'] = 'unfinised';
+				$statistic_array[$key]['pos_id'] = $value->post_id;
+				$statistic_array[$key]['user_id'] = $value->user_id;
+
+			} else {
+				$statistic_array[$key]['status'] = 'finished';
+				$statistic_array[$key]['pos_id'] = $value->post_ids;
+				$statistic_array[$key]['user_id'] = $value->user_id;
 			}
 		}
-		$this->finished_study_users = $finished;
-		$this->active_studies_users = $studying;
+
+		foreach ($statistic_array as $key => $value) {
+			if($value['status'] == 'finished') {
+				if(!in_array($value['pos_id'],$finshed_array)) {
+					array_push($finshed_array, $value['pos_id']);
+				}
+				if(!in_array($value['user_id'],$finished_users)) {
+					array_push($finished_users, $value['user_id']);
+				}
+			}
+			if($value['status'] == 'unfinised') {
+				if(!in_array($value['pos_id'],$inprogress_array)) {
+					array_push($inprogress_array, $value['pos_id']);
+				}
+				if(!in_array($value['user_id'],$inprogress_users)) {
+					array_push($inprogress_users, $value['user_id']);
+				}		
+			}
+		}
+		//статистика по массивам 
+		$this->active = count($inprogress_array);
+		$this->done = count($finshed_array);
+		
+		//статистика по пользователям
+		$this->finished_study_users = count($finished_users);
+		$this->active_studies_users = count($inprogress_users);
 	}
 
 	public function get_istochiki_count() 
@@ -967,5 +979,10 @@ class Statistic  {
 	}
 }
 // (49) Блок статистики end
+add_filter( 'embed_defaults', 'bigger_embed_size' );
 
+function bigger_embed_size()
+{ 
+  return array( 'width' => 780, 'height' => 430 );
+}
 ?>

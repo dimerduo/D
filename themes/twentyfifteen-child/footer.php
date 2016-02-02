@@ -22,7 +22,7 @@
 				 */
 				do_action( 'twentyfifteen_credits' );
 			?>
-			<a href="<?php echo home_url(); ?>">Diductio.ru - место встречи людей и знаний</a>
+			<a href="<?php echo home_url(); ?>">Diductio.ru - встреча знаний и людей</a>
 		</div><!-- .site-info -->
 	</footer><!-- .site-footer -->
 

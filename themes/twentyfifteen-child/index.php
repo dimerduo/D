@@ -72,7 +72,7 @@ get_header(); ?>
 						<span class="label label-important label-important-soft">Ваш прогресс</span>
 						<span class="label label-important"><?=$st->get_div_studying_progress();?> %</span>
 					<?php else: ?>
-						<span><span class="label label-important label-important-soft">Ваш уровень </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
+						<span><span class="label label-important label-important-soft">Ваш прогресс </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
 					<?php endif;?>
 				</div>
 			</div>
@@ -102,8 +102,8 @@ get_header(); ?>
 
 			// Previous/next page navigation.
 			the_posts_pagination( array(
-				'prev_text'          => __( 'Previous page', 'twentyfifteen' ),
-				'next_text'          => __( 'Next page', 'twentyfifteen' ),
+				'prev_text'          => __( '->', 'twentyfifteen' ),
+				'next_text'          => __( '<-', 'twentyfifteen' ),
 				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentyfifteen' ) . ' </span>',
 			) );
 
