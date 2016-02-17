@@ -500,6 +500,7 @@ div.precent-row {
 @media screen and (max-width: 767px) { 
   .checkbox-label {
     padding-top: 12px;
+    margin-left: 20px;
   }
   div.istochiniki-rubriki >span.cat-links:before {
     top: 5px;
@@ -538,6 +539,10 @@ div.precent-row {
       display: inline-block;
       margin-right: 0 !important;
       margin-bottom: 10px;
+  }
+   .checkbox-label {
+    padding-top: 12px;
+    margin-left: 20px;
   }
   /*Планшетный вид статистики end*/
 

@@ -757,26 +757,26 @@ function add_post_to_statistic($post_id)
 	);
 }
 
-add_action('wpfp_after_remove', 'remove_post_from_statistic');
-function  remove_post_from_statistic ($post_id) {
-	global $current_user, $wpdb;
-	$user_id = $current_user->ID;
-	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+// add_action('wpfp_after_remove', 'remove_post_from_statistic');
+// function  remove_post_from_statistic ($post_id) {
+// 	global $current_user, $wpdb;
+// 	$user_id = $current_user->ID;
+// 	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 
-	$wpdb->delete( $table_name, array( 'user_id' => $user_id, 'post_id' => $post_id ) );
-}
-// (47) Связывание добавление и удаление в избранное с логикой зачётки end
+// 	$wpdb->delete( $table_name, array( 'user_id' => $user_id, 'post_id' => $post_id ) );
+// }
+// // (47) Связывание добавление и удаление в избранное с логикой зачётки end
 
 
-//удаление поста из статистической таблицы пользователей 
-add_action( 'before_delete_post', 'course_removed' );
-function course_removed($postid) {
-	global $current_user, $wpdb;
+// //удаление поста из статистической таблицы пользователей 
+// add_action( 'before_delete_post', 'course_removed' );
+// function course_removed($postid) {
+// 	global $current_user, $wpdb;
 
-	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-	$sql = "DELETE FROM `wp_user_add_info` WHERE `post_id` = {$postid}";
-	$wpdb->query($sql);
-}
+// 	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+// 	$sql = "DELETE FROM `wp_user_add_info` WHERE `post_id` = {$postid}";
+// 	$wpdb->query($sql);
+// }
 
 // (49) Блок статистики
 $st = new Statistic;
