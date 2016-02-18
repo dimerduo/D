@@ -983,6 +983,10 @@ add_filter( 'embed_defaults', 'bigger_embed_size' );
 
 function bigger_embed_size()
 { 
-  return array( 'width' => 780, 'height' => 430 );
+   if(wp_is_mobile ()) {
+  		return array( 'width' => 780, 'height' => 200 );
+   } else {
+  		return array( 'width' => 780, 'height' => 430 );
+   }
 }
 ?>
