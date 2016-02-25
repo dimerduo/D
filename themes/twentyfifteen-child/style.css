@@ -445,6 +445,12 @@ div.label {
 {
   margin-bottom: 0;
 }
+h1.entry-title {
+  word-wrap: break-word;
+}
+iframe {
+  width: 100%;
+}
 /* Стилизация контентной зоны end */
 
 /* Стилизация футера */
