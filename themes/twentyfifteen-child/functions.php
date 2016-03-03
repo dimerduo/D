@@ -666,7 +666,14 @@ function get_courses( $is_complite = true) {
 		    return  $b->in_progress_count - $a->in_progress_count;
 		});
 	}
-	
+	foreach ($courses_array as $key => $value) {
+		if ($is_complite &&  $value->complite_count == 0) {
+			unset($courses_array[$key]);
+		}
+		if (!$is_complite &&  $value->in_progress_count == 0) {
+			unset($courses_array[$key]);
+		}
+	}
 	return $courses_array;
 }
 // (38) Работа с массивами текущих и пройденных end
@@ -846,7 +853,7 @@ class Statistic  {
 
 			} else {
 				$statistic_array[$key]['status'] = 'finished';
-				$statistic_array[$key]['pos_id'] = $value->post_ids;
+				$statistic_array[$key]['pos_id'] = $value->post_id;
 				$statistic_array[$key]['user_id'] = $value->user_id;
 			}
 		}

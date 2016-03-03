@@ -451,6 +451,15 @@ h1.entry-title {
 iframe {
   width: 100%;
 }
+
+.custom-pagination > ul > li {
+    display: inline-block;
+}
+.custom-pagination > ul {
+    margin-bottom: 0 !important;
+    display: block !important;
+}
+
 /* Стилизация контентной зоны end */
 
 /* Стилизация футера */
@@ -537,6 +546,10 @@ div.precent-row {
   .site-header {
       margin:  0;
       margin-bottom: 10%;
+  }
+  .custom-page-wrapper {
+    margin-left: 77px !important;
+    margin-bottom: 13px !important;
   }
 }
 /* (29) Глобальное. Правки мобильной версии end */
