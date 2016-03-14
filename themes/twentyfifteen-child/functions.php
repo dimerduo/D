@@ -466,18 +466,21 @@ function get_first_unchecked_lesson($post_id) {
 	$sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
 	$sql .= "AND `post_id` = '{$post_id}'";
 	$progress = $wpdb->get_row($sql);
-	$all_lessons = range(1, $progress->lessons_count);
-	$lessons_checked = explode(',', $progress->checked_lessons);
+	if($progress) {
 
-	if($all_lessons && count($all_lessons) > 1) {
-		$unchecked_array = array_diff($all_lessons, $lessons_checked);
-		if(!empty($unchecked_array)) {
-			$first_unchecked = min($unchecked_array);
-			if($first_unchecked) {
-				return "#lesson-".$first_unchecked;
+		$all_lessons = range(1, $progress->lessons_count);
+		$lessons_checked = explode(',', $progress->checked_lessons);
+
+		if($all_lessons && count($all_lessons) > 1) {
+			$unchecked_array = array_diff($all_lessons, $lessons_checked);
+			if(!empty($unchecked_array)) {
+				$first_unchecked = min($unchecked_array);
+				if($first_unchecked) {
+					return "#lesson-".$first_unchecked;
+				}
 			}
-		}
 
+		}
 	}
 }
 // (20) Стилизация авторизации, регистрации, восстановления пароля, выхода
@@ -954,10 +957,10 @@ class Statistic  {
 
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql    = "SELECT * FROM `$table_name` ";
-		$sql   .= "WHERE `user_id` = ". $current_user->id . "";
+		$sql   .= "WHERE `user_id` = ". $current_user->ID . "";
 		$progress = $wpdb->get_results($sql);
 		$user_array_count = 0;
-		
+		$precent = 0;
 		if($progress) {	
 			foreach ($progress as $key => $value) {
 				$lessons_count = $value->lessons_count;
