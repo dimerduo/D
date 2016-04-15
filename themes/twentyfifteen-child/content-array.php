@@ -6,7 +6,7 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-	global $active_flag;
+	global $active_flag, $st;
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -25,15 +25,6 @@
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
-		<div class="add-to-favor-wrapper">
-		    <?php if($active_flag): ?>
-				<span class="label label-success label-soft">Массив недавно прошли</span>
-				<span class="label label-success"><?=$post->complite_count;?></span>
-		    <?php else: ?>
-				<span class="label label-success label-soft">Массив проходят</span>
-				<span class="label label-success"><?=$post->in_progress_count;?></span>
-		    <?php endif; ?>
-		</div>
 		<?php the_content('Читать далее'); ?>
 		<?php
 			wp_link_pages( array(
@@ -48,6 +39,34 @@
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
+		<div class="footer-statistic">
+			<?php $post_statistic = $st->get_course_info($post->ID); ?>
+			<?php if($post_statistic['in_progress'] > 0 ): ?>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Массив проходят</span>
+					<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
+				</div>
+			<?php endif; ?>
+			<?php if($post_statistic['done'] > 0 ): ?>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Недавно прошли</span>
+					<span class="label label-success"><?=$post_statistic['done'];?></span>
+				</div>
+			<?php endif; ?>
+			<?php if($post_statistic['les_count']): ?>
+				<div class="stat-col">
+					<span class="label label-grey-soft">Частей</span>
+					<span class="label label-grey"><?=$post_statistic['les_count'];?></span>
+				</div>
+			<?php endif; ?>
+			<?php $approved = wp_count_comments( $post->ID )->approved;
+			if($approved > 0 ): ?>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Обсуждение</span>
+					<span class="label label-success"> <?=$approved; ?> </span>
+				</div>
+			<?php endif; ?>
+		</div>
 		<?php twentyfifteen_entry_meta(); ?>
 		<?php edit_post_link( __( 'Edit', 'twentyfifteen' ), '<span class="edit-link">', '</span>' ); ?>
 	</footer><!-- .entry-footer -->

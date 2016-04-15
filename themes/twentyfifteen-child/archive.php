@@ -16,18 +16,24 @@
  * @since Twenty Fifteen 1.0
  */
 
-get_header(); ?>
+get_header(); 
+$cat_id =get_query_var('cat') ; ?>
 
 	<section id="primary" class="content-area">
+		<div id="statistic" class="hentry">
+			<div class="stat-col">
+				<span class="label label-success label-soft">Массивы знаний</span>
+				<span class="label label-success"><?=get_category($cat_id)->category_count;?></span>
+			</div>
+		</div>
 		<main id="main" class="site-main" role="main">
-		<?php $cat_id =get_query_var('cat') ; ?>
 		<?php if ( have_posts() ) : ?>
 
 			<header class="page-header">
 				<?php
 					the_archive_title( '<h1 class="entry-title">', '</h1>' );
-					echo "<span class='label label-success label-soft'>Массивов &nbsp;</span>";
-					echo "<span class='label label-success label-number'>". get_category($cat_id)->category_count."</span>";
+					// echo "<span class='label label-success label-soft'>Массивов &nbsp;</span>";
+					// echo "<span class='label label-success label-number'>". get_category($cat_id)->category_count."</span>";
 					the_archive_description( '<div class="taxonomy-description">', '</div>' );
 				?>
 			</header><!-- .page-header -->

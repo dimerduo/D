@@ -6,7 +6,7 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
- 	global $tag;
+ 	global $tag, $st;
  	$tag_id = $tag->term_id;
 	global $wp_query;
 	$args = array( 
@@ -38,13 +38,22 @@
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
-		<div class="add-to-favor-wrapper">
+		<!-- <div class="add-to-favor-wrapper">
 		    <span class="label label-success label-soft">Массивов</span>
 		    <span class="label label-success"><?=$tag->count;?></span>
-		</div>
+		</div> -->
 		<?=$tag->description;?>
+	<div class="public_statistic">
+		
+	</div>
 	</div><!-- .entry-content -->
 	<footer class="entry-footer">
+		<div class="footer-statistic">
+			<div class="stat-col">
+				<span class="label label-success label-soft">Массивов</span>
+		    	<span class="label label-success"><?=$tag->count;?></span>
+			</div>
+		</div>
 		<?=$html2;?>		
 	</footer>
 </article><!-- #post-## -->

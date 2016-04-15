@@ -9,7 +9,7 @@
  * @since Twenty Fifteen 1.0
  */
 ?>
-
+<?php global $st; ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php
 		// Post thumbnail.
@@ -27,19 +27,6 @@
 	</header><!-- .entry-header -->
 	<div class="entry-content <?=$removing_space_class;?>">
 	
-<!-- (4) Вставка добавления избранного в начало записи -->
-	<?php 
-		if ( is_user_logged_in() && is_single() ) {
-			echo '<div class="add-to-favor-wrapper">';
-			 if(array_complite($post->ID)) {
-				echo "<span class='label label-success'>Массив успешно пройден</span>";
-			 } else {
-				if (function_exists('wpfp_link')) { wpfp_link(); } 
-			 }
-			echo "</div>";
-		}  
-	?>
-<!-- (4) Вставка добавления избранного в начало записи end -->
 
 		<?php
 			/* translators: %s: Name of current post */
@@ -85,7 +72,6 @@
 		<?php endif;?>
 	<?php endif;?>
 <!-- (17) Добавление чекбокса на страницу с отсутствующим акордеоном end-->
-
 	</div><!-- .entry-content -->
 
 	<?php
@@ -94,8 +80,38 @@
 			get_template_part( 'author-bio' );
 		endif;
 	?>
-
+	
 	<footer class="entry-footer">
+		<?php if(!is_single()): ?>
+		<div class="footer-statistic">
+				<?php $post_statistic = $st->get_course_info($post->ID); ?>
+				<?php if($post_statistic['in_progress'] > 0 ): ?>
+					<div class="stat-col">
+						<span class="label label-success label-soft">Массив проходят</span>
+						<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
+					</div>
+				<?php endif; ?>
+				<?php if($post_statistic['done'] > 0 ): ?>
+					<div class="stat-col">
+						<span class="label label-success label-soft">Недавно прошли</span>
+						<span class="label label-success"><?=$post_statistic['done'];?></span>
+					</div>
+				<?php endif; ?>
+				<?php if($post_statistic['les_count']): ?>
+					<div class="stat-col">
+						<span class="label label-grey-soft">Частей</span>
+						<span class="label label-grey"><?=$post_statistic['les_count'];?></span>
+					</div>
+				<?php endif; ?>
+				<?php $approved = wp_count_comments( $post->ID )->approved;
+				if($approved > 0 ): ?>
+					<div class="stat-col">
+						<span class="label label-success label-soft">Обсуждение</span>
+						<span class="label label-success"> <?=$approved; ?> </span>
+					</div>
+				<?php endif; ?>
+		</div>
+		<?php endif; ?>
 		<?php twentyfifteen_entry_meta(); ?>
 		<?php edit_post_link( __( 'Edit', 'twentyfifteen' ), '<span class="edit-link">', '</span>' ); ?>
 	</footer><!-- .entry-footer -->

@@ -20,7 +20,7 @@ get_header(); ?>
 		<div id="statistic" class="hentry">
 			<div class="public_statistic row">
 				<div class="stat-col">
-					<span class="label label-success label-soft">Массивы</span>
+					<span class="label label-success label-soft">Массивы знаний</span>
 					<span class="label label-success"><?=$st->get_all_arrays();?></span>
 				</div>
 				<div class="stat-col">
@@ -38,27 +38,27 @@ get_header(); ?>
 			</div>
 			<div class="public_statistic row precent-row">
 				<div class="stat-col">
-					<span class="label label-success label-soft">Активных</span>
+					<span class="label label-success label-soft">Люди</span>
 					<span class="label label-success"><?=$st->get_all_users();?></span>
 				</div>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Сейчас учатся</span>
+					<span class="label label-success label-soft">Сейчас проходят</span>
 					<span class="label label-success"><?=$st->active_studies_users;?></span>
 				</div>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Недавно закончили</span>
+					<span class="label label-success label-soft">Недавно прошли</span>
 					<span class="label label-success"><?=$st->finished_study_users;?></span>
 				</div>
-				<div class="stat-col">
+				<!-- <div class="stat-col">
 					<span class="label label-success label-soft">Всего</span>
 					<span class="label label-success">523К</span>
-				</div>
-			</div>
-			<div class="public_statistic row precent-row">
+				</div> -->
 				<div class="stat-col">
-					<span class="label label-important label-important-soft">Общий уровень </span>
+					<span class="label label-important-soft">Общий уровень</span>
 					<span class="label label-important"><?=$st->get_rating();?> %</span>
 				</div>
+			</div>
+			<!-- <div class="public_statistic row precent-row">
 				<div class="stat-col">
 					<?php if ( is_user_logged_in() ): ?>
 						<span class="label label-important label-important-soft">Ваш уровень</span>
@@ -75,7 +75,7 @@ get_header(); ?>
 						<span><span class="label label-important label-important-soft">Ваш прогресс </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
 					<?php endif;?>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<main id="main" class="site-main homepage-main" role="main">
 		<?php if ( have_posts() ) : ?>

@@ -16,8 +16,16 @@
 
 	<header class="entry-header">
 	 	<?php $id = get_the_ID(); 
-	 	if($id != '68'): ?>
+
+	 	if($id != '68' && !is_page('mojj-progress') ): ?>
 			<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+		<?php elseif(is_page('mojj-progress')):
+			$current_user = wp_get_current_user(); ?>
+			<div  class="avatar inline "><?=get_avatar( $current_user->user_email, 96 );?></div>		
+			<div class="inline" style="margin-left:20px;"> 
+				<h1 class="entry-title"><?php print_r($current_user->data->display_name); ?></h1>
+				<div class="about"><?=get_user_meta($current_user->ID,'description')[0];?></div>
+			</div>
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 

@@ -161,8 +161,8 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 					$moya_zachetka_items_count = 0;
 				}
 				
-				echo "<li><a href='/moi-kursy'>Мои массивы <span class='label label-success right-count'>".$fav_count."</span></a></li>";
-				echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
+				echo "<li><a href='/mojj-progress'>Мой прогресс <span class='label label-success right-count'>".$fav_count."</span></a></li>";
+				// echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
 				echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>".$comments_count."</span></a></li>";
 				echo "<li><a href='/wp-admin/profile.php'>Мой профиль</a></li>";
 			}
@@ -643,6 +643,7 @@ function get_courses( $is_complite = true) {
 		$sql   = "SELECT  *  FROM `$table_name` WHERE ";
 		$sql  .= "`post_id` = '{$post_id}'";
 		$post_progress_info = $wpdb->get_results($sql);
+
 		foreach ($post_progress_info as $post_progress_key => $post_progress_value) {
 			if($post_progress_value->checked_lessons != 0) {
 				$post_checked_lessons = count(explode(',', $post_progress_value->checked_lessons));
@@ -677,6 +678,7 @@ function get_courses( $is_complite = true) {
 			unset($courses_array[$key]);
 		}
 	}
+
 	return $courses_array;
 }
 // (38) Работа с массивами текущих и пройденных end
@@ -888,10 +890,14 @@ class Statistic  {
 		$this->active_studies_users = count($inprogress_users);
 	}
 
+	/**
+	 *  Получить количество постов в источнике
+	 */
 	public function get_istochiki_count() 
 	{
 		return wp_count_terms( 'post_tag');
 	}
+
 
 	public function get_rating($rating_type = 'global') {
 		global $current_user, $wpdb;
@@ -986,6 +992,86 @@ class Statistic  {
 			return 0;
 		}
 
+	}
+	/**
+	 * Фунция дающая статистическую информацию по конкретному курсу 
+	 * @param $course_id - Id поста
+	 * @return array [done - количество пользовтелей, которые прошли курс]
+	 * 	in_progress - количество пользовтелей, которые проходят курс, 
+	 *  les_count - количество уроков в массиве]
+	 */
+	public function get_course_info($course_id) 
+	{
+		global $current_user, $wpdb;
+
+		$done = $in_progress = 0; 
+		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		$sql   = "SELECT * FROM `$table_name` WHERE `post_id` = {$course_id}";
+		$progress = $wpdb->get_results($sql);
+		if ($progress) {
+			foreach ($progress as $key => $value) {
+				$lessons_count = $value->lessons_count;
+				if($value->checked_lessons != 0) {
+					$checked_lessons = count(explode(',', $value->checked_lessons));
+				} else {
+					$checked_lessons = 0; 
+				}
+				
+				if($lessons_count != $checked_lessons) {
+					$in_progress ++ ;
+				} else {
+					$done++;
+				}
+				$les_count = $lessons_count;
+			}
+			$out['done'] = $done;
+			$out['in_progress'] = $in_progress;
+			$out['les_count'] = $les_count;
+		} else {
+			$out['done'] = 0;
+			$out['in_progress'] = 0;
+			$out['les_count'] = get_post_meta( $course_id,'publication_count')[0];
+		}
+
+		return $out;
+	}
+	/**
+	 *  Возвращает информацию по статистике пользователя пройденные и активные
+	 */
+	public function get_user_info() 
+	{
+		global $current_user, $wpdb;
+
+		$user_id = $current_user->ID; 
+		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		$sql   = "SELECT * FROM `$table_name` WHERE `user_id` = {$user_id}";
+		$progress = $wpdb->get_results($sql);
+
+		$in_progress = $done = 0;
+		if($progress) {
+			foreach ($progress as $key => $value) {
+				$lessons_count = $value->lessons_count;
+				if($value->checked_lessons != 0) {
+					$checked_lessons = count(explode(',', $value->checked_lessons));
+				} else {
+					$checked_lessons = 0; 
+				}
+				
+				if($lessons_count != $checked_lessons) {
+					$in_progress ++ ;
+				} else {
+					$done++;
+				}
+				$les_count = $lessons_count;
+			}
+			$out['done'] = $in_progress;
+			$out['in_progress'] = $done;
+		} else {
+			$out['done'] = 0;
+			$out['in_progress'] = 0;
+		}
+
+		return $out;
 	}
 }
 // (49) Блок статистики end

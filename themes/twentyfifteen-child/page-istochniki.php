@@ -6,6 +6,44 @@
 get_header(); ?>
 
 	<div id="primary" class="content-area">
+		<div id="statistic" class="hentry">
+			<div class="public_statistic row">
+				<div class="stat-col">
+					<span class="label label-success label-soft">Массивы знаний</span>
+					<span class="label label-success"><?=$st->get_all_arrays();?></span>
+				</div>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Сейчас проходят</span>
+					<span class="label label-success"><?=$st->active;?></span>
+				</div>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Недавно прошли</span>
+					<span class="label label-success"><?=$st->done;?></span>
+				</div>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Источники</span>
+					<span class="label label-success"><?=$st->get_istochiki_count();?></span>
+				</div>
+			</div>
+			<div class="public_statistic row precent-row">
+				<div class="stat-col">
+					<span class="label label-success label-soft">Люди</span>
+					<span class="label label-success"><?=$st->get_all_users();?></span>
+				</div>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Сейчас проходят</span>
+					<span class="label label-success"><?=$st->active_studies_users;?></span>
+				</div>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Недавно прошли</span>
+					<span class="label label-success"><?=$st->finished_study_users;?></span>
+				</div>
+				<div class="stat-col">
+					<span class="label label-important-soft">Общий уровень</span>
+					<span class="label label-important"><?=$st->get_rating();?> %</span>
+				</div>
+			</div>
+		</div>
 		<main id="main" class="site-main" role="main">
 		<?php
 		// $args = array(

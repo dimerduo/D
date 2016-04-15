@@ -10,6 +10,50 @@
 get_header(); ?>
 
 	<div id="primary" class="content-area">
+		<div id="statistic" class="hentry">
+			<?php $post_statistic = $st->get_course_info($post->ID); ?>
+			<?php if($post_statistic['in_progress'] > 0 ): ?>
+					<div class="stat-col">
+						<span class="label label-success label-soft">Массив проходят</span>
+						<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
+					</div>
+			<?php endif; ?>
+			<?php if($post_statistic['done'] > 0 ): ?>
+					<div class="stat-col">
+						<span class="label label-success label-soft">Недавно прошли</span>
+						<span class="label label-success"><?=$post_statistic['done'];?></span>
+					</div>
+			<?php endif; ?>
+			<?php if($post_statistic['les_count']): ?>
+					<div class="stat-col">
+						<span class="label label-grey-soft">Частей</span>
+						<span class="label label-grey"><?=$post_statistic['les_count'];?></span>
+					</div>
+			<?php endif; ?>
+			<?php $approved = wp_count_comments( $post->ID )->approved;
+				if($approved > 0 ): ?>
+					<div class="stat-col">
+						<span class="label label-success label-soft">Обсуждение</span>
+						<span class="label label-success"> <?=$approved; ?> </span>
+					</div>
+			<?php endif; ?>
+					<div class="stat-col">
+						<!-- (4) Вставка добавления избранного в начало записи -->
+							<?php 
+								if ( is_user_logged_in() && is_single() ) {
+									echo '<div class="add-to-favor-wrapper">';
+									 if(array_complite($post->ID)) {
+										echo "<span class='label label-success'>Массив успешно пройден</span>";
+									 } else {
+										if (function_exists('wpfp_link')) { wpfp_link(); } 
+									 }
+									echo "</div>";
+								}  
+							?>
+						<!-- (4) Вставка добавления избранного в начало записи end -->
+
+					</div>
+		</div>
 		<main id="main" class="site-main" role="main">
 
 		<?php
