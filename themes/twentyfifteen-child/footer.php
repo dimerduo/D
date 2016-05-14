@@ -22,13 +22,20 @@
 				 */
 				do_action( 'twentyfifteen_credits' );
 			?>
-			<a href="<?php echo home_url(); ?>">Diductio.ru - встреча знаний и людей</a>
+			<div class="footer-menu">
+				<div class="fMenu-item inline"><a href="<?=home_url()?>/dlya-chego-ehto-nuzhno">О проекте</a></div>
+				<div class="fMenu-item inline"><a href="<?=home_url()?>/pishite-nam">Пишите нам!</a></div>
+			</div>
 		</div><!-- .site-info -->
 	</footer><!-- .site-footer -->
 
 </div><!-- .site -->
 
 <?php wp_footer(); ?>
-
+<script type="text/javascript">
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
 </body>
 </html>

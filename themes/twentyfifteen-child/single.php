@@ -6,22 +6,66 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
+$post_statistic = $st->get_course_info($post->ID);
+$active_users = $post_statistic['active_users'];
+$done_users = $post_statistic['done_users'];
+if ($active_users) {
+	$act_args = array(
+		'role__in' => ['subscriber','administrator']
+	);
+	$act_args['include'] = $active_users;
+	$active_users_array = new WP_User_Query( $act_args );
+} 
+if ($done_users) {
+	$done_args = array(
+		'role__in' => ['subscriber','administrator']
+	);
+	$done_args['include'] = $done_users;
+	$done_users_array = new WP_User_Query( $done_args );	
+}
 
 get_header(); ?>
 
 	<div id="primary" class="content-area">
 		<div id="statistic" class="hentry">
-			<?php $post_statistic = $st->get_course_info($post->ID); ?>
 			<?php if($post_statistic['in_progress'] > 0 ): ?>
 					<div class="stat-col">
 						<span class="label label-success label-soft">Массив проходят</span>
 						<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
+						<div class="inline profile_avatars">
+							<?php 
+								// User Loop
+								if ( ! empty( $active_users_array->results ) ) {
+									foreach ( $active_users_array->results as $user ) {
+										$user_link = get_site_url() . "/user/" . $user->data->user_nicename;
+
+										printf("<div class='inline'><a href='%s' target='_blank'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
+									}
+								} else {
+									echo 'No users found.';
+								}
+							?>
+						</div>
 					</div>
 			<?php endif; ?>
 			<?php if($post_statistic['done'] > 0 ): ?>
 					<div class="stat-col">
 						<span class="label label-success label-soft">Недавно прошли</span>
 						<span class="label label-success"><?=$post_statistic['done'];?></span>
+						<div class="inline profile_avatars">
+							<?php 
+								// User Loop
+								if ( ! empty( $done_users_array->results ) ) {
+									foreach ( $done_users_array->results as $user ) {
+										$user_link = get_site_url() . "/user/" . $user->data->user_nicename;
+
+										printf("<div class='inline'><a href='%s' target='_blank'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
+									}
+								} else {
+									echo 'No users found.';
+								}
+							?>
+						</div>
 					</div>
 			<?php endif; ?>
 			<?php if($post_statistic['les_count']): ?>

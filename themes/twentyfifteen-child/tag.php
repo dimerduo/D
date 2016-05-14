@@ -16,13 +16,16 @@
  * @since Twenty Fifteen 1.0
  */
 
-get_header(); ?>
+get_header();
+$post_count  = $wp_query->get_queried_object()->count;
+
+?>
 
 	<section id="primary" class="content-area">
 		<div id="statistic" class="hentry">
 			<div class="stat-col">
 				<span class="label label-success label-soft">Массивы знаний</span>
-				<span class="label label-success"><?=$wp_the_query->post_count;?></span>
+				<span class="label label-success"><?=$post_count;?></span>
 			</div>
 		</div>
 		<main id="main" class="site-main" role="main">

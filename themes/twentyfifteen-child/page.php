@@ -15,7 +15,7 @@ get_header(); ?>
 
 	<div id="primary" class="content-area">
 	<?php if(is_page('dlya-chego-ehto-nuzhno')): ?>
-	<div id="statistic" class="hentry">
+	<!-- <div id="statistic" class="hentry">
 			<div class="public_statistic row">
 				<div class="stat-col">
 					<span class="label label-success label-soft">Массивы знаний</span>
@@ -52,7 +52,7 @@ get_header(); ?>
 					<span class="label label-important"><?=$st->get_rating();?> %</span>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	<?php elseif(is_page('mojj-progress')): 
 		$user_statistic = $st->get_user_info();
 	?>

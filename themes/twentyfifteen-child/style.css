@@ -248,6 +248,29 @@ div.my-comment-head {
   padding-bottom: 10px;
   text-align: center;
 }
+
+li.recentcomments {
+  position: relative;
+}
+
+div.comment-avatar 
+{
+  margin-left: 5px;
+  margin-top: 7px;
+  position: absolute;
+  right: 0;
+}
+div.comment-avatar > img.avatar 
+{
+  /*border-radius: 0;*/
+}
+.comments-title {
+  /*margin-bottom: 10px;*/
+  /*font-size: 19px;*/
+}
+.comment-content{
+  max-width: 90%;
+}
 /* (22) Стилизация ленты комментариев в виджете "Свежие комментарии" и на странице "Мои комментарии" end*/
 
 
@@ -321,7 +344,7 @@ div.add-to-favor-wrapper .wpfp-span a:hover {
 }
 #reply-link > a {
   color: #c30;
-  font-size: 16px;
+  font-size: 15px;
   border-bottom: 1px dotted #c30 !important;
 }
 #reply-link > a:hover {
@@ -329,19 +352,36 @@ div.add-to-favor-wrapper .wpfp-span a:hover {
 }
 .comment-meta {
   display: inline-block;
-  margin-right: 10px;
+  /*margin-right: 10px;*/
 }
 .comment-body > p {
   margin-bottom: 0;
 }
 .comment-meta-container {
-  margin-bottom: 32px;
+  margin-bottom: 10px;
+  margin-top: 0px;
+  padding-left: 0px;
 }
 .comment-edit > a{
-  font-size: 16px;
+  font-size: 15px;
 }
 .comment-author, .comment-date {
-  font-size: 16px;
+  font-size: 15px;
+}
+.comment-author .avatar {
+    height: 20px;
+    margin-left: 10px;
+    top: 0px;
+    width: 20px;
+}
+.comment-author  a:hover 
+{
+  text-decoration: none;
+  border-bottom: none;
+}
+.comment-author  a 
+{
+  color: #707070;
 }
 ol.diductio-comment-list {
   border: none;
@@ -350,13 +390,14 @@ ol.diductio-comment-list {
    list-style-type: none;
 }
 ol.diductio-comment-list  li{
-  list-style: none;
+  list-style: none;   
   text-decoration: none;
    list-style-type: none;
 }
 div.comment-body > p {
   margin-bottom: 0;
   padding-bottom: 0;
+  line-height: 23px;
 }
 .comments-area {
     margin-left: 4.333% !important;
@@ -472,6 +513,20 @@ iframe {
 .avatar {
   margin-bottom: 40px;
 }
+.all-users {
+  margin-top: 50px;
+}
+.all-users a.link-style-1 {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Open Sans",sans-serif;
+}
+.all-users > div {
+  margin-left: -15px;
+}
+.all-users img {
+  margin-bottom: 12px;
+}
 /* Стилизация контентной зоны end */
 
 /* Стилизация футера */
@@ -490,6 +545,12 @@ iframe {
 .site-main {
     padding: 4.3333% 0;
 }
+div.footer-menu {
+  /*text-align: center;*/
+}
+div.footer-menu > div.fMenu-item {
+  margin-right: 15px;
+}
 /* Стилизация футера end  */
 
 /*  Блок статистики */
@@ -500,7 +561,9 @@ div.stat-col {
   display: inline-block;
   margin-right: 25px;
 }
-
+div.stat-col > a:hover {
+ text-decoration: none;
+}
 div.precent-row {
   /*margin-top: 15px;*/
   margin-top: 7.5px;
@@ -530,7 +593,26 @@ div.precent-row {
 .footer-statistic > div.stat-col {
   margin-right: 12px !important;
 }
-
+.profile_avatars > div.inline {
+  margin-right: 7px;  
+}
+.profile_avatars > div.inline img{
+  margin-bottom: 0px;  
+}
+/* Стилизация страницы все пользователи */
+#users-page div.stat-col {
+    margin-right: 0;
+}
+#users-page .label-important {
+  margin-right: 0;
+}
+#users-page div.inline {
+    margin-right: 10px;
+}
+#users-page div.entry-content {
+    padding: 0 0% 5%;
+}
+/* Стилизация страницы все пользователи end  */
 /* (29) Глобальное. Правки мобильной версии */
 @media screen and (max-width: 767px) { 
   .checkbox-label {
@@ -544,7 +626,7 @@ div.precent-row {
 
   /*Мобильный вид статистики*/
   div.stat-col {
-      display: inline-block;
+      display: inline-block;v.
       margin-right: 0 !important;
       margin-bottom: 10px;
   }

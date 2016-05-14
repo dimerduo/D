@@ -20,23 +20,31 @@ get_header(); ?>
 		<div id="statistic" class="hentry">
 			<div class="public_statistic row">
 				<div class="stat-col">
-					<span class="label label-success label-soft">Массивы знаний</span>
-					<span class="label label-success"><?=$st->get_all_arrays();?></span>
+					<a href="<?=get_site_url();?>">
+						<span class="label label-success">Массивы знаний</span>
+						<span class="label label-success"><?=$st->get_all_arrays();?></span>
+					</a>
 				</div>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Сейчас проходят</span>
-					<span class="label label-success"><?=$st->active;?></span>
+					<a href="/aktivnye-massivy">
+						<span class="label label-success label-soft">Сейчас проходят</span>
+						<span class="label label-success"><?=$st->active;?></span>
+					</a>
 				</div>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Недавно прошли</span>
-					<span class="label label-success"><?=$st->done;?></span>
+					<a href="/projjdennye-massivy">
+						<span class="label label-success label-soft">Недавно прошли</span>
+						<span class="label label-success"><?=$st->done;?></span>
+					</a>
 				</div>
 				<div class="stat-col">
+				   <a href="/istochniki">
 					<span class="label label-success label-soft">Источники</span>
 					<span class="label label-success"><?=$st->get_istochiki_count();?></span>
+				   </a>
 				</div>
 			</div>
-			<div class="public_statistic row precent-row">
+			<!-- <div class="public_statistic row precent-row">
 				<div class="stat-col">
 					<span class="label label-success label-soft">Люди</span>
 					<span class="label label-success"><?=$st->get_all_users();?></span>
@@ -49,31 +57,13 @@ get_header(); ?>
 					<span class="label label-success label-soft">Недавно прошли</span>
 					<span class="label label-success"><?=$st->finished_study_users;?></span>
 				</div>
-				<!-- <div class="stat-col">
+				 <div class="stat-col">
 					<span class="label label-success label-soft">Всего</span>
 					<span class="label label-success">523К</span>
-				</div> -->
+				</div> 
 				<div class="stat-col">
 					<span class="label label-important-soft">Общий уровень</span>
 					<span class="label label-important"><?=$st->get_rating();?> %</span>
-				</div>
-			</div>
-			<!-- <div class="public_statistic row precent-row">
-				<div class="stat-col">
-					<?php if ( is_user_logged_in() ): ?>
-						<span class="label label-important label-important-soft">Ваш уровень</span>
-						<span class="label label-important"><?=$st->get_rating('local');?> %</span>
-					<?php else: ?>
-						<span><span class="label label-important label-important-soft">Ваш уровень </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
-					<?php endif;?>
-				</div>
-				<div class="stat-col">
-					<?php if ( is_user_logged_in() ): ?>
-						<span class="label label-important label-important-soft">Ваш прогресс</span>
-						<span class="label label-important"><?=$st->get_div_studying_progress();?> %</span>
-					<?php else: ?>
-						<span><span class="label label-important label-important-soft">Ваш прогресс </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
-					<?php endif;?>
 				</div>
 			</div> -->
 		</div>

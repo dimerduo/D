@@ -62,9 +62,15 @@ add_shortcode( 'istochniki', 'func_list_sources' );
 // (32) Шорткод страницы  "Моя зачетка" 
 add_shortcode( 'zachetka', 'moya_zachetka' );
 function moya_zachetka() {
-	global $view_path, $wpdb;
+	global $view_path, $wpdb, $author_info;
 	
-	$user_id = get_current_user_id();
+	$author = get_user_by( 'slug', get_query_var( 'author_name' ) );
+	if ($author_info) {
+		$user_id = $author_info->ID;
+	} else {
+		$user_id = get_current_user_id();
+	}
+
 	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 	$sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
 	$progress = $wpdb->get_results($sql);
@@ -323,11 +329,23 @@ class WP_Widget_Recent_Comments_Mod extends WP_Widget {
 			foreach ( (array) $comments as $comment) {
 				$output .= '<li class="recentcomments">';
 				/* translators: comments widget: 1: comment author, 2: post link */
+				
+				//comment content
+				$output .= "<div class='inline comment-content'>";
 				$output .= sprintf( _x( '%1$s', 'widgets' ),
-					' <a class="link-style-1" href="' . esc_url( get_permalink( $comment->comment_post_ID ) ) . '"> ' . get_the_title( $comment->comment_post_ID ) . '</a>'
+					' <a class="link-style-1" href="' . esc_url( get_permalink( $comment->comment_post_ID ) ) . '"> ' . excerp_comment(get_the_title( $comment->comment_post_ID )) . '</a>'
 				);
-				$output .= "<div class='comment-body'>".get_comment_excerpt($comment->id) ."";
+				$output .= "<div class='comment-body'>".excerp_comment(get_comment_excerpt($comment->id)) ."";
 				$output .="<span><a class='link-style-1' href='". esc_url( get_comment_link( $comment->comment_ID ) ) ."'>&nbsp;#</a></span></div>";
+				$output .= "</div>";
+
+				
+				$user_info = get_user_by ('email', $comment->comment_author_email);
+		 	 	$user_link = get_site_url() . "/user/" . $user_info->data->user_nicename;
+				$output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
+				// $output .= "1";
+				$output .= get_avatar( $comment->comment_author_email, 24 );
+				$output .= "</a></div>";
 				$output .= '</li>';
 			}
 		}
@@ -416,15 +434,18 @@ function my_scripts_method() {
 }
 
 // (15) Вывод прогресса в "Мои курсы"
-function diductio_add_progress($post_id){
+function diductio_add_progress($post_id, $uid = false){
 	global $wpdb;
 	
-	$user_id = get_current_user_id();
+	if (!$uid) {
+		$user_id = get_current_user_id();
+	} else {
+		$user_id = (int)$uid;
+	}
 	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 	$sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
 	$sql .= "AND `post_id` = '{$post_id}'";
 	$progress = $wpdb->get_row($sql);
-
 	if($progress) {	
 		if($progress->checked_lessons != "0") {
 			$checked_count = count(explode(',', $progress->checked_lessons));
@@ -497,6 +518,7 @@ add_filter( 'login_headerurl', create_function('', 'return get_home_url();') );
  
 /* убираем title в логотипе "сайт работает на wordpress" */
 add_filter( 'login_headertitle', create_function('', 'return false;') );
+add_filter('is_protected_meta', 'my_is_protected_meta_filter', 10, 2);
 // (20) Стилизация авторизации, регистрации, восстановления пароля, выхода end
 
 
@@ -547,6 +569,8 @@ function init_function() {
 	if(user_can( $current_user, "subscriber" )) {
 		update_user_meta($current_user->ID,'show_admin_bar_front', 'false');
 	}
+
+	add_post_type_support( 'post', 'custom-fields'); 
 }
 add_action( 'init', 'init_function' );
 // (28) Модификация личного кабинета end
@@ -565,8 +589,13 @@ function diductio_comments($comment, $args, $depth) {
 		 	 </div>
 		 	 <div class="comment-meta comment-author">
 		 	 	<?php 
-		 	 		$user_name_str = substr(get_comment_author(),0, 20); 
-					printf(__('<b>%s</b>'), $user_name_str) 
+		 	 		// $user_name_str = substr(get_comment_author(),0, 20);
+		 	 		$user_info = get_user_by ('email', $comment->comment_author_email);
+		 	 		$user_link = get_site_url() . "/user/" . $user_info->data->user_nicename;
+		 	 		echo "<a href='{$user_link}'>"; 
+					printf(__('<div class="inline"><b>%s</b></div>'), $user_info->data->display_name);
+					printf(__('<div class="inline">%s</div>'), get_avatar($user_info->data->user_email));
+		 	 		echo "</a>"; 
 				?>
 		 	 </div>
 		 	 <div class="comment-meta comment-date">
@@ -634,12 +663,13 @@ function get_courses( $is_complite = true) {
 	
 	$sql  = "SELECT DISTINCT(`post_id`) FROM `$table_name`";
 	$progress = $wpdb->get_results($sql);
-
+ 
 	foreach ($progress as $course_key => $course_value) {
 		$complite_count = 0;
 		$in_progress_count = 0;
 		$post_id = $course_value->post_id;
 		$post_info = get_post($post_id);
+
 		$sql   = "SELECT  *  FROM `$table_name` WHERE ";
 		$sql  .= "`post_id` = '{$post_id}'";
 		$post_progress_info = $wpdb->get_results($sql);
@@ -803,6 +833,10 @@ class Statistic  {
 
  	public $finished_study_users = 0;
 
+ 	public $active_studies_users_ids = 0;
+
+ 	public $finished_study_ids = 0;
+
 	function __construct() {
 		$this->active = 0;
 		$this->done = 0;
@@ -829,6 +863,7 @@ class Statistic  {
 
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql   = "SELECT * FROM `$table_name`";
+
 		$progress = $wpdb->get_results($sql);
 		$active_courses = 0;
 		$done_courses = 0;
@@ -886,6 +921,7 @@ class Statistic  {
 		$this->done = count($finshed_array);
 		
 		//статистика по пользователям
+
 		$this->finished_study_users = count($finished_users);
 		$this->active_studies_users = count($inprogress_users);
 	}
@@ -899,8 +935,12 @@ class Statistic  {
 	}
 
 
-	public function get_rating($rating_type = 'global') {
+	public function get_rating($rating_type = 'global', $uid = false) {
 		global $current_user, $wpdb;
+
+		if ($uid) {
+			$current_user =  get_userdata( $uid );
+		}
 
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql   = "SELECT * FROM `$table_name`";
@@ -951,16 +991,77 @@ class Statistic  {
 		}
 	}
 
-	public function get_all_users() 
+	/**
+	 * Возвращает пользователей
+	 */
+	public function get_all_users($flag = false) 
 	{
-		$users = get_users();
-		return count($users);
+		if (!$flag) {
+			$users = get_users();
+			return count($users);
+		} else {
+			global $wpdb;
+
+			$finished_users = array();
+			$inprogress_users = array();
+
+
+			$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+			$sql    = "SELECT * FROM `$table_name` ";
+			$progress = $wpdb->get_results($sql);
+			
+			foreach ($progress as $key => $value) {
+				$lessons_count = $value->lessons_count;
+
+				if($value->checked_lessons != 0) {
+					$checked_lessons = count(explode(',', $value->checked_lessons));
+				} else {
+					$checked_lessons = 0; 
+				}
+				
+				if($lessons_count != $checked_lessons) {
+					$statistic_array[$key]['status'] = 'unfinised';
+					$statistic_array[$key]['pos_id'] = $value->post_id;
+					$statistic_array[$key]['user_id'] = $value->user_id;
+
+				} else {
+					$statistic_array[$key]['status'] = 'finished';
+					$statistic_array[$key]['pos_id'] = $value->post_id;
+					$statistic_array[$key]['user_id'] = $value->user_id;
+				}
+				
+
+			}
+
+			foreach ($statistic_array as $key => $value) {
+					if($value['status'] == 'finished') {
+						if(!in_array($value['user_id'],$finished_users)) {
+							array_push($finished_users, $value['user_id']);
+						}
+					}
+					if($value['status'] == 'unfinised') {
+						if(!in_array($value['user_id'],$inprogress_users)) {
+							array_push($inprogress_users, $value['user_id']);
+						}		
+					}
+				}
+
+			if ($flag == 'active_users') {
+				return $inprogress_users;
+			} else {
+				return $finished_users;
+			}
+		}
 	}
 
-	public function get_div_studying_progress()
+	public function get_div_studying_progress($uid = false)
 	{
 		global $current_user, $wpdb;
 
+		if ($uid) {
+			$current_user =  get_userdata( $uid );
+		}
+		
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql    = "SELECT * FROM `$table_name` ";
 		$sql   .= "WHERE `user_id` = ". $current_user->ID . "";
@@ -1004,7 +1105,9 @@ class Statistic  {
 	{
 		global $current_user, $wpdb;
 
-		$done = $in_progress = 0; 
+		$done = $in_progress = 0;
+		$user_done_ids = $user_active_ids =  array() ;
+
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql   = "SELECT * FROM `$table_name` WHERE `post_id` = {$course_id}";
 		$progress = $wpdb->get_results($sql);
@@ -1018,19 +1121,29 @@ class Statistic  {
 				}
 				
 				if($lessons_count != $checked_lessons) {
+					if (!in_array($value->user_id, $user_active_ids)) {
+						array_push($user_active_ids, $value->user_id);					
+					} 
 					$in_progress ++ ;
 				} else {
+					if (!in_array($value->user_id, $user_done_ids)) {
+						array_push($user_done_ids, $value->user_id);					
+					}
 					$done++;
 				}
 				$les_count = $lessons_count;
 			}
 			$out['done'] = $done;
 			$out['in_progress'] = $in_progress;
-			$out['les_count'] = $les_count;
+			$out['les_count'] = get_post_meta( $course_id,'publication_count')[0];
+			$out['active_users'] = $user_active_ids;
+			$out['done_users'] = $user_done_ids;
 		} else {
 			$out['done'] = 0;
 			$out['in_progress'] = 0;
 			$out['les_count'] = get_post_meta( $course_id,'publication_count')[0];
+			$out['active_users'] = 0;
+			$out['done_users'] = 0;
 		}
 
 		return $out;
@@ -1038,11 +1151,15 @@ class Statistic  {
 	/**
 	 *  Возвращает информацию по статистике пользователя пройденные и активные
 	 */
-	public function get_user_info() 
+	public function get_user_info($id = false) 
 	{
 		global $current_user, $wpdb;
 
-		$user_id = $current_user->ID; 
+		if (!$id) {
+			$user_id = $current_user->ID; 
+		} else {
+			$user_id = (int)$id; 
+		}
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql   = "SELECT * FROM `$table_name` WHERE `user_id` = {$user_id}";
 		$progress = $wpdb->get_results($sql);
@@ -1064,14 +1181,38 @@ class Statistic  {
 				}
 				$les_count = $lessons_count;
 			}
-			$out['done'] = $in_progress;
-			$out['in_progress'] = $done;
+			$out['done'] = $done;
+			$out['in_progress'] = $in_progress;
 		} else {
 			$out['done'] = 0;
 			$out['in_progress'] = 0;
 		}
 
 		return $out;
+	}
+
+	/**
+	 * Пересчитывает всю статистику
+	 */
+	public function refresh() 
+	{
+		global $wpdb;
+
+		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		$sql    = "SELECT * FROM `$table_name` ";
+		$progress = $wpdb->get_results($sql);
+		
+		foreach ($progress as $key => $value) {
+			
+			$user_exist  = get_userdata($value->user_id);
+			$post_exist =  get_post_status	($value->post_id);
+			
+			if(!$user_exist || !$post_exist ) {
+				$del_sql = "DELETE FROM `wp_user_add_info` WHERE `id` = {$value->id}";
+				$wpdb->query($del_sql);
+			} 
+		}
+
 	}
 }
 // (49) Блок статистики end
@@ -1084,5 +1225,45 @@ function bigger_embed_size()
    } else {
   		return array( 'width' => 780, 'height' => 430 );
    }
+}
+
+function draw_user_progress($id) 
+{
+	global $current_user, $wpdb;
+
+	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+	$sql   = "SELECT * FROM `$table_name` WHERE `user_id` = {$id}";
+	$progress = $wpdb->get_results($sql);
+	$user_id = $id ;
+	foreach ($progress as $key => $value) {
+		$post_id = $value->post_id;
+		$html = diductio_add_progress($post_id,$user_id);
+	}
+}
+
+function excerp_comment($text)
+{
+
+	$comment_excerp_size = 25; //configuration;
+	
+	$excerpt = strip_shortcodes($text);
+	$excerpt = strip_tags($excerpt);
+
+	$str_lenght = strlen($excerpt);
+	if($str_lenght < $comment_excerp_size) {
+		$the_str = $excerpt;
+	} else {
+		mb_internal_encoding("UTF-8");
+		$the_str = mb_substr($excerpt, 0, $comment_excerp_size) . "...";
+	}
+	return $the_str;
+}
+
+function my_is_protected_meta_filter($protected, $meta_key) {
+    if( $meta_key == 'old_id' || $meta_key == 'wpfp_favorites'  ) {
+    	return true;
+    } else {
+    	return $protected;
+    }
 }
 ?>
