@@ -527,6 +527,9 @@ iframe {
 .all-users img {
   margin-bottom: 12px;
 }
+.all-users .stat-col {
+  display: none;
+}
 /* Стилизация контентной зоны end */
 
 /* Стилизация футера */
@@ -625,10 +628,20 @@ div.precent-row {
   }
 
   /*Мобильный вид статистики*/
+  div.public_statistic {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .entry-footer { 
+   padding: 2% 5%;
+   padding-top: 5%;
+  }
+
   div.stat-col {
-      display: inline-block;v.
-      margin-right: 0 !important;
-      margin-bottom: 10px;
+      display: inline-block;
+      margin-bottom: 11px;
+      margin-right: 0;
   }
 
   /*Мобильный вид статистики end*/
@@ -646,13 +659,26 @@ div.precent-row {
       margin: 8.333% 27.333% 0 !important;
   }
   .site-header {
-      margin:  0;
-      margin-bottom: 10%;
+      margin: 0;
+      margin-bottom: 4%;
   }
   .custom-page-wrapper {
     margin-left: 77px !important;
     margin-bottom: 13px !important;
   }
+
+  .comments-title {
+    margin-bottom: 0;
+  }
+  #author-page {
+    margin-left: 0;
+  }
+  #author-page div.wpfp-span > ul{
+    margin-left: 0;
+  }
+  .comments-area {
+	 margin-left: 0 !important;
+   }
 }
 /* (29) Глобальное. Правки мобильной версии end */
 

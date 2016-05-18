@@ -13,7 +13,8 @@ $user_count = $user_count_query->get_results();
 // count the number of users found in the query
 $total_users = $user_count ? count($user_count) : 1;
 // grab the current page number and set to 1 if no page number is set
-$page = max(1,get_query_var('page'));
+$page = max(1,get_query_var('paged'));
+
 // how many users to show per page
 $users_per_page = 80;
 
@@ -36,19 +37,19 @@ get_header(); ?>
 	    <div id="statistic" class="hentry">
 	    	<div class="public_statistic row precent-row">
 				<div class="stat-col">
-					<a href="<?php get_home_url(); ?>/lyudi">
+					<a href="<?php get_home_url(); ?>/people">
 						<span class="label label-success">Люди</span>
 						<span class="label label-success"><?=$st->get_all_users();?></span>
 					</a>
 				</div>
 				<div class="stat-col">
-					<a href="<?php get_home_url(); ?>/sejjchas-prokhodyat">
+					<a href="<?php get_home_url(); ?>/people-active">
 						<span class="label label-success label-soft">Сейчас проходят</span>
 						<span class="label label-success"><?=$st->active_studies_users;?></span>
 					</a>
 				</div>
 				<div class="stat-col">
-					<a href="<?php get_home_url(); ?>/sejjchas-prokhodyat">
+					<a href="<?php get_home_url(); ?>/people-recently">
 						<span class="label label-success label-soft">Недавно прошли</span>
 						<span class="label label-success"><?=$st->finished_study_users;?></span>
 					</a>	
@@ -87,7 +88,7 @@ get_header(); ?>
 
 			// if in the admin, your base should be the admin URL + your page
 			// $base = 'http://5.178.82.26/lyudi/' . remove_query_arg('p', $query_string) . '%_%';
-			$paginate_url =  home_url()."/people/";
+			$paginate_url =  home_url()."/people/page/";
 			// if on the front end, your base is the current page
 			//$base = get_permalink( get_the_ID() ) . '?' . remove_query_arg('p', $query_string) . '%_%';
 

@@ -5,7 +5,7 @@
 */
 global $st;
 
-if(is_page('sejjchas-prokhodyat')) {
+if(is_page('people-active')) {
 	$user_in = $st->get_all_users('active_users');
 } else {
 	$user_in = $st->get_all_users('finished_users');
@@ -29,20 +29,20 @@ get_header(); ?>
 		<div id="statistic" class="hentry">
 		    	<div class="public_statistic row precent-row">
 					<div class="stat-col">
-						<a href="<?php get_home_url(); ?>/lyudi">
+						<a href="<?php get_home_url(); ?>/people">
 							<span class="label label-success label-soft">Люди</span>
 							<span class="label label-success"><?=$st->get_all_users();?></span>
 						</a>
 					</div>
 					<div class="stat-col">
-						<a href="<?php get_home_url(); ?>/sejjchas-prokhodyat">
-							<span class="label label-success <?php if(!is_page('sejjchas-prokhodyat')): ?>label-soft <?php endif; ?>">Сейчас проходят</span>
+						<a href="<?php get_home_url(); ?>/people-active">
+							<span class="label label-success <?php if(!is_page('people-active')): ?>label-soft <?php endif; ?>">Сейчас проходят</span>
 							<span class="label label-success"><?=$st->active_studies_users;?></span>
 						</a>
 					</div>
 					<div class="stat-col">
-						<a href="<?php get_home_url(); ?>/nedavno-proshli">
-							<span class="label label-success <?php if(!is_page('nedavno-proshli')): ?>label-soft <?php endif; ?>">Недавно прошли</span>
+						<a href="<?php get_home_url(); ?>/people-recently">
+							<span class="label label-success <?php if(!is_page('people-recently')): ?>label-soft <?php endif; ?>">Недавно прошли</span>
 							<span class="label label-success"><?=$st->finished_study_users;?></span>
 						</a>	
 					</div>

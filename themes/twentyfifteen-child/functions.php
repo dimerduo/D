@@ -167,7 +167,7 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 					$moya_zachetka_items_count = 0;
 				}
 				
-				echo "<li><a href='/mojj-progress'>Мой прогресс <span class='label label-success right-count'>".$fav_count."</span></a></li>";
+				echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>".$fav_count."</span></a></li>";
 				// echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
 				echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>".$comments_count."</span></a></li>";
 				echo "<li><a href='/wp-admin/profile.php'>Мой профиль</a></li>";
@@ -341,7 +341,7 @@ class WP_Widget_Recent_Comments_Mod extends WP_Widget {
 
 				
 				$user_info = get_user_by ('email', $comment->comment_author_email);
-		 	 	$user_link = get_site_url() . "/user/" . $user_info->data->user_nicename;
+		 	 	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
 				$output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
 				// $output .= "1";
 				$output .= get_avatar( $comment->comment_author_email, 24 );
@@ -591,7 +591,7 @@ function diductio_comments($comment, $args, $depth) {
 		 	 	<?php 
 		 	 		// $user_name_str = substr(get_comment_author(),0, 20);
 		 	 		$user_info = get_user_by ('email', $comment->comment_author_email);
-		 	 		$user_link = get_site_url() . "/user/" . $user_info->data->user_nicename;
+		 	 		$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
 		 	 		echo "<a href='{$user_link}'>"; 
 					printf(__('<div class="inline"><b>%s</b></div>'), $user_info->data->display_name);
 					printf(__('<div class="inline">%s</div>'), get_avatar($user_info->data->user_email));
@@ -720,10 +720,10 @@ function my_template( $template ) {
 	// если это страница со слагом projjdennye-massivy, используем файл шаблона page-arrays.php
 	// используем условный тег is_page()
 	
-	if( is_page('projjdennye-massivy') || is_page('aktivnye-massivy') ){
+	if( is_page('array-recently') || is_page('array-active') ){
 		if ( $new_template = locate_template( array( 'page-arrays.php' ) ) )
 			return $new_template ;
-	} elseif(is_page('istochniki') ){
+	} elseif(is_page('source') ){
 		// если это страница со слагом istochniki(страница источников), используем файл шаблона page-istochiki
 		// используем условный тег is_page()
 		if ( $new_template = locate_template( array( 'page-istochniki.php' ) ) )
@@ -758,6 +758,9 @@ function post_update_method($post_ID, $post_after, $post_before){
     	$accordion_count = $accordion_count / 2;
     }
 	
+	if( $accordion_count == 0) {
+	   $accordion_count = get_post_meta($post_ID, 'publication_count', true);	
+	}
 	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 	$sql   = "UPDATE {$table_name} SET `lessons_count` = {$accordion_count} ";
 	$sql  .= " WHERE `post_id` = {$post_ID}";
@@ -1266,4 +1269,11 @@ function my_is_protected_meta_filter($protected, $meta_key) {
     	return $protected;
     }
 }
+
+function my_tweaked_admin_bar() {
+	global $wp_admin_bar;
+	
+	print_r($wp_admin_bar);
+}
+add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' ); 
 ?>

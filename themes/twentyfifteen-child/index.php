@@ -26,19 +26,19 @@ get_header(); ?>
 					</a>
 				</div>
 				<div class="stat-col">
-					<a href="/aktivnye-massivy">
+					<a href="/array-active">
 						<span class="label label-success label-soft">Сейчас проходят</span>
 						<span class="label label-success"><?=$st->active;?></span>
 					</a>
 				</div>
 				<div class="stat-col">
-					<a href="/projjdennye-massivy">
+					<a href="/array-recently">
 						<span class="label label-success label-soft">Недавно прошли</span>
 						<span class="label label-success"><?=$st->done;?></span>
 					</a>
 				</div>
 				<div class="stat-col">
-				   <a href="/istochniki">
+				   <a href="/source">
 					<span class="label label-success label-soft">Источники</span>
 					<span class="label label-success"><?=$st->get_istochiki_count();?></span>
 				   </a>

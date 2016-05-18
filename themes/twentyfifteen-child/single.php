@@ -37,9 +37,9 @@ get_header(); ?>
 								// User Loop
 								if ( ! empty( $active_users_array->results ) ) {
 									foreach ( $active_users_array->results as $user ) {
-										$user_link = get_site_url() . "/user/" . $user->data->user_nicename;
+										$user_link = get_site_url() . "/people/" . $user->data->user_nicename;
 
-										printf("<div class='inline'><a href='%s' target='_blank'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
+										printf("<div class='inline'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
 									}
 								} else {
 									echo 'No users found.';
@@ -57,9 +57,9 @@ get_header(); ?>
 								// User Loop
 								if ( ! empty( $done_users_array->results ) ) {
 									foreach ( $done_users_array->results as $user ) {
-										$user_link = get_site_url() . "/user/" . $user->data->user_nicename;
+										$user_link = get_site_url() . "/people/" . $user->data->user_nicename;
 
-										printf("<div class='inline'><a href='%s' target='_blank'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
+										printf("<div class='inline'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
 									}
 								} else {
 									echo 'No users found.';

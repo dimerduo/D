@@ -53,7 +53,7 @@ get_header(); ?>
 				</div>
 			</div>
 		</div> -->
-	<?php elseif(is_page('mojj-progress')): 
+	<?php elseif(is_page('progress')): 
 		$user_statistic = $st->get_user_info();
 	?>
 	<div id="statistic" class="hentry">

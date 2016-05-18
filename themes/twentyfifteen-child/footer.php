@@ -23,8 +23,7 @@
 				do_action( 'twentyfifteen_credits' );
 			?>
 			<div class="footer-menu">
-				<div class="fMenu-item inline"><a href="<?=home_url()?>/dlya-chego-ehto-nuzhno">О проекте</a></div>
-				<div class="fMenu-item inline"><a href="<?=home_url()?>/pishite-nam">Пишите нам!</a></div>
+				<div class="fMenu-item inline"><a href="<?=home_url()?>">Diductio - Встреча знаний и людей</a></div>
 			</div>
 		</div><!-- .site-info -->
 	</footer><!-- .site-footer -->

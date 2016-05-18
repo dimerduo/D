@@ -12,5 +12,13 @@
 		</ul>
 	</div>
 <?php else: ?>
-	Ваша зачетка пуста.
+
+	 <?php 
+	 $is_author_page = $GLOBALS['author_info']->data->user_login;
+	 
+	 if($is_author_page): ?>
+	 	Нету пройденных массивов
+	 <?php else: ?>
+		Ваша зачетка пуста.
+	 <?php endif; ?>
 <?php endif; ?>

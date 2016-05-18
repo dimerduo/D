@@ -15,20 +15,20 @@ get_header(); ?>
 					</a>
 				</div>
 				<div class="stat-col">
-					<a href="/aktivnye-massivy">
+					<a href="/array-active">
 						<span class="label label-success 
-							<?php if(!is_page('aktivnye-massivy')): ?>label-soft<?php endif; ?> ">Сейчас проходят</span>
+							<?php if(!is_page('array-active')): ?>label-soft<?php endif; ?> ">Сейчас проходят</span>
 						<span class="label label-success"><?=$st->active;?></span>
 					</a>
 				</div>
 				<div class="stat-col">
-					<a href="/projjdennye-massivy">
-						<span class="label label-success <?php if(!is_page('projjdennye-massivy')): ?>label-soft<?php endif; ?>">Недавно прошли</span>
+					<a href="/array-recently">
+						<span class="label label-success <?php if(!is_page('array-recently')): ?>label-soft<?php endif; ?>">Недавно прошли</span>
 						<span class="label label-success"><?=$st->done;?></span>
 					</a>
 				</div>
 				<div class="stat-col">
-					<a href="/istochniki">
+					<a href="/source">
 						<span class="label label-success label-soft">Источники</span>
 						<span class="label label-success"><?=$st->get_istochiki_count();?></span>
 					</a>
@@ -60,14 +60,14 @@ get_header(); ?>
 		<main id="main" class="site-main" role="main">
 		<?php
 		// Start the loop.
-		if(is_page('projjdennye-massivy')) {
+		if(is_page('array-recently')) {
 			$active_flag = true;
 			$courses = get_courses();
-			$paginate_url = home_url()."/projjdennye-massivy/";
-		} elseif ('aktivnye-massivy') { 
+			$paginate_url = home_url()."/array-recently/";
+		} elseif ('array-active') { 
 			$courses = get_courses(false);
 			$active_flag = false;
-			$paginate_url = home_url()."/aktivnye-massivy/";
+			$paginate_url = home_url()."/array-active/";
 		}
 
 

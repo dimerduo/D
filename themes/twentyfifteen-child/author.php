@@ -55,7 +55,7 @@
 		</div> 
 	</div>
 		<main id="main" class="site-main" role="main">
-			<header class="page-header">
+			<header class="page-header" id="author-page">
 				<div  class="avatar inline "><?=get_avatar( $author_info->user_email, 96 );?></div>		
 				<div class="inline" style="margin-left:20px;"> 
 					<h1 class="entry-title"><?php print_r($author_info->data->display_name); ?></h1>
@@ -88,7 +88,7 @@
 				        }
 				        endwhile;
 				        if($curses_count == 0) {
-				            echo "<li>Мои массивы пусты</li>";
+				            echo "<li>Нету активных массивов</li>";
 				        }
 				        echo "</ul>";
 					?>
