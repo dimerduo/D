@@ -8,6 +8,7 @@ plugins/wp-fastest-cache/
 plugins/edit-author-slug/
 plugins/lazy-load-for-videos/
 plugins/my-smtp-wp/
+plugins/lazy-load-xt/
 
 themes/twentyfifteen/
 

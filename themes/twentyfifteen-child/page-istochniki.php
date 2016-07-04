@@ -7,22 +7,23 @@ get_header(); ?>
 
 	<div id="primary" class="content-area">
 		<div id="statistic" class="hentry">
+			
 			<div class="public_statistic row">
 				<div class="stat-col">
 					<a href="<?=get_site_url();?>">
-						<span class="label label-success label-soft">Массивы знаний</span>
+						<span class="label label-success label-soft">Массивы</span>
 						<span class="label label-success"><?=$st->get_all_arrays();?></span>
 					</a>
 				</div>
 				<div class="stat-col">
 					<a href="/array-active">
-						<span class="label label-success label-soft">Сейчас проходят</span>
+						<span class="label label-success label-soft">Проходят</span>
 						<span class="label label-success"><?=$st->active;?></span>
 					</a>
 				</div>
 				<div class="stat-col">
 					<a href="/array-recently">
-						<span class="label label-success label-soft">Недавно прошли</span>
+						<span class="label label-success label-soft">Прошли</span>
 						<span class="label label-success"><?=$st->done;?></span>
 					</a>
 				</div>
@@ -32,7 +33,14 @@ get_header(); ?>
 					<span class="label label-success"><?=$st->get_istochiki_count();?></span>
 				   </a>
 				</div>
+				<div class="stat-col">
+				   <a href="/people">
+					<span class="label label-important-soft">Люди</span>
+					<span class="label label-important"><?=$st->get_all_users();?></span>
+				   </a>
+				</div>
 			</div>
+		
 		</div>
 		<main id="main" class="site-main" role="main">
 		<?php

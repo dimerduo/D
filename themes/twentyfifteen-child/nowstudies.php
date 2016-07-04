@@ -27,31 +27,37 @@ get_header(); ?>
 
 	<div id="primary" class="content-area">
 		<div id="statistic" class="hentry">
-		    	<div class="public_statistic row precent-row">
-					<div class="stat-col">
-						<a href="<?php get_home_url(); ?>/people">
-							<span class="label label-success label-soft">Люди</span>
-							<span class="label label-success"><?=$st->get_all_users();?></span>
-						</a>
-					</div>
-					<div class="stat-col">
-						<a href="<?php get_home_url(); ?>/people-active">
-							<span class="label label-success <?php if(!is_page('people-active')): ?>label-soft <?php endif; ?>">Сейчас проходят</span>
-							<span class="label label-success"><?=$st->active_studies_users;?></span>
-						</a>
-					</div>
-					<div class="stat-col">
-						<a href="<?php get_home_url(); ?>/people-recently">
-							<span class="label label-success <?php if(!is_page('people-recently')): ?>label-soft <?php endif; ?>">Недавно прошли</span>
-							<span class="label label-success"><?=$st->finished_study_users;?></span>
-						</a>	
-					</div>
-					<div class="stat-col">
-						<span class="label label-important-soft">Общий уровень</span>
-						<span class="label label-important"><?=$st->get_rating();?> %</span>
-					</div>
+			<div class="public_statistic row precent-row">
+				<div class="stat-col">
+					<a href="<?php get_home_url(); ?>/people">
+						<span class="label label-important-soft">Люди</span>
+						<span class="label label-important"><?=$st->get_all_users();?></span>
+					</a>
 				</div>
-	    </div>
+				<div class="stat-col">
+					<a href="<?php get_home_url(); ?>/people-active">
+						<span class="label label-important <?php if(!is_page('people-active')): ?>label-important-soft<?php endif; ?>">Проходят</span>
+						<span class="label label-important"><?=$st->active_studies_users;?></span>
+					</a>
+				</div>
+				<div class="stat-col">
+					<a href="<?php get_home_url(); ?>/people-recently">
+						<span class="label label-important <?php if(!is_page('people-recently')): ?>label-important-soft<?php endif; ?>">Прошли</span>
+						<span class="label label-important"><?=$st->finished_study_users;?></span>
+					</a>	
+				</div>
+				<div class="stat-col">
+					<span class="label label-important-soft">Уровень</span>
+					<span class="label label-important"><?=$st->get_rating();?> %</span>
+				</div>
+				<div class="stat-col">
+					<a href="<?=get_home_url();?>">
+						<span class="label label-success label-soft">Массивы</span>
+						<span class="label label-success"><?=$st->finished_study_users;?></span>
+					</a>	
+				</div>
+			</div>
+		</div>
 		<main id="main" class="site-main" role="main">
 			<article id="users-page" class="page type-page status-publish hentry">
 				<header class="entry-header">

@@ -1067,7 +1067,8 @@ class Statistic  {
 		
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql    = "SELECT * FROM `$table_name` ";
-		$sql   .= "WHERE `user_id` = ". $current_user->ID . "";
+		$sql   .= "WHERE `user_id` = ". $current_user->ID . " ";
+		$sql   .= "AND `checked_lessons` != 0 ";
 		$progress = $wpdb->get_results($sql);
 		$user_array_count = 0;
 		$precent = 0;
@@ -1273,7 +1274,7 @@ function my_is_protected_meta_filter($protected, $meta_key) {
 function my_tweaked_admin_bar() {
 	global $wp_admin_bar;
 	
-	print_r($wp_admin_bar);
+	// print_r($wp_admin_bar);
 }
 add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' ); 
 ?>

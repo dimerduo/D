@@ -30,7 +30,7 @@ get_header(); ?>
 		<div id="statistic" class="hentry">
 			<?php if($post_statistic['in_progress'] > 0 ): ?>
 					<div class="stat-col">
-						<span class="label label-success label-soft">Массив проходят</span>
+						<span class="label label-success label-soft">Проходят</span>
 						<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
 						<div class="inline profile_avatars">
 							<?php 
@@ -50,7 +50,7 @@ get_header(); ?>
 			<?php endif; ?>
 			<?php if($post_statistic['done'] > 0 ): ?>
 					<div class="stat-col">
-						<span class="label label-success label-soft">Недавно прошли</span>
+						<span class="label label-success label-soft">Прошли</span>
 						<span class="label label-success"><?=$post_statistic['done'];?></span>
 						<div class="inline profile_avatars">
 							<?php 
@@ -70,15 +70,15 @@ get_header(); ?>
 			<?php endif; ?>
 			<?php if($post_statistic['les_count']): ?>
 					<div class="stat-col">
-						<span class="label label-grey-soft">Частей</span>
-						<span class="label label-grey"><?=$post_statistic['les_count'];?></span>
+						<span class="label label-success label-soft">Частей</span>
+						<span class="label label-success"><?=$post_statistic['les_count'];?></span>
 					</div>
 			<?php endif; ?>
 			<?php $approved = wp_count_comments( $post->ID )->approved;
 				if($approved > 0 ): ?>
 					<div class="stat-col">
-						<span class="label label-success label-soft">Обсуждение</span>
-						<span class="label label-success"> <?=$approved; ?> </span>
+						<span class="label label-important-soft">Обсуждение</span>
+						<span class="label label-important"> <?=$approved; ?> </span>
 					</div>
 			<?php endif; ?>
 					<div class="stat-col">

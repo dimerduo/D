@@ -38,25 +38,31 @@ get_header(); ?>
 	    	<div class="public_statistic row precent-row">
 				<div class="stat-col">
 					<a href="<?php get_home_url(); ?>/people">
-						<span class="label label-success">Люди</span>
-						<span class="label label-success"><?=$st->get_all_users();?></span>
+						<span class="label label-important">Люди</span>
+						<span class="label label-important"><?=$st->get_all_users();?></span>
 					</a>
 				</div>
 				<div class="stat-col">
 					<a href="<?php get_home_url(); ?>/people-active">
-						<span class="label label-success label-soft">Сейчас проходят</span>
-						<span class="label label-success"><?=$st->active_studies_users;?></span>
+						<span class="label label-important-soft">Проходят</span>
+						<span class="label label-important"><?=$st->active_studies_users;?></span>
 					</a>
 				</div>
 				<div class="stat-col">
 					<a href="<?php get_home_url(); ?>/people-recently">
-						<span class="label label-success label-soft">Недавно прошли</span>
-						<span class="label label-success"><?=$st->finished_study_users;?></span>
+						<span class="label label-important-soft">Прошли</span>
+						<span class="label label-important"><?=$st->finished_study_users;?></span>
 					</a>	
 				</div>
 				<div class="stat-col">
-					<span class="label label-important-soft">Общий уровень</span>
+					<span class="label label-important-soft">Уровень</span>
 					<span class="label label-important"><?=$st->get_rating();?> %</span>
+				</div>
+				<div class="stat-col">
+					<a href="<?=get_home_url(); ?>">
+						<span class="label label-success label-soft">Массивы</span>
+						<span class="label label-success"><?=$st->finished_study_users;?></span>
+					</a>	
 				</div>
 			</div>
 	    </div>

@@ -43,20 +43,20 @@
 			<?php $post_statistic = $st->get_course_info($post->ID); ?>
 			<?php if($post_statistic['in_progress'] > 0 ): ?>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Массив проходят</span>
+					<span class="label label-success label-soft">Проходят</span>
 					<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
 				</div>
 			<?php endif; ?>
 			<?php if($post_statistic['done'] > 0 ): ?>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Недавно прошли</span>
+					<span class="label label-success label-soft">Прошли</span>
 					<span class="label label-success"><?=$post_statistic['done'];?></span>
 				</div>
 			<?php endif; ?>
 			<?php if($post_statistic['les_count']): ?>
 				<div class="stat-col">
-					<span class="label label-grey-soft">Частей</span>
-					<span class="label label-grey"><?=$post_statistic['les_count'];?></span>
+					<span class="label label-success label-soft">Частей</span>
+					<span class="label label-success"><?=$post_statistic['les_count'];?></span>
 				</div>
 			<?php endif; ?>
 			<?php $approved = wp_count_comments( $post->ID )->approved;

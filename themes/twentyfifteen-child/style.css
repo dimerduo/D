@@ -176,8 +176,8 @@ a.remove-parent {
   transform-origin: left top;
   /*border-right: 4px solid #cee;*/
   /*border-top: 4px solid #cee;*/
-  border-right: 4px solid rgba(204, 51, 0, 0.3);
-  border-top: 4px solid rgba(204, 51, 0, 0.3);;
+     border-right: 4px solid rgba(204, 51, 0, 0.3);
+    border-top: 4px solid rgba(204, 51, 0, 0.3);
 
   content: '';
   display: block;
@@ -190,7 +190,7 @@ a.remove-parent {
 }
 .checkbox label:hover:after, .checkbox-alt label:hover:after {
   /*border-color: #bdd;*/
-  border-color: rgba(204, 51, 0, 1.0);;
+  border-color: rgba(204, 51, 0, 1.0);
 }
 .checkbox input, .checkbox-alt input {
   display: none;
@@ -202,7 +202,7 @@ a.remove-parent {
   -o-animation: check 0.8s;
   animation: check 0.8s;
   /*border-color: #6aa;*/
-  border-color: rgba(204, 51, 0, 1.0);
+  border-color: rgba(204, 51, 0, 1.0);;
 }
 .checkbox.checkbox-alt label:hover:after, .checkbox-alt.checkbox-alt label:hover:after {
   -webkit-animation: check 0.8s ease infinite;
@@ -223,7 +223,7 @@ a.remove-parent {
   margin-top: -16px;
 }
 .checkbox-label label{
-  /*color: #6aa;*/
+  font-size: 15px;
   color: rgba(204, 51, 0, 1.0);
   border-bottom: 1px dotted #600 !important;
 }
@@ -615,6 +615,35 @@ div.precent-row {
 #users-page div.entry-content {
     padding: 0 0% 5%;
 }
+
+.accordion-title {
+	font-size: 15px !important;
+    color: #36f;
+    text-decoration: none;
+}
+.accordion-title:hover {
+	cursor: pointer;
+}
+.container-youtube, .container-vimeo {
+	margin-bottom: 7px;
+}
+.entry-content a.lazy-load-youtube, a.lazy-load-youtube, .lazy-load-vimeo {
+	border:none;
+}
+a.lazy-load-youtube {
+  position: relative !important;
+}
+.titletext {
+  position: initial;
+}
+.lazy-load-youtube-info{
+    position: absolute;
+    top: 0;
+    padding: 4px;
+    background-color: white;
+    color: black;
+}
+
 /* Стилизация страницы все пользователи end  */
 /* (29) Глобальное. Правки мобильной версии */
 @media screen and (max-width: 767px) { 
