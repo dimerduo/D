@@ -3,6 +3,7 @@
  * Template Name: Все люди
  * Данный шаблон страницы выводит всех пользователей на сайте
 */
+
 $count_args  = array(
     'role'      => 'Subscriber',
     'fields'    => 'all_with_meta',
@@ -61,8 +62,13 @@ get_header(); ?>
 				<div class="stat-col">
 					<a href="<?=get_home_url(); ?>">
 						<span class="label label-success label-soft">Массивы</span>
-						<span class="label label-success"><?=$st->finished_study_users;?></span>
+						<span class="label label-success"><?=$st->get_all_arrays();?></span>
 					</a>	
+				</div>
+				<div class="stat-col">
+				   <a href="/plus">
+					<span class="label label-orange">+</span>
+				   </a>
 				</div>
 			</div>
 	    </div>
