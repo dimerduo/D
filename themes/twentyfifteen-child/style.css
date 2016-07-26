@@ -221,6 +221,7 @@ a.remove-parent {
   padding-top: 8px;
   margin-left: -41px;
   margin-top: -16px;
+  margin-bottom: 15px;
 }
 .checkbox-label label{
   font-size: 15px;
@@ -451,6 +452,10 @@ div.label {
 .label-important-soft{
   background-color: rgba(51, 122, 183, 0.7);
 }
+
+.label-orange{
+  background-color: #e67e22;
+}
 /* (39) Стилизация нотисов (глобальный) end*/
 
 /* Стилизация сайдбара */
@@ -562,7 +567,8 @@ div.footer-menu > div.fMenu-item {
 }
 div.stat-col {
   display: inline-block;
-  margin-right: 25px;
+  /*margin-right: 25px;*/
+  margin-right: 17px;
 }
 div.stat-col > a:hover {
  text-decoration: none;
