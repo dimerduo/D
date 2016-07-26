@@ -554,7 +554,7 @@ add_filter( 'login_redirect', 'login_redirect', 10, 3 );
 // (28) Модификация личного кабинета
 function remove_menus (){
 	global $current_user; 
-	get_currentuserinfo();
+	wp_get_current_user();
 	
 	if(user_can( $current_user, "subscriber" )) {
 		remove_menu_page( 'index.php' );
@@ -565,7 +565,7 @@ function remove_menus (){
 add_action( 'admin_menu', 'remove_menus' );
 function init_function() {
 	global $current_user; 
-	get_currentuserinfo();
+	wp_get_current_user();
 	if(user_can( $current_user, "subscriber" )) {
 		update_user_meta($current_user->ID,'show_admin_bar_front', 'false');
 	}
