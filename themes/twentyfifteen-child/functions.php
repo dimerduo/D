@@ -781,9 +781,12 @@ function get_courses( $is_complite = true) {
 				$in_progress_count ++; 
 			}
 		}
-		$post_info -> complite_count = $complite_count;
-		$post_info -> in_progress_count = $in_progress_count;
-		$courses_array[$post_id]  = $post_info;
+		//print_r($post_info -> complite_count);
+		if ($post_info != null){
+		  $post_info -> complite_count = $complite_count;
+		  $post_info -> in_progress_count = $in_progress_count;
+		  $courses_array[$post_id]  = $post_info;
+		}
 	}
 	if($is_complite) {
 		usort($courses_array, function($a, $b) {
