@@ -9,13 +9,16 @@ plugins/edit-author-slug/
 plugins/lazy-load-for-videos/
 plugins/my-smtp-wp/
 plugins/lazy-load-xt/
+plugins/democracy-poll/
+plugins/quiz-master-next/
 
 themes/twentyfifteen/
 
-backupwordpress-d5cc91efb1-backups/
 uploads/
 languages/
 themes/index.php
 index.php
-backupwordpress-9869543f77-backups/.htaccess
-backupwordpress-9869543f77-backups/index.html
+wflogs/
+wfcache/
+*-backups/
+*.swp

@@ -2,6 +2,12 @@
 
 $view_path = get_stylesheet_directory()."/view/";
 
+function sort_desc($a, $b) {
+  if ($a['update_at']< $b['update_at'])
+return 1;
+}
+
+
 // (1) Удаления даты и количества комментариев из ленты записей, удаление даты и админа из тела
 if (!function_exists('twentyfifteen_entry_meta')) {
     function twentyfifteen_entry_meta() {
@@ -271,7 +277,7 @@ class WP_Widget_Recent_Comments_Mod extends WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		global $comments, $comment;
+		global $comments, $comment, $wpdb;
 
 		$cache = array();
 		if ( ! $this->is_preview() ) {
@@ -309,49 +315,137 @@ class WP_Widget_Recent_Comments_Mod extends WP_Widget {
 		 *
 		 * @param array $comment_args An array of arguments used to retrieve the recent comments.
 		 */
+
+		/* Так как нельзя группировать то по Post_id пишем свой запрос 
 		$comments = get_comments( apply_filters( 'widget_comments_args', array(
-			'number'      => $number,
+			'number'      => 100,
 			'status'      => 'approve',
 			'post_status' => 'publish'
-		) ) );
+		) ) );*/
+
+		//SQL запрос, получаем интересующие записи
+		$table_name = $wpdb->get_blog_prefix() . 'comments';
+		$sql  = "
+		  SELECT *
+		  FROM (
+			SELECT *
+			FROM `$table_name`
+			ORDER BY `comment_date` DESC
+		  ) AS wp_comments
+		  WHERE `comment_approved` = 1
+		  GROUP BY wp_comments.comment_post_id
+		  ORDER BY wp_comments.comment_date DESC
+		  LIMIT $number";
+		
+		//это SQL запрос прогресса 
+		$table_name2 = $wpdb->get_blog_prefix() . 'user_add_info';
+		$sql2  = "
+		  SELECT *
+		  FROM (
+			SELECT *
+			FROM `$table_name2`
+			ORDER BY `update_at` DESC
+		  ) AS wp_progres
+          WHERE wp_progres.update_at != '0000-00-00 00:00:00' 
+		  AND  wp_progres.checked_lessons != '0'
+          GROUP BY  wp_progres.post_id
+		  ORDER BY  wp_progres.update_at DESC
+		  LIMIT $number";
+
+		//выполняем запроссы
+		$progress = $wpdb->get_results($sql2);
+		$comments = $wpdb->get_results($sql);
+		$stream   = [];
+		
+		//формируем ленту
+		if(is_array( $comments) && $comments){
+		  foreach((array) $comments as $comment){
+
+			//print_r($comment);
+			$stream[] = Array(
+			  'id'        => $comment->comment_ID,
+			  'post_id'   => $comment->comment_post_ID,
+			  'user_id'   => $comment->user_id,
+			  'update_at' => $comment->comment_date_gmt,
+			  'content'   => $comment->comment_content
+			);
+		  }
+		}
+
+		if(is_array( $progress) && $progress){
+		  foreach((array) $progress as $progres){
+			$stream[] = Array(
+			  'post_id'   => $progres->post_id,
+			  'user_id'   => $progres->user_id,
+			  'update_at' => $progres->update_at,
+			  'content'   => null
+			);
+		  }
+		}
+		//сортируем по дате
+		usort($stream, 'sort_desc');
+		//обраезаем массив по колличеству из админки
+		$stream_n = array_slice($stream, 0, $number);
+		unset($stream);
 
 		$output .= $args['before_widget'];
 		if ( $title ) {
 			$output .= $args['before_title'] . $title . $args['after_title'];
 		}
-
+		
+		#stat stream
 		$output .= '<ul id="recentcomments">';
-		if ( is_array( $comments ) && $comments ) {
-			// Prime cache for associated posts. (Prime post term cache if we need it for permalinks.)
-			$post_ids = array_unique( wp_list_pluck( $comments, 'comment_post_ID' ) );
-			_prime_post_caches( $post_ids, strpos( get_option( 'permalink_structure' ), '%category%' ), false );
-
-			foreach ( (array) $comments as $comment) {
+		if ( is_array($stream_n) && $stream_n ) {
+		
+		  foreach ( (array) $stream_n as $s) {
+				$user_info = get_user_by ('id', $s['user_id']);
+				$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+				
 				$output .= '<li class="recentcomments">';
-				/* translators: comments widget: 1: comment author, 2: post link */
-				
-				//comment content
-				$output .= "<div class='inline comment-content'>";
-				$output .= sprintf( _x( '%1$s', 'widgets' ),
-					' <a class="link-style-1" href="' . esc_url( get_permalink( $comment->comment_post_ID ) ) . '"> ' . excerp_comment(get_the_title( $comment->comment_post_ID )) . '</a>'
-				);
-				$output .= "<div class='comment-body'>".excerp_comment(get_comment_excerpt($comment->id)) ."";
-				$output .="<span><a class='link-style-1' href='". esc_url( get_comment_link( $comment->comment_ID ) ) ."'>&nbsp;#</a></span></div>";
-				$output .= "</div>";
-
-				
-				$user_info = get_user_by ('email', $comment->comment_author_email);
-		 	 	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
 				$output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
-				// $output .= "1";
-				$output .= get_avatar( $comment->comment_author_email, 24 );
-				$output .= "</a></div>";
-				$output .= '</li>';
+				$output .= get_avatar( $user_info->data->user_email, 20 );
+				$output .= "<span>";
+				$output .= $user_info->data->display_name;
+				
+				if($s['content'] === null){
+				  $small_text = "Повысил прогресс";
+				}else{
+				  $comments_count  = wp_count_comments($s['post_id']);
+				  $approved = $comments_count->approved;
+				  //Сколнения :)
+				  if(1==$approved){
+					$approved_text = "комментарий";
+				  }elseif($approved < 5){
+					$approved_text = "комментария";
+				  }else{
+					$approved_text = "комментариев";
+				  }
+				  $small_text = $approved ." ". $approved_text;
+				}
+
+				$output .= "</span></a><small>". $small_text ."</small></div>";
+				$output .= "<div class='inline comment-content'>";
+				$output .= "<div class='comment-body'>";
+				if($s['content'] != null ){
+				  $output .= excerp_comment(get_comment($s['id'])->comment_content, 60);
+				  $output .= "<a class='link-style-1' href='"
+					. esc_url( get_comment_link( $s['id'] ) ) ."'>&nbsp;#</a><br>";
+				  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
+					. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
+					. excerp_comment(get_the_title( $s['post_id'] ), 30) . '</a>');
+				}else{
+				  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
+					. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
+					. excerp_comment(get_the_title( $s['post_id'] ), 30) . '</a>');
+				}
+				$output .= "<span></span></div>";
+				$output .= "</div>";
+				$output .= "</li>";
 			}
 		}
 		$output .= '</ul>';
+		##end stream
 		$output .= $args['after_widget'];
-
 		echo $output;
 
 		if ( ! $this->is_preview() ) {
@@ -946,13 +1040,23 @@ class Statistic  {
 		}
 
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-		$sql   = "SELECT * FROM `$table_name`";
+		$sql   = "SELECT * FROM `$table_name` WHERE `checked_lessons` != '0' ";
 		$progress = $wpdb->get_results($sql);
+
+		//моя функция
+		$count_c = 0;
+		$count_l = 0;
+		foreach($progress as $k => $v){
+			$count_c = $count_c + count(explode(',', $v->checked_lessons));
+			$count_l = $count_l + $v -> lessons_count;
+			
+		}
+		//и Всё!
+		//остальное 'магия'
+		
 		$users_statistick = array();
 		$passed_courses = 0;
 		if($progress) {
-
-
 			foreach ($progress as $key => $value) {
 				$lessons_count = $value->lessons_count;
 				if($value->checked_lessons != 0) {
@@ -982,7 +1086,8 @@ class Statistic  {
 			}
 			if(!empty($all_div_counts)) {
 				if($rating_type =='global') {
-					return round($all_div_counts/$user_count, 2);
+				  //return round($all_div_counts/$user_count, 2);
+				  return round( ($count_c/$count_l)*100, 2);
 				} else {
 					return round($users_statistick[$current_user->ID]['passed_div'],2);
 				}
@@ -1245,10 +1350,10 @@ function draw_user_progress($id)
 	}
 }
 
-function excerp_comment($text)
+function excerp_comment($text, $size=23)
 {
 
-	$comment_excerp_size = 25; //configuration;
+	$comment_excerp_size = $size; //configuration;
 	
 	$excerpt = strip_shortcodes($text);
 	$excerpt = strip_tags($excerpt);
@@ -1258,7 +1363,7 @@ function excerp_comment($text)
 		$the_str = $excerpt;
 	} else {
 		mb_internal_encoding("UTF-8");
-		$the_str = mb_substr($excerpt, 0, $comment_excerp_size) . "...";
+		$the_str = mb_substr($excerpt, 0, $comment_excerp_size) . "…";
 	}
 	return $the_str;
 }

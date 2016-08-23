@@ -29,13 +29,14 @@
 				'user_id' => $user_id, 
 				'post_id' => $post_id, 
 				'lessons_count' => $lessons_count, 
-				'checked_lessons' => $checked_lessons 
-				);
+				'checked_lessons' => $checked_lessons,
+				'update_at'       => date('Y-m-d G:i:s')
+			);
 			
 			if($progress) {
-				$wpdb->update($table_name,$insert_data, array('id' =>$progress->id), array("%d","%d","%d","%s"), array("%d","%d","%d","%s") );
+				$wpdb->update($table_name,$insert_data, array('id' =>$progress->id), array("%d","%d","%d","%s","%s"), array("%d","%d","%d","%s","%s") );
 			} else {
-				$wpdb->insert($table_name, $insert_data, array("%d","%d","%d","%s"));
+				$wpdb->insert($table_name, $insert_data, array("%d","%d","%d","%s", "%s"));
 			}
 		}
 	}
