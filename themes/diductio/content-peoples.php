@@ -9,7 +9,7 @@
 
 	global $user, $st;
 	$user_statistic = $st->get_user_info($user->ID);
-	$level = $st->get_rating('local', $user->ID);
+	//$level = $st->get_rating('local', $user->ID);
 	$progress = $st->get_div_studying_progress($user->ID);
 ?>
 
@@ -23,10 +23,11 @@
 		</div>
 		<div class="stat-col">
 			<span class="label label-success label-soft" data-toggle="tooltip" data-placement="top" title="Пройденных"><?=$user_statistic['done'];?></span>
-		</div>
+			</div>
+		<?php /*
 		<div class="stat-col">
 			<span class="label label-important-soft" data-toggle="tooltip" data-placement="top" title="Уровень"><?=$level;?> %</span>
-		</div>
+		</div>*/?>
 		<div class="stat-col">
 			<span class="label label-important-soft" data-toggle="tooltip" data-placement="top" title="Прогресс"><?=$progress;?> %</span>
 		</div>

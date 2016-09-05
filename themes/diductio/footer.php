@@ -32,9 +32,11 @@
 
 <?php wp_footer(); ?>
 <script type="text/javascript">
-	$(function () {
-	  $('[data-toggle="tooltip"]').tooltip()
-	})
+	document.addEventListener("DOMContentLoaded", function(event) {
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		});
+	});
 </script>
 </body>
 </html>

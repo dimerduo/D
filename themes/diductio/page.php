@@ -66,6 +66,7 @@ get_header(); ?>
 					<span class="label label-success label-soft">Пройденных</span>
 					<span class="label label-success"><?=$user_statistic['done'];?></span>
 			</div>
+			<?php /*
 			<div class="stat-col" style="margin-right: 11px;">
 				<?php if ( is_user_logged_in() ): ?>
 					<span class="label label-important label-important-soft">Уровень</span>
@@ -73,10 +74,10 @@ get_header(); ?>
 				<?php else: ?>
 					<span><span class="label label-important label-important-soft">Ваш уровень </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
 				<?php endif;?>
-			</div>
+			</div> */ ?>
 			<div class="stat-col" style="margin-right: 11px;">
 				<?php if ( is_user_logged_in() ): ?>
-					<span class="label label-important label-important-soft">Прогресс</span>
+					<span class="label label-important label-important-soft">Мой прогресс</span>
 					<span class="label label-important"><?=$st->get_div_studying_progress();?> %</span>
 				<?php else: ?>
 					<span><span class="label label-important label-important-soft">Ваш прогресс </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>

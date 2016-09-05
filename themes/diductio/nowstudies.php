@@ -48,7 +48,7 @@ get_header(); ?>
 				</div>
 				<div class="stat-col">
 					<span class="label label-important-soft">Уровень</span>
-					<span class="label label-important"><?=$st->get_rating();?> %</span>
+					<span class="label label-important"><?=$st->get_progress();?> %</span>
 				</div>
 				<div class="stat-col">
 					<a href="<?=get_home_url();?>">

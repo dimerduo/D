@@ -17,7 +17,7 @@ themes/twentyfifteen/
 uploads/
 languages/
 themes/index.php
-index.php
+/index.php
 wflogs/
 wfcache/
 *-backups/
