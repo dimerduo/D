@@ -1387,6 +1387,7 @@ class Statistic  {
 		
 		//статистика по пользователям
 
+
 		$this->finished_study_users = count($finished_users);
 		$this->active_studies_users = count($inprogress_users);
 	}
@@ -1784,4 +1785,79 @@ add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' );
 	return "$url' defer='defer";
   }
 
+  function get_user_work_times() {
+	global $current_user, $wpdb;
+	$uid = $current_user->ID;
+
+	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+	$sql      = "SELECT * FROM `$table_name` WHERE `user_id`=$uid";
+	$progress = $wpdb->get_results($sql);
+	$wts = array(
+	  'all' => 0,
+	  'complete' => 0,
+	  'nocomplete' => 0
+	);
+
+	foreach ($progress as $k => $v) {
+	  $wt = (int)get_post_meta($v->post_id, 'work_time', true);
+	  $wts['all'] =+ $wt;
+	  if ($wt != 0 and $v->checked_lessons != '0'){
+		$cof = count(explode(',', $v->checked_lessons)) / $v->lessons_count;
+		$wts['complete'] += floor($wt * $cof);
+	  }
+	}
+	$wts['nocomplete'] = $wts['all'] - $wts['complete'];
+
+	return $wts;
+  }
+/*
+  // Добавляем дополнительное поле
+  function time_meta_box() {  
+	add_meta_box(  
+		'time_meta_box', // Идентификатор(id)
+		'My Meta Box', // Заголовок области с мета-полями(title)
+		'show_time_metabox', // Вызов(callback)
+		'post', // Где будет отображаться наше поле, в нашем случае в Записях
+		'normal', 
+		'high'
+	);
+  }
+
+  add_action('add_meta_boxes', 'time_meta_box'); // Запускаем функцию
+
+  $meta_fields = array(  
+	array(  
+	  'label' => 'Текстiовое поле',  
+	  'desc'  => 'Описание для поля.',  
+	  'id'    => 'mytextinput',
+	),
+	array(  
+	  'label' => 'Текстовое поле 2',  
+	  'desc'  => 'Описание для поля2.',  
+	  'id'    => 'mytextinput2',
+	)
+  );
+
+  // Вызов метаполей  
+  function show_time_metabox() {  
+	global $meta_fields; // Обозначим наш массив с полями глобальным
+	global $post;  // Глобальный $post для получения id создаваемого/редактируемого поста
+	// Выводим скрытый input, для верификации. Безопасность прежде всего!
+	echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
+	// Начинаем выводить таблицу с полями через цикл
+	echo '<table class="form-table">';
+	foreach ($meta_fields as $field) {  
+	  // Получаем значение если оно есть для этого поля 
+	  $meta = get_post_meta($post->ID, $field['id'], true);  
+	  // Начинаем выводить таблицу
+	  echo '<tr><th><label for="'.$field['id'].'">'.$field['label'].'</label></th><td>';
+	  echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" size="30" /> 
+			<br />
+			<span class="description">'.$field['desc'].'</span>';
+		
+	  echo '</td></tr>';  
+    }
+	echo '</table>'; 
+  }
+ */
 ?>

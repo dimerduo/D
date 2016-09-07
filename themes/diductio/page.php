@@ -63,18 +63,29 @@ get_header(); ?>
 					<span class="label label-success"><?=$user_statistic['in_progress'];?></span>
 			</div>
 			<div class="stat-col" style="margin-right: 11px;">
-					<span class="label label-success label-soft">Пройденных</span>
+					<span class="label label-success label-soft">Пройденныхu</span>
 					<span class="label label-success"><?=$user_statistic['done'];?></span>
 			</div>
-			<?php /*
-			<div class="stat-col" style="margin-right: 11px;">
-				<?php if ( is_user_logged_in() ): ?>
-					<span class="label label-important label-important-soft">Уровень</span>
-					<span class="label label-important"><?=$st->get_rating('local');?> %</span>
-				<?php else: ?>
-					<span><span class="label label-important label-important-soft">Ваш уровень </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
-				<?php endif;?>
-			</div> */ ?>
+			<?php if ( is_user_logged_in() ): ?>
+				<?php $wts = get_user_work_times();?>
+				<div class="stat-col" style="margin-right: 11px;">
+					<span class="label label-important label-important-soft">Требуется</span>
+					<span class="label label-important">
+						<?php print_r(floor($wts['nocomplete']/60))?>ч : 
+						<?php print_r($wts['nocomplete']%60)?>м
+					</span>
+				</div>
+
+				<div class="stat-col" style="margin-right: 11px;">
+					<span class="label label-important label-important-soft">Пройденно</span>
+					<span class="label label-important">
+						<?php print_r(floor($wts['complete']/60))?>ч : 
+						<?php print_r($wts['complete'] %60)?>м
+					</span>
+				</div>
+			<?php endif;?>
+
+
 			<div class="stat-col" style="margin-right: 11px;">
 				<?php if ( is_user_logged_in() ): ?>
 					<span class="label label-important label-important-soft">Мой прогресс</span>

@@ -22,3 +22,4 @@ wflogs/
 wfcache/
 *-backups/
 *.swp
+*.swo

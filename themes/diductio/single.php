@@ -74,6 +74,17 @@ get_header(); ?>
 						<span class="label label-success"><?=$post_statistic['les_count'];?></span>
 					</div>
 			<?php endif; ?>
+
+			<?php 
+				//Получаем время урока из произвольного поля
+				$work_time = (int)get_post_meta($post->ID, 'work_time', true);
+				if( $work_time!=0 ): ?>
+				<div class="stat-col">
+					<span class="label label-success label-soft">Время</span>
+					<span class="label label-success"><?=floor($work_time/60)?>ч : <?=$work_time %60?>м</span>
+				</div>
+			<?php endif; ?>
+
 			<?php $approved = wp_count_comments( $post->ID )->approved;
 				if($approved > 0 ): ?>
 					<div class="stat-col">
