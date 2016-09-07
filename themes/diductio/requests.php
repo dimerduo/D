@@ -30,7 +30,7 @@
 				'post_id' => $post_id, 
 				'lessons_count' => $lessons_count, 
 				'checked_lessons' => $checked_lessons,
-				'update_at'       => date('Y-m-d G:i:s')
+				'update_at'       => date('Y-m-d H:i:s')
 			);
 			
 			if($progress) {

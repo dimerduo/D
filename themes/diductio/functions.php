@@ -1785,10 +1785,11 @@ add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' );
 	return "$url' defer='defer";
   }
 
-  function get_user_work_times() {
+  function get_user_work_times($uid = 0) {
 	global $current_user, $wpdb;
-	$uid = $current_user->ID;
-
+	if($uid === 0){
+	  $uid = $current_user->ID;
+	}
 	$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 	$sql      = "SELECT * FROM `$table_name` WHERE `user_id`=$uid";
 	$progress = $wpdb->get_results($sql);
@@ -1800,7 +1801,7 @@ add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' );
 
 	foreach ($progress as $k => $v) {
 	  $wt = (int)get_post_meta($v->post_id, 'work_time', true);
-	  $wts['all'] =+ $wt;
+	  $wts['all'] += $wt;
 	  if ($wt != 0 and $v->checked_lessons != '0'){
 		$cof = count(explode(',', $v->checked_lessons)) / $v->lessons_count;
 		$wts['complete'] += floor($wt * $cof);

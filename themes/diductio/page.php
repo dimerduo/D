@@ -91,7 +91,7 @@ get_header(); ?>
 					<span class="label label-important label-important-soft">Мой прогресс</span>
 					<span class="label label-important"><?=$st->get_div_studying_progress();?> %</span>
 				<?php else: ?>
-					<span><span class="label label-important label-important-soft">Ваш прогресс </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
+					<span><span class="label label-important label-important-soft">Прогресс </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
 				<?php endif;?>
 			</div>
 		</div> 
