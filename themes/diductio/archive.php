@@ -22,7 +22,7 @@ $cat_id =get_query_var('cat') ; ?>
 	<section id="primary" class="content-area">
 		<div id="statistic" class="hentry">
 			<div class="stat-col">
-				<span class="label label-success label-soft">Массивы знаний</span>
+				<span class="label label-success label-soft">Массивы</span>
 				<span class="label label-success"><?=get_category($cat_id)->category_count;?></span>
 			</div>
 		</div>

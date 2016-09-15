@@ -65,11 +65,11 @@ get_header(); ?>
 						<span class="label label-success"><?=$st->get_all_arrays();?></span>
 					</a>	
 				</div>
-				<div class="stat-col">
+				<!--<div class="stat-col">
 				   <a href="/plus">
 					<span class="label label-orange">+</span>
 				   </a>
-				</div>
+				</div>-->
 			</div>
 	    </div>
 		<main id="main" class="site-main" role="main">

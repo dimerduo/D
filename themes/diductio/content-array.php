@@ -43,7 +43,7 @@
 			<?php $post_statistic = $st->get_course_info($post->ID); ?>
 			<?php if($post_statistic['in_progress'] > 0 ): ?>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Проходят</span>
+					<span class="label label-success label-soft">Проходят1</span>
 					<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
 				</div>
 			<?php endif; ?>

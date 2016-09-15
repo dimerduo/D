@@ -43,11 +43,11 @@ get_header(); ?>
 					<span class="label label-important"><?=$st->get_all_users();?></span>
 				   </a>
 				</div>
-				<div class="stat-col">
+				<!--<div class="stat-col">
 				   <a href="/category/poll">
 					<span class="label label-orange">+</span>
 				   </a>
-				</div>
+				</div>-->
 			</div>
 		</div>
 		<main id="main" class="site-main homepage-main" role="main">
