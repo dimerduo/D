@@ -872,7 +872,7 @@ function get_my_comments() {
 // (12 глобальный) Подключения JS файлов и файлов стилизации
 add_action( 'wp_enqueue_scripts', 'my_scripts_method' );
 function my_scripts_method() {
- wp_register_script('diductio-script', get_stylesheet_directory_uri()."/js/diductio.js");
+ wp_register_script('diductio-script', get_stylesheet_directory_uri()."/js/javascripts.js");
  
 // (13 глобальный) Опции JS по умолчанию
  $didaction_object = array(
