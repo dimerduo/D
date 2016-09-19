@@ -9,7 +9,7 @@
 					);
 			?>
 			<div class="col-md-12 my-comment">
-				<div><?=$output;?></div>
+				<div><?php echo $output;?></div>
 				<div><?=$comment->comment_content?> <a class="link-style-1" href="<?=$comment_link?>">&nbsp; #</a></div>
 				<div class="divider"></div>
 			</div>

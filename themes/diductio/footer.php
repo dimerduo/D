@@ -20,7 +20,7 @@
 				 *
 				 * @since Twenty Fifteen 1.0
 				 */
-				do_action( 'twentyfifteen_credits' );
+				do_action( 'diductio_credits' );
 			?>
 			<div class="footer-menu">
 				<div class="fMenu-item inline"><a href="<?=home_url()?>">Diductio - Встреча знаний и людей</a></div>

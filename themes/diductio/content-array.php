@@ -28,11 +28,11 @@
 		<?php the_content('Читать далее'); ?>
 		<?php
 			wp_link_pages( array(
-				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentyfifteen' ) . '</span>',
+				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'diductio' ) . '</span>',
 				'after'       => '</div>',
 				'link_before' => '<span>',
 				'link_after'  => '</span>',
-				'pagelink'    => '<span class="screen-reader-text">' . __( 'Page', 'twentyfifteen' ) . ' </span>%',
+				'pagelink'    => '<span class="screen-reader-text">' . __( 'Page', 'diductio' ) . ' </span>%',
 				'separator'   => '<span class="screen-reader-text">, </span>',
 			) );
 		?>
@@ -43,7 +43,7 @@
 			<?php $post_statistic = $st->get_course_info($post->ID); ?>
 			<?php if($post_statistic['in_progress'] > 0 ): ?>
 				<div class="stat-col">
-					<span class="label label-success label-soft">Проходят1</span>
+					<span class="label label-success label-soft">Проходят</span>
 					<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
 				</div>
 			<?php endif; ?>
@@ -68,7 +68,7 @@
 			<?php endif; ?>
 		</div>
 		<?php twentyfifteen_entry_meta(); ?>
-		<?php edit_post_link( __( 'Edit', 'twentyfifteen' ), '<span class="edit-link">', '</span>' ); ?>
+		<?php edit_post_link( __( 'Edit', 'diductio' ), '<span class="edit-link">', '</span>' ); ?>
 	</footer><!-- .entry-footer -->
 
 </article><!-- #post-## -->
