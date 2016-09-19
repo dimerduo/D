@@ -24,7 +24,7 @@ $post_count  = $wp_query->get_queried_object()->count;
 	<section id="primary" class="content-area">
 		<div id="statistic" class="hentry">
 			<div class="stat-col">
-				<span class="label label-success label-soft">Массивы знаний</span>
+				<span class="label label-success label-soft">Массивы</span>
 				<span class="label label-success"><?=$post_count;?></span>
 			</div>
 		</div>
@@ -90,9 +90,9 @@ $post_count  = $wp_query->get_queried_object()->count;
 
 			// Previous/next page navigation.
 			the_posts_pagination( array(
-				'prev_text'          => __( 'Previous page', 'twentyfifteen' ),
-				'next_text'          => __( 'Next page', 'twentyfifteen' ),
-				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentyfifteen' ) . ' </span>',
+				'prev_text'          => __( 'Previous page', 'diductio' ),
+				'next_text'          => __( 'Next page', 'diductio' ),
+				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'diductio' ) . ' </span>',
 			) );
 
 		// If no content, include the "No posts found" template.

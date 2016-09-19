@@ -57,9 +57,9 @@ function twentyfifteen_setup() {
 	 * Make theme available for translation.
 	 * Translations can be filed at WordPress.org. See: https://translate.wordpress.org/projects/wp-themes/twentyfifteen
 	 * If you're building a theme based on twentyfifteen, use a find and replace
-	 * to change 'twentyfifteen' to the name of your theme in all the template files
+	 * to change 'diductio' to the name of your theme in all the template files
 	 */
-	load_theme_textdomain( 'twentyfifteen' );
+	load_theme_textdomain( 'diductio' );
 
 	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
@@ -82,8 +82,8 @@ function twentyfifteen_setup() {
 
 	// This theme uses wp_nav_menu() in two locations.
 	register_nav_menus( array(
-		'primary' => __( 'Primary Menu',      'twentyfifteen' ),
-		'social'  => __( 'Social Links Menu', 'twentyfifteen' ),
+		'primary' => __( 'Primary Menu',      'diductio' ),
+		'social'  => __( 'Social Links Menu', 'diductio' ),
 	) );
 
 	/*
@@ -144,9 +144,9 @@ add_action( 'after_setup_theme', 'twentyfifteen_setup' );
  */
 function twentyfifteen_widgets_init() {
 	register_sidebar( array(
-		'name'          => __( 'Widget Area', 'twentyfifteen' ),
+		'name'          => __( 'Widget Area', 'diductio' ),
 		'id'            => 'sidebar-1',
-		'description'   => __( 'Add widgets here to appear in your sidebar.', 'twentyfifteen' ),
+		'description'   => __( 'Add widgets here to appear in your sidebar.', 'diductio' ),
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h2 class="widget-title">',
@@ -172,7 +172,7 @@ function twentyfifteen_fonts_url() {
 	 * Translators: If there are characters in your language that are not supported
 	 * by Noto Sans, translate this to 'off'. Do not translate into your own language.
 	 */
-	if ( 'off' !== _x( 'on', 'Noto Sans font: on or off', 'twentyfifteen' ) ) {
+	if ( 'off' !== _x( 'on', 'Noto Sans font: on or off', 'diductio' ) ) {
 		$fonts[] = 'Noto Sans:400italic,700italic,400,700';
 	}
 
@@ -180,7 +180,7 @@ function twentyfifteen_fonts_url() {
 	 * Translators: If there are characters in your language that are not supported
 	 * by Noto Serif, translate this to 'off'. Do not translate into your own language.
 	 */
-	if ( 'off' !== _x( 'on', 'Noto Serif font: on or off', 'twentyfifteen' ) ) {
+	if ( 'off' !== _x( 'on', 'Noto Serif font: on or off', 'diductio' ) ) {
 		$fonts[] = 'Noto Serif:400italic,700italic,400,700';
 	}
 
@@ -188,7 +188,7 @@ function twentyfifteen_fonts_url() {
 	 * Translators: If there are characters in your language that are not supported
 	 * by Inconsolata, translate this to 'off'. Do not translate into your own language.
 	 */
-	if ( 'off' !== _x( 'on', 'Inconsolata font: on or off', 'twentyfifteen' ) ) {
+	if ( 'off' !== _x( 'on', 'Inconsolata font: on or off', 'diductio' ) ) {
 		$fonts[] = 'Inconsolata:400,700';
 	}
 
@@ -196,7 +196,7 @@ function twentyfifteen_fonts_url() {
 	 * Translators: To add an additional character subset specific to your language,
 	 * translate this to 'greek', 'cyrillic', 'devanagari' or 'vietnamese'. Do not translate into your own language.
 	 */
-	$subset = _x( 'no-subset', 'Add new subset (greek, cyrillic, devanagari, vietnamese)', 'twentyfifteen' );
+	$subset = _x( 'no-subset', 'Add new subset (greek, cyrillic, devanagari, vietnamese)', 'diductio' );
 
 	if ( 'cyrillic' == $subset ) {
 		$subsets .= ',cyrillic,cyrillic-ext';
@@ -270,8 +270,8 @@ function twentyfifteen_scripts() {
 
 	wp_enqueue_script( 'twentyfifteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20150330', true );
 	wp_localize_script( 'twentyfifteen-script', 'screenReaderText', array(
-		'expand'   => '<span class="screen-reader-text">' . __( 'expand child menu', 'twentyfifteen' ) . '</span>',
-		'collapse' => '<span class="screen-reader-text">' . __( 'collapse child menu', 'twentyfifteen' ) . '</span>',
+		'expand'   => '<span class="screen-reader-text">' . __( 'expand child menu', 'diductio' ) . '</span>',
+		'collapse' => '<span class="screen-reader-text">' . __( 'collapse child menu', 'diductio' ) . '</span>',
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'twentyfifteen_scripts' );
@@ -385,29 +385,29 @@ return 1;
 if (!function_exists('twentyfifteen_entry_meta')) {
     function twentyfifteen_entry_meta() {
 		if ( is_sticky() && is_home() && ! is_paged() ) {
-			printf( '<span class="sticky-post">%s</span>', __( 'Featured', 'twentyfifteen' ) );
+			printf( '<span class="sticky-post">%s</span>', __( 'Featured', 'diductio' ) );
 		}
 		$format = get_post_format();
 		if ( current_theme_supports( 'post-formats', $format ) ) {
 			printf( '<span class="entry-format">%1$s<a href="%2$s">%3$s</a></span>',
-				sprintf( '<span class="screen-reader-text">%s </span>', _x( 'Format', 'Used before post format.', 'twentyfifteen' ) ),
+				sprintf( '<span class="screen-reader-text">%s </span>', _x( 'Format', 'Used before post format.', 'diductio' ) ),
 				esc_url( get_post_format_link( $format ) ),
 				get_post_format_string( $format )
 			);
 		}
 		if ( 'post' == get_post_type() ) {
-			$categories_list = get_the_category_list( _x( ', ', 'Used between list items, there is a space after the comma.', 'twentyfifteen' ) );
+			$categories_list = get_the_category_list( _x( ', ', 'Used between list items, there is a space after the comma.', 'diductio' ) );
 			if ( $categories_list && twentyfifteen_categorized_blog() ) {
 				printf( '<span  class="cat-links 2"><span class="screen-reader-text">%1$s </span>%2$s</span>',
-					_x( 'Categories', 'Used before category names.', 'twentyfifteen' ),
+					_x( 'Categories', 'Used before category names.', 'diductio' ),
 					$categories_list
 				);
 			}
 
-			$tags_list = get_the_tag_list( '', _x( ', ', 'Used between list items, there is a space after the comma.', 'twentyfifteen' ) );
+			$tags_list = get_the_tag_list( '', _x( ', ', 'Used between list items, there is a space after the comma.', 'diductio' ) );
 			if ( $tags_list ) {
 				printf( '<span class="tags-links"><span class="screen-reader-text">%1$s </span>%2$s</span>',
-					_x( 'Tags', 'Used before tag names.', 'twentyfifteen' ),
+					_x( 'Tags', 'Used before tag names.', 'diductio' ),
 					$tags_list
 				);
 			}
@@ -417,7 +417,7 @@ if (!function_exists('twentyfifteen_entry_meta')) {
 			$metadata = wp_get_attachment_metadata();
 
 			printf( '<span class="full-size-link"><span class="screen-reader-text">%1$s </span><a href="%2$s">%3$s &times; %4$s</a></span>',
-				_x( 'Full size', 'Used before full size attachment link.', 'twentyfifteen' ),
+				_x( 'Full size', 'Used before full size attachment link.', 'diductio' ),
 				esc_url( wp_get_attachment_url() ),
 				$metadata['width'],
 				$metadata['height']
@@ -872,7 +872,7 @@ function get_my_comments() {
 // (12 глобальный) Подключения JS файлов и файлов стилизации
 add_action( 'wp_enqueue_scripts', 'my_scripts_method' );
 function my_scripts_method() {
- wp_register_script('diductio-script', get_stylesheet_directory_uri()."/diductio.js");
+ wp_register_script('diductio-script', get_stylesheet_directory_uri()."/js/javascripts.js");
  
 // (13 глобальный) Опции JS по умолчанию
  $didaction_object = array(

@@ -41,7 +41,7 @@ function twentyfifteen_customize_register( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'color_scheme', array(
-		'label'    => __( 'Base Color Scheme', 'twentyfifteen' ),
+		'label'    => __( 'Base Color Scheme', 'diductio' ),
 		'section'  => 'colors',
 		'type'     => 'select',
 		'choices'  => twentyfifteen_get_color_scheme_choices(),
@@ -56,8 +56,8 @@ function twentyfifteen_customize_register( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'sidebar_textcolor', array(
-		'label'       => __( 'Header and Sidebar Text Color', 'twentyfifteen' ),
-		'description' => __( 'Applied to the header on small screens and the sidebar on wide screens.', 'twentyfifteen' ),
+		'label'       => __( 'Header and Sidebar Text Color', 'diductio' ),
+		'description' => __( 'Applied to the header on small screens and the sidebar on wide screens.', 'diductio' ),
 		'section'     => 'colors',
 	) ) );
 
@@ -72,13 +72,13 @@ function twentyfifteen_customize_register( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'header_background_color', array(
-		'label'       => __( 'Header and Sidebar Background Color', 'twentyfifteen' ),
-		'description' => __( 'Applied to the header on small screens and the sidebar on wide screens.', 'twentyfifteen' ),
+		'label'       => __( 'Header and Sidebar Background Color', 'diductio' ),
+		'description' => __( 'Applied to the header on small screens and the sidebar on wide screens.', 'diductio' ),
 		'section'     => 'colors',
 	) ) );
 
 	// Add an additional description to the header image section.
-	$wp_customize->get_section( 'header_image' )->description = __( 'Applied to the header on small screens and the sidebar on wide screens.', 'twentyfifteen' );
+	$wp_customize->get_section( 'header_image' )->description = __( 'Applied to the header on small screens and the sidebar on wide screens.', 'diductio' );
 }
 add_action( 'customize_register', 'twentyfifteen_customize_register', 11 );
 
@@ -147,7 +147,7 @@ function twentyfifteen_get_color_schemes() {
 	 */
 	return apply_filters( 'twentyfifteen_color_schemes', array(
 		'default' => array(
-			'label'  => __( 'Default', 'twentyfifteen' ),
+			'label'  => __( 'Default', 'diductio' ),
 			'colors' => array(
 				'#f1f1f1',
 				'#ffffff',
@@ -158,7 +158,7 @@ function twentyfifteen_get_color_schemes() {
 			),
 		),
 		'dark'    => array(
-			'label'  => __( 'Dark', 'twentyfifteen' ),
+			'label'  => __( 'Dark', 'diductio' ),
 			'colors' => array(
 				'#111111',
 				'#202020',
@@ -169,7 +169,7 @@ function twentyfifteen_get_color_schemes() {
 			),
 		),
 		'yellow'  => array(
-			'label'  => __( 'Yellow', 'twentyfifteen' ),
+			'label'  => __( 'Yellow', 'diductio' ),
 			'colors' => array(
 				'#f4ca16',
 				'#ffdf00',
@@ -180,7 +180,7 @@ function twentyfifteen_get_color_schemes() {
 			),
 		),
 		'pink'    => array(
-			'label'  => __( 'Pink', 'twentyfifteen' ),
+			'label'  => __( 'Pink', 'diductio' ),
 			'colors' => array(
 				'#ffe5d1',
 				'#e53b51',
@@ -191,7 +191,7 @@ function twentyfifteen_get_color_schemes() {
 			),
 		),
 		'purple'  => array(
-			'label'  => __( 'Purple', 'twentyfifteen' ),
+			'label'  => __( 'Purple', 'diductio' ),
 			'colors' => array(
 				'#674970',
 				'#2e2256',
@@ -202,7 +202,7 @@ function twentyfifteen_get_color_schemes() {
 			),
 		),
 		'blue'   => array(
-			'label'  => __( 'Blue', 'twentyfifteen' ),
+			'label'  => __( 'Blue', 'diductio' ),
 			'colors' => array(
 				'#e9f2f9',
 				'#55c3dc',

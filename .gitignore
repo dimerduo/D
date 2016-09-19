@@ -11,6 +11,8 @@ plugins/my-smtp-wp/
 plugins/lazy-load-xt/
 plugins/democracy-poll/
 plugins/quiz-master-next/
+plugins/theme-check
+
 
 themes/twentyfifteen/
 
