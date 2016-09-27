@@ -15,7 +15,6 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-
 	get_header(); 
     global $wpdb, $st;
 	$cat_id =get_query_var('cat') ; 
@@ -69,8 +68,15 @@
 					</div>*/ ?>
 			<div class="stat-col" style="margin-right: 11px;">
 					<span class="label label-important label-important-soft">Прогресс</span>
-					<span class="label label-important"><?=$st->get_div_studying_progress($user_id);?> %</span>
+					<span class="label label-important">
+					<?=0 //$st->get_div_studying_progress($user_id);?> 
+					%</span>
 			</div>
+			<?php
+				if (function_exists('getSubsriberView')) {
+					echo getSubsriberView(); 
+				}
+			?>
 		</div> 
 	</div>
 		<main id="main" class="site-main" role="main">

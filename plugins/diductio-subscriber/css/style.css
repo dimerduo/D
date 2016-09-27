@@ -1,0 +1,46 @@
+.sbscr-loading:before{
+	background-image: url('../img/loading.gif');
+    display: inline-block;
+    width: 16px; 
+    height: 16px;
+    content:"";
+}
+.link-style-3:hover{
+	cursor: pointer;
+}
+.link-style-3 {
+	color: #c30;
+    font-size: 18px;
+    border-bottom: 1px dotted #c30 !important
+}
+.sbscr-message{
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.sbsr-success {
+	background-color: rgba(92, 184 , 92, 0.7);
+}
+
+.sbsr-fail {
+	background-color: rgba(244, 67, 54, 0.8);
+}
+
+.diductio_subscriber li {
+    padding-bottom: 10px;
+    list-style-type: none;
+}
+
+.diductio_subscriber li:not(:first-child), .widget_recent_entries li {
+    border-top: 1px solid #eaeaea;
+    border-top: 1px solid rgba(51, 51, 51, 0.1);
+    padding: 0.7667em 0;
+}

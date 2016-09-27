@@ -547,6 +547,7 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 				}
 				
 				echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>".$fav_count."</span></a></li>";
+				echo "<li><a href='/subscription'>Мои подписки </a></li>";
 				// echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
 				echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>".$comments_count."</span></a></li>";
 				echo "<li><a href='/wp-admin/profile.php'>Мой профиль</a></li>";
