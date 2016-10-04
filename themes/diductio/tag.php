@@ -15,10 +15,17 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-
 get_header();
 $post_count  = $wp_query->get_queried_object()->count;
-
+if (is_tag()) {
+	$tag = get_queried_object();
+	$tag_id = $tag->term_id;
+	global $wp_query;
+	$args = array( 
+        'tag__in' => $tag_id,
+        'posts_per_page' => -1);
+	$tag_posts = get_posts($args);
+}
 ?>
 
 	<section id="primary" class="content-area">
@@ -27,6 +34,11 @@ $post_count  = $wp_query->get_queried_object()->count;
 				<span class="label label-success label-soft">Массивы</span>
 				<span class="label label-success"><?=$post_count;?></span>
 			</div>
+			<?php
+				if (function_exists('getSubsriberView')) {
+					echo getSubsriberView('tag'); 
+				}
+			?>
 		</div>
 		<main id="main" class="site-main" role="main">
 
@@ -44,14 +56,7 @@ $post_count  = $wp_query->get_queried_object()->count;
 				<footer class="entry-footer">
 					<span class="screen-reader-text">Рубрики </span>
 						<?php
-						 if(is_tag()){
-						 	$tag = get_queried_object();
-		    				$tag_id = $tag->term_id;
-		    				global $wp_query;
-		    				$args = array( 
-						        'tag__in' => $tag_id,
-						        'posts_per_page' => -1);
-		    				$tag_posts = get_posts($args);
+						 if($tag_posts)	{
 		    				$tag_categories = array();
 		    				foreach ($tag_posts as $tag_key => $tag_value) {
 		    					$category_id = wp_get_post_categories($tag_value->ID);

@@ -2,9 +2,7 @@
 /**
  * Template Name: Шаблон страницы "Источники"
  */
-
 get_header(); ?>
-
 	<div id="primary" class="content-area">
 		<div id="statistic" class="hentry">
 			
@@ -45,7 +43,6 @@ get_header(); ?>
 				   </a>
 				</div>-->
 			</div>
-		
 		</div>
 		<main id="main" class="site-main" role="main">
 		<?php

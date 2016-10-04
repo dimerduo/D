@@ -25,6 +25,11 @@ $cat_id =get_query_var('cat') ; ?>
 				<span class="label label-success label-soft">Массивы</span>
 				<span class="label label-success"><?=get_category($cat_id)->category_count;?></span>
 			</div>
+			<?php
+				if (function_exists('getSubsriberView')) {
+					echo getSubsriberView('category'); 
+				}
+			?>
 		</div>
 		<main id="main" class="site-main" role="main">
 		<?php if ( have_posts() ) : ?>

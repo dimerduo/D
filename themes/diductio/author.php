@@ -74,7 +74,7 @@
 			</div>
 			<?php
 				if (function_exists('getSubsriberView')) {
-					echo getSubsriberView(); 
+					echo getSubsriberView('author'); 
 				}
 			?>
 		</div> 

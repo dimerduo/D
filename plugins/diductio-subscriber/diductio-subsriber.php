@@ -7,6 +7,8 @@ Author: Aleksey Novikov
 */
 register_activation_hook( __FILE__ , 'sbscr_install' );
 add_action('wp_ajax_subscribe', 'subscribe');
+add_action('wp_ajax_tag_subscribe', 'tag_subscribe');
+add_action('wp_ajax_сategory_subscribe', 'category_subscribe');
 add_action( 'wp_enqueue_scripts', 'load_scripts', 99 );
 add_filter( 'template_include', 'portfolio_page_template', 99 );
 add_action( 'widgets_init', 'WidgetInit' );
@@ -42,25 +44,54 @@ function sbscr_install()
     }
 }
 
-function getSubsriberView(){
-	if(is_user_logged_in()) {	
-		global $author, $current_user;
-		$id = get_current_user_id();
-		$data = new stdClass();
-		$data->author = $author;
-		$subscriber_list = get_user_meta($id, 'subscribe_to')[0];
-		if($subscriber_list) {
-			if(in_array($author->ID,$subscriber_list)) {
-				//мы подписаны на обновление данного пользователя
-				$data->main_phrase = "Отписаться"; 
-			} else {
-				//мы не подписаны на обновление данного пользователя
-				$data->main_phrase = "Подписаться"; 
-			}
-		} else {
-			$data->main_phrase = "Подписаться"; 
-		}
+function getSubsriberView($view_type = false){
 
+	if(is_user_logged_in()) {
+
+		global $author, $current_user;
+		$data = new stdClass();
+		$id = get_current_user_id();
+		$show_my_view = false;
+		switch ($view_type) {
+			//вывод view для подписки-отписки на автора
+			case 'author':
+				$data->html_class = "add-subscriber";
+				$data->html_id = "author-" . $author->ID;
+				$data->author = $author;
+				$subscriber_list = get_user_meta($id, 'subscribe_to')[0];
+				$data->main_phrase = "Подписаться"; 
+				if(!empty($subscriber_list) && in_array($author->ID,$subscriber_list)) {
+					//мы подписаны на обновление данного пользователя
+					$data->main_phrase = "Отписаться"; 
+				}
+				break;
+			//вывод view для подписки-отписки на рубрику, источник 
+			case 'tag':
+			    global $tag, $tag_id;
+				$show_my_view = true;
+				$data->html_class = "tag-subscribe";
+				$data->html_id = "tag-" . $tag->term_id;
+				$tag_list = get_user_meta($id, 'signed_tags')[0];
+				$data->main_phrase = "Подписаться"; 
+				if(!empty($tag_list) && in_array($tag_id, $tag_list)) {
+					$data->main_phrase = "Отписаться"; 
+				}
+				break;
+			case 'category':
+			    global $cat_id;
+				$show_my_view = true;
+				$data->html_class = "category-subscribe";
+				$data->html_id = "category-" . $cat_id;
+				$data->main_phrase = "Подписаться";
+				$category_list = get_user_meta($id, 'signed_categories')[0];
+				if(!empty($category_list) && in_array($cat_id, $category_list)) {
+					$data->main_phrase = "Отписаться";
+				}
+			break;
+		}
+		if($show_my_view) {
+			loadView('my', $data);
+		}
 		loadView('subscriber', $data);
 	}
 }
@@ -110,11 +141,93 @@ function subscribe($user_id)
 	wp_die();
 }
 
+function tag_subscribe()
+{
+	$tag_id = sanitize_text_field($_POST['tag_id']);
+	$id = get_current_user_id();
+	$subscribed_to = get_user_meta($id, 'signed_tags')[0];
+	$out['message'] = 'Вы успешно подписались на обновление';
+	$unsubscribe = false;
+
+	if($subscribed_to) {
+		foreach ($subscribed_to as $key => $value) {
+			if($tag_id == $value) {
+				$out['message'] = 'Вы успешно отписались от обновления';
+				$unsubscribe = true;
+			}
+		}
+
+		if(!$unsubscribe) {
+			$subscribed_to[$tag_id] = $tag_id;
+		} else {
+			unset($subscribed_to[$tag_id]);
+		}
+
+		if(!empty($subscribed_to)) {
+			update_user_meta($id, 'signed_tags', $subscribed_to);
+		} else {
+			delete_user_meta($id, 'signed_tags');
+		}
+
+ 	} else {
+ 		$subscribed_to[$tag_id] = $tag_id;
+		add_user_meta($id, 'signed_tags', $subscribed_to);
+	}
+
+	$out['status'] = 'ok';
+	echo json_encode($out);
+	wp_die();
+
+}
+
+function category_subscribe()
+{
+	$cat_id = sanitize_text_field($_POST['cat_id']);
+	$id = get_current_user_id();
+	$subscribed_to = get_user_meta($id, 'signed_categories')[0];
+	$out['message'] = 'Вы успешно подписались на обновление';
+	$unsubscribe = false;
+	if($subscribed_to) {
+		foreach ($subscribed_to as $key => $value) {
+			if($cat_id == $value) {
+				$out['message'] = 'Вы успешно отписались от обновления';
+				$unsubscribe = true;
+			}
+		}
+
+		if(!$unsubscribe) {
+			$subscribed_to[$cat_id] = $cat_id;
+		} else {
+			unset($subscribed_to[$cat_id]);
+		}
+
+		if(!empty($subscribed_to)) {
+			update_user_meta($id, 'signed_categories', $subscribed_to);
+		} else {
+			delete_user_meta($id, 'signed_categories');
+		}
+
+ 	} else {
+ 		$subscribed_to[$cat_id] = $cat_id;
+		add_user_meta($id, 'signed_categories', $subscribed_to);
+	}
+
+	$out['status'] = 'ok';
+	echo json_encode($out);
+	wp_die();
+}
+
 function portfolio_page_template( $template ) {
+	
 	if( is_page('subscription')  ){
 		if ( $new_template =  plugin_dir_path( __FILE__)."page-subscribers.php")
 			$template = $new_template ;
 	}
+	if(is_page('my-subscriptions')) {
+		if ( $new_template =  plugin_dir_path( __FILE__)."page-my.php")
+			$template = $new_template ;
+	}
+
 	return $template;
 }
 

@@ -1,19 +1,39 @@
 $(document).ready(function(){
  	$(".add-subscriber").click(function(){
- 		sbcrb(this);
+ 		sbcrb(this, 'author');
+ 	});
+
+ 	$(".tag-subscribe").click(function(){
+ 		sbcrb(this, 'tag');
+ 	});
+
+ 	$(".category-subscribe").click(function(){
+ 		sbcrb(this, 'category');
  	});
 });
 
-function sbcrb(obj)
+function sbcrb(obj, type)
 {
 	var id = $(obj).attr('id').split("-")[1];
 	$(obj).text('Подождите...');
 	$(obj).addClass('sbscr-loading')
+	
+	var data = new Object();
+	switch(type) {
+	  case 'author': 
+	  	data.action = 'subscribe';
+	  	data.user_id = id; 
+	    break;
+	  case 'tag':
+	    data.action = 'tag_subscribe';
+	    data.tag_id = id;
+	    break;
+	  case 'category':  
+	    data.action = 'сategory_subscribe';
+	    data.cat_id = id;
+	    break;
+	}
 
-	var data = {
-		action: 'subscribe',
-		user_id: id
-	};
 	$.post(didAjax.url, data, function(response) {
 		if(response.status == 'ok') {
 			$(obj).removeClass('sbscr-loading');
