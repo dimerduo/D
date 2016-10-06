@@ -11,6 +11,7 @@ $id = get_current_user_id();
 $tag_list = get_user_meta($id, 'signed_tags')[0];
 $category_list = get_user_meta($id, 'signed_categories')[0];
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$data->class = "";
 if($category_list) {
 	$args['category__in'] = $category_list; 
 	$args['posts_per_page'] = get_option( 'posts_per_page' ); 
@@ -32,10 +33,11 @@ query_posts($args);
 			<div class="public_statistic row">
 				<div class="stat-col">
 					<a href="<?=get_site_url();?>">
-						<span class="label label-success">Массивы</span>
+						<span class="label label-success label-soft">Массивы</span>
 						<span class="label label-success"><?=$st->get_all_arrays();?></span>
 					</a>
 				</div>
+				<?php if (function_exists('loadView')) { loadView('my', $data); } ?>
 				<div class="stat-col">
 					<a href="/array-active">
 						<span class="label label-success label-soft">Проходят</span>

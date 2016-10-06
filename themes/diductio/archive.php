@@ -18,7 +18,6 @@
 
 get_header(); 
 $cat_id =get_query_var('cat') ; ?>
-
 	<section id="primary" class="content-area">
 		<div id="statistic" class="hentry">
 			<div class="stat-col">

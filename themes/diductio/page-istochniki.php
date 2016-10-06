@@ -13,6 +13,11 @@ get_header(); ?>
 						<span class="label label-success"><?=$st->get_all_arrays();?></span>
 					</a>
 				</div>
+				<?php if (function_exists('loadView')) { 
+					$data->class="label-soft";
+					loadView('my', $data); 
+				} 
+				?>
 				<div class="stat-col">
 					<a href="/array-active">
 						<span class="label label-success label-soft">Проходят</span>

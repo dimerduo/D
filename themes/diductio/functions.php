@@ -380,7 +380,7 @@ function sort_desc($a, $b) {
 return 1;
 }
 
-
+$data = new stdClass();
 // (1) Удаления даты и количества комментариев из ленты записей, удаление даты и админа из тела
 if (!function_exists('twentyfifteen_entry_meta')) {
     function twentyfifteen_entry_meta() {
@@ -546,8 +546,9 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 					$moya_zachetka_items_count = 0;
 				}
 				
+				$subscription_count = getSubscriptionsCount();
 				echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>".$fav_count."</span></a></li>";
-				echo "<li><a href='/subscription'>Мои подписки </a></li>";
+				echo "<li><a href='/subscription'>Мои подписки <span class='label label-success right-count'>".$subscription_count."</span></a></li>";
 				// echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
 				echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>".$comments_count."</span></a></li>";
 				echo "<li><a href='/wp-admin/profile.php'>Мой профиль</a></li>";
@@ -1812,54 +1813,16 @@ add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' );
 
 	return $wts;
   }
-/*
-  // Добавляем дополнительное поле
-  function time_meta_box() {  
-	add_meta_box(  
-		'time_meta_box', // Идентификатор(id)
-		'My Meta Box', // Заголовок области с мета-полями(title)
-		'show_time_metabox', // Вызов(callback)
-		'post', // Где будет отображаться наше поле, в нашем случае в Записях
-		'normal', 
-		'high'
-	);
+
+  function getSubscriptionsCount()
+  {
+  	$count = 0;
+  	$id = get_current_user_id();
+  	$subscriber_list = get_user_meta($id, 'subscribe_to')[0];
+  	$tag_list = get_user_meta($id, 'signed_tags')[0];
+  	$category_list = get_user_meta($id, 'signed_categories')[0];
+  	$count = count($subscriber_list) + count($tag_list) + count($category_list);
+
+   	return 3;
   }
-
-  add_action('add_meta_boxes', 'time_meta_box'); // Запускаем функцию
-
-  $meta_fields = array(  
-	array(  
-	  'label' => 'Текстiовое поле',  
-	  'desc'  => 'Описание для поля.',  
-	  'id'    => 'mytextinput',
-	),
-	array(  
-	  'label' => 'Текстовое поле 2',  
-	  'desc'  => 'Описание для поля2.',  
-	  'id'    => 'mytextinput2',
-	)
-  );
-
-  // Вызов метаполей  
-  function show_time_metabox() {  
-	global $meta_fields; // Обозначим наш массив с полями глобальным
-	global $post;  // Глобальный $post для получения id создаваемого/редактируемого поста
-	// Выводим скрытый input, для верификации. Безопасность прежде всего!
-	echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
-	// Начинаем выводить таблицу с полями через цикл
-	echo '<table class="form-table">';
-	foreach ($meta_fields as $field) {  
-	  // Получаем значение если оно есть для этого поля 
-	  $meta = get_post_meta($post->ID, $field['id'], true);  
-	  // Начинаем выводить таблицу
-	  echo '<tr><th><label for="'.$field['id'].'">'.$field['label'].'</label></th><td>';
-	  echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" size="30" /> 
-			<br />
-			<span class="description">'.$field['desc'].'</span>';
-		
-	  echo '</td></tr>';  
-    }
-	echo '</table>'; 
-  }
- */
 ?>

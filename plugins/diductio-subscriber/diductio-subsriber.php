@@ -51,7 +51,6 @@ function getSubsriberView($view_type = false){
 		global $author, $current_user;
 		$data = new stdClass();
 		$id = get_current_user_id();
-		$show_my_view = false;
 		switch ($view_type) {
 			//вывод view для подписки-отписки на автора
 			case 'author':
@@ -68,7 +67,6 @@ function getSubsriberView($view_type = false){
 			//вывод view для подписки-отписки на рубрику, источник 
 			case 'tag':
 			    global $tag, $tag_id;
-				$show_my_view = true;
 				$data->html_class = "tag-subscribe";
 				$data->html_id = "tag-" . $tag->term_id;
 				$tag_list = get_user_meta($id, 'signed_tags')[0];
@@ -79,7 +77,6 @@ function getSubsriberView($view_type = false){
 				break;
 			case 'category':
 			    global $cat_id;
-				$show_my_view = true;
 				$data->html_class = "category-subscribe";
 				$data->html_id = "category-" . $cat_id;
 				$data->main_phrase = "Подписаться";
@@ -88,9 +85,6 @@ function getSubsriberView($view_type = false){
 					$data->main_phrase = "Отписаться";
 				}
 			break;
-		}
-		if($show_my_view) {
-			loadView('my', $data);
 		}
 		loadView('subscriber', $data);
 	}

@@ -1,9 +1,10 @@
 <?php 
 /*
  * Template Name: Все люди
- * Данный шаблон страницы выводит всех пользователей на сайте
+ * Данный шаблон страницы выводит всех пользователей, метки и рубрики, на которые подписан залогиненый юзер.
 */
 $logged_user_id = get_current_user_id();
+
 $subscriber_list = get_user_meta($logged_user_id, 'subscribe_to')[0];
 $count_args  = array(
     'role'      => 'Subscriber',
@@ -17,7 +18,6 @@ $user_count = $user_count_query->get_results();
 $total_users = $user_count ? count($user_count) : 1;
 // grab the current page number and set to 1 if no page number is set
 $page = max(1,get_query_var('paged'));
-
 // how many users to show per page
 $users_per_page = 80;
 
@@ -38,6 +38,29 @@ if($subscriber_list) {
 	$user_query = new WP_User_Query($args);
 }
 
+//collect categories and meta information
+$category_list = get_user_meta($logged_user_id, 'signed_categories')[0];
+$tag_list = get_user_meta($logged_user_id, 'signed_tags')[0];
+$collector = array();
+if($category_list) {
+	foreach ($category_list as $value) {
+		$cat_info = get_category($value);
+		$tmp['name'] = $cat_info->name;
+		$tmp['taxonomy'] =  $cat_info->taxonomy;
+		$tmp['url'] =  	get_category_link($value);
+		$collector[] = $tmp;
+	}
+}
+if($tag_list) {
+	foreach ($tag_list as $value) {
+		$tag_info = get_tag($value);
+		$tmp['name'] = $tag_info->name;
+		$tmp['taxonomy'] =  $tag_info->taxonomy;
+		$tmp['url'] =  get_tag_link($value);
+		$collector[] = $tmp;
+	}
+}
+$data->taxonomies = $collector;
 get_header(); ?>
 
 	<div id="primary" class="content-area">
@@ -90,7 +113,11 @@ get_header(); ?>
 								}
 							?>
 					</div>
-	
+					<?php
+					 if(function_exists('loadView')) {
+					 	loadView('my-taxonomies',$data);
+					 }
+					?>
 				</header>
 			</article>
 			<?php
