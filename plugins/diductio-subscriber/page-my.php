@@ -11,20 +11,20 @@ $id = get_current_user_id();
 $tag_list = get_user_meta($id, 'signed_tags')[0];
 $category_list = get_user_meta($id, 'signed_categories')[0];
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$is_empty = true;
 $data->class = "";
 if($category_list) {
 	$args['category__in'] = $category_list; 
 	$args['posts_per_page'] = get_option( 'posts_per_page' ); 
 	$args['paged'] = $paged; 
-
+	$is_empty = false; 
 }
 
 if($tag_list) {
-	$args['tag__in'] = $tag_list; 
+	$args['tag__in'] = $tag_list;
+	$is_empty = false; 
 }
-
-query_posts($args);
-
+$data->number_of_posts=getMyPostCount();
 ?>
 
 
@@ -70,7 +70,7 @@ query_posts($args);
 			</div>
 		</div>
 		<main id="main" class="site-main homepage-main" role="main">
-		<?php if ( have_posts() ) : ?>
+		<?php if ( have_posts() && !$is_empty ) : ?>
 
 			<?php if ( is_home() && ! is_front_page() ) : ?>
 				<header>
@@ -100,11 +100,13 @@ query_posts($args);
 			) );
 
 		// If no content, include the "No posts found" template.
-		else :
-			get_template_part( 'content', 'none' );
-
-		endif;
-		?>
+		else: ?>
+			<section class="no-results not-found">
+				<header class="page-header">
+					<p>Ваша лента пуста</p>
+				</header><!-- .page-header -->
+			</section><!-- .no-results -->
+		<?php endif; ?>
 
 		</main><!-- .site-main -->
 	</div><!-- .content-area -->

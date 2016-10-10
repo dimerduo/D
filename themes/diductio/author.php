@@ -21,7 +21,11 @@
 	$author = get_user_by( 'slug', get_query_var( 'author_name' ) );
 	$author_info = get_userdata($author->ID);
 	$favorite_post_ids = get_user_meta($author->ID, WPFP_META_KEY, true);
-	$favorite_post_ids = array_reverse($favorite_post_ids);
+
+	if($favorite_post_ids) {
+		$favorite_post_ids = array_reverse($favorite_post_ids);
+	}
+	
 	$post_per_page = wpfp_get_option("post_per_page");
 	$page = intval(get_query_var('paged'));
 	$qry = array('post__in' => $favorite_post_ids, 'posts_per_page'=> $post_per_page, 'orderby' => 'post__in', 'paged' => $page);

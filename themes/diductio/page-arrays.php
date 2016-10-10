@@ -16,6 +16,7 @@ get_header(); ?>
 				</div>
 				<?php if (function_exists('loadView')) { 
 					$data->class="label-soft";
+					$data->number_of_posts=getMyPostCount();
 					loadView('my', $data); 
 				} 
 				?>

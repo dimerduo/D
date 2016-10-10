@@ -1821,8 +1821,9 @@ add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' );
   	$subscriber_list = get_user_meta($id, 'subscribe_to')[0];
   	$tag_list = get_user_meta($id, 'signed_tags')[0];
   	$category_list = get_user_meta($id, 'signed_categories')[0];
+  	// delete_user_meta($id,'subscribe_to');exit;
   	$count = count($subscriber_list) + count($tag_list) + count($category_list);
 
-   	return 3;
+   	return $count;
   }
 ?>

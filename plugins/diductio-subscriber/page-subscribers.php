@@ -3,11 +3,19 @@
  * Template Name: Все люди
  * Данный шаблон страницы выводит всех пользователей, метки и рубрики, на которые подписан залогиненый юзер.
 */
+global $wp_roles;
+
 $logged_user_id = get_current_user_id();
 
 $subscriber_list = get_user_meta($logged_user_id, 'subscribe_to')[0];
+
+$roles = array();
+foreach ($wp_roles->roles as $rKey => $rvalue) {
+	$roles[] = $rKey;
+}
+
 $count_args  = array(
-    'role'      => 'Subscriber',
+    'role__in'      => $roles,
     'fields'    => 'all_with_meta',
     'include'    => $subscriber_list,
     'number'    => 999999  
@@ -27,7 +35,7 @@ $total_pages = ceil($total_users / $users_per_page);
 
 $args  = array(
     // search only for Authors role
-    'role'      => 'Subscriber',
+    'role__in'      => $roles,
     'number'    => $users_per_page,
     'include'   => $subscriber_list,
     'offset'    => $offset // skip the number of users that we have per page  

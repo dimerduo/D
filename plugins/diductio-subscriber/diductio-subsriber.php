@@ -553,5 +553,34 @@ class Diductio_subsriber extends WP_Widget {
 	}
 }
 
+function getMyPostCount()
+{
+	$args = array();
+	$args['tax_query'] = array( 'relation' => 'OR' );
+	$id = get_current_user_id();
+	$tag_list = get_user_meta($id, 'signed_tags')[0];
+	$category_list = get_user_meta($id, 'signed_categories')[0];
+	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+	$is_empty = true;
+	if($category_list) {
+		$args['category__in'] = $category_list; 
+		$args['posts_per_page'] = get_option( 'posts_per_page' ); 
+		$args['paged'] = $paged; 
+		$is_empty = false; 
+	}
+
+	if($tag_list) {
+		$args['tag__in'] = $tag_list;
+		$is_empty = false; 
+	}
+	$the_query = new WP_Query( $args );
+	
+	if($is_empty) {
+		return 0;
+	} else {
+		return $the_query->found_posts;
+
+	}
+}
 
 ?>

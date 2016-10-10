@@ -6,19 +6,26 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
+global $wp_roles;
+
+$roles = array();
+foreach ($wp_roles->roles as $rKey => $rvalue) {
+	$roles[] = $rKey;
+}
+
 $post_statistic = $st->get_course_info($post->ID);
 $active_users = $post_statistic['active_users'];
 $done_users = $post_statistic['done_users'];
 if ($active_users) {
 	$act_args = array(
-		'role__in' => ['subscriber','administrator']
+		'role__in' => $roles
 	);
 	$act_args['include'] = $active_users;
 	$active_users_array = new WP_User_Query( $act_args );
 } 
 if ($done_users) {
 	$done_args = array(
-		'role__in' => ['subscriber','administrator']
+		'role__in' => $roles
 	);
 	$done_args['include'] = $done_users;
 	$done_users_array = new WP_User_Query( $done_args );	
@@ -41,8 +48,6 @@ get_header(); ?>
 
 										printf("<div class='inline'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
 									}
-								} else {
-									echo 'No users found.';
 								}
 							?>
 						</div>
@@ -61,8 +66,6 @@ get_header(); ?>
 
 										printf("<div class='inline'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
 									}
-								} else {
-									echo 'No users found.';
 								}
 							?>
 						</div>
