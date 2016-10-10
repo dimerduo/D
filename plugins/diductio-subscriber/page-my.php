@@ -24,6 +24,7 @@ if($tag_list) {
 	$args['tag__in'] = $tag_list;
 	$is_empty = false; 
 }
+query_posts($args);
 $data->number_of_posts=getMyPostCount();
 ?>
 
