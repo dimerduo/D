@@ -3,7 +3,7 @@
  * Template Name: Сейчас проходя
  * Данный шаблон страницы выводит всех пользователей на сайте, которые проходят какие-либо массивы
 */
-global $st;
+global $st, $wp_roles;
 
 if(is_page('people-active')) {
 	$user_in = $st->get_all_users('active_users');
@@ -11,15 +11,18 @@ if(is_page('people-active')) {
 	$user_in = $st->get_all_users('finished_users');
 }
 
+$roles = array();
+foreach ($wp_roles->roles as $rKey => $rvalue) {
+ 	$roles[] = $rKey;
+}
 // The Query
 $args = array(
-	'role' => 'Subscriber'
+	'role__in' => $roles
 );
 
 if ($user_in) {
 	$args['include'] = $user_in;
 }
-
 $user_query = new WP_User_Query( $args );
 
 

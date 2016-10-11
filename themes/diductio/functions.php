@@ -1561,14 +1561,16 @@ class Statistic  {
 	public function get_div_studying_progress($uid = false)
 	{
 		global $current_user, $wpdb;
-
+		
 		if ($uid) {
-			$current_user =  get_userdata( $uid );
+			$user_info =  get_userdata( $uid );
+		} else {
+			$user_info  = $current_user;
 		}
 		
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		$sql    = "SELECT * FROM `$table_name` ";
-		$sql   .= "WHERE `user_id` = ". $current_user->ID . " ";
+		$sql   .= "WHERE `user_id` = ". $user_info->ID . " ";
 		//$sql   .= "AND `checked_lessons` != 0 ";
 		$progress = $wpdb->get_results($sql);
 		$user_array_count = 0;
