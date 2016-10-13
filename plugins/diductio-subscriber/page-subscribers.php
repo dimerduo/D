@@ -7,23 +7,31 @@ global $wp_roles;
 
 $logged_user_id = get_current_user_id();
 
-$subscriber_list = get_user_meta($logged_user_id, 'subscribe_to')[0];
 
+$subscriber_list = get_user_meta($logged_user_id, 'subscribe_to');
 $roles = array();
 foreach ($wp_roles->roles as $rKey => $rvalue) {
 	$roles[] = $rKey;
 }
 
-$count_args  = array(
-    'role__in'      => $roles,
-    'fields'    => 'all_with_meta',
-    'include'    => $subscriber_list,
-    'number'    => 999999  
-);
-$user_count_query = new WP_User_Query($count_args);
-$user_count = $user_count_query->get_results();
-// count the number of users found in the query
-$total_users = $user_count ? count($user_count) : 1;
+if(!empty($subscriber_list)) {
+  	$subscriber_list = $subscriber_list[0];
+
+
+	$count_args  = array(
+	    'role__in'      => $roles,
+	    'fields'    => 'all_with_meta',
+	    'include'    => $subscriber_list,
+	    'number'    => 999999  
+	);
+	$user_count_query = new WP_User_Query($count_args);
+	$user_count = $user_count_query->get_results();
+	// print_r($user_count);
+	// count the number of users found in the query
+	$total_users = $user_count ? count($user_count) : 1;
+} else {
+	$total_users = 0;	
+}
 // grab the current page number and set to 1 if no page number is set
 $page = max(1,get_query_var('paged'));
 // how many users to show per page
@@ -47,8 +55,14 @@ if($subscriber_list) {
 }
 
 //collect categories and meta information
-$category_list = get_user_meta($logged_user_id, 'signed_categories')[0];
-$tag_list = get_user_meta($logged_user_id, 'signed_tags')[0];
+// $category_list = get_user_meta($logged_user_id, 'signed_categories')[0];
+$category_list = $tag_list = null;
+if(!empty(get_user_meta($logged_user_id, 'signed_categories'))) {
+	$category_list = get_user_meta($logged_user_id, 'signed_categories')[0];
+}
+if(!empty(get_user_meta($logged_user_id, 'signed_tags'))) {
+	$tag_list = get_user_meta($logged_user_id, 'signed_tags')[0];
+}
 $collector = array();
 if($category_list) {
 	foreach ($category_list as $value) {
