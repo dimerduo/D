@@ -63,7 +63,7 @@ get_header(); ?>
 					<span class="label label-success"><?=$user_statistic['in_progress'];?></span>
 			</div>
 			<div class="stat-col" style="margin-right: 11px;">
-					<span class="label label-success label-soft">Пройденныхu</span>
+					<span class="label label-success label-soft">Пройденных</span>
 					<span class="label label-success"><?=$user_statistic['done'];?></span>
 			</div>
 			<?php if ( is_user_logged_in() ): ?>

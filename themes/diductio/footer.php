@@ -23,7 +23,7 @@
 				do_action( 'diductio_credits' );
 			?>
 			<div class="footer-menu">
-				<div class="fMenu-item inline"><a href="<?=home_url()?>">Diductio - Встреча знаний и людей</a></div>
+				<div class="fMenu-item inline">Сделано на Diductio platform. Управление знаниями и задачами.</div>
 			</div>
 		</div><!-- .site-info -->
 	</footer><!-- .site-footer -->
