@@ -373,14 +373,35 @@ require get_template_directory() . '/inc/template-tags.php';
 require get_template_directory() . '/inc/customizer.php';
 
 
+//Global variables 
 $view_path = get_stylesheet_directory()."/view/";
+$data = new stdClass();
 
+//OOP start here
+
+//class autoloader function
+spl_autoload_register(function ($class_name) {
+  $file_name = strtolower($class_name). '.class.php';
+  $file = get_template_directory() . DIRECTORY_SEPARATOR . $file_name;
+  if ( file_exists($file) )
+    require_once ($file);
+});
+
+
+//theme configuration 
+$settings = array();
+$settings['stat_table'] = $wpdb->get_blog_prefix() . 'user_add_info';
+
+$diductio = Diductio::gi();
+$diductio->settings = $settings;
+
+$post = new Post();
+//OOP end here
 function sort_desc($a, $b) {
-  if ($a['update_at']< $b['update_at'])
-return 1;
+  	if ($a['update_at']< $b['update_at'])
+		return 1;
 }
 
-$data = new stdClass();
 // (1) Удаления даты и количества комментариев из ленты записей, удаление даты и админа из тела
 if (!function_exists('twentyfifteen_entry_meta')) {
     function twentyfifteen_entry_meta() {
