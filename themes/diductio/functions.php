@@ -381,7 +381,10 @@ $data = new stdClass();
 
 //class autoloader function
 spl_autoload_register(function ($class_name) {
-  $file_name = strtolower($class_name). '.class.php';
+  if($class_name !== 'Diductio' && $class_name[0] == 'd' ) {
+  	$class_name = substr($class_name, 1);
+  }
+  $file_name =  strtolower($class_name). '.class.php';
   $file = get_template_directory() . DIRECTORY_SEPARATOR . $file_name;
   if ( file_exists($file) )
     require_once ($file);
@@ -391,11 +394,21 @@ spl_autoload_register(function ($class_name) {
 //theme configuration 
 $settings = array();
 $settings['stat_table'] = $wpdb->get_blog_prefix() . 'user_add_info';
-
+$stat_count = $wpdb->get_row("SELECT COUNT(`id`) AS `count` FROM `{$settings['stat_table']}`");
+$settings['stat_table_count'] = $stat_count->count;
+unset($stat_count);
 $diductio = Diductio::gi();
 $diductio->settings = $settings;
 
-$post = new Post();
+$dPost = new Post();
+$dUser = new User();
+
+if ( is_admin() ) {
+	$file_name = 'admin.class.php';
+	$admin_file = get_template_directory() . DIRECTORY_SEPARATOR . $file_name;
+    if ( file_exists($admin_file) )
+    	require_once ($admin_file);
+}
 //OOP end here
 function sort_desc($a, $b) {
   	if ($a['update_at']< $b['update_at'])
@@ -1230,8 +1243,9 @@ add_filter('wp_list_categories','categories_postcount_filter');
 // (45) Стилизация количества записей в виджете категорий end
 
 // (47) Связывание добавление и удаление в избранное с логикой зачётки
-add_action( 'post_updated', 'post_update_method', 10, 3 );
+// add_action( 'post_updated', 'post_update_method', 10, 3 );
 function post_update_method($post_ID, $post_after, $post_before){
+	//method depricated - I've moved it to the post->onPostUpdate;
     global $wpdb;
 
     $words_array = str_word_count($post_after->post_content, 1);

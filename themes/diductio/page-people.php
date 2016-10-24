@@ -106,7 +106,8 @@ get_header(); ?>
 
 			// if in the admin, your base should be the admin URL + your page
 			// $base = 'http://5.178.82.26/lyudi/' . remove_query_arg('p', $query_string) . '%_%';
-			$paginate_url =  home_url()."/people/page/";
+			$slug = basename(get_permalink());
+			$paginate_url =  home_url()."/{$slug}/page/";
 			// if on the front end, your base is the current page
 			//$base = get_permalink( get_the_ID() ) . '?' . remove_query_arg('p', $query_string) . '%_%';
 
