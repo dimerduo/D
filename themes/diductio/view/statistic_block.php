@@ -14,10 +14,14 @@ $st = $GLOBALS['st'];
                         <span class="label label-success"><?= $st->get_all_arrays(); ?></span>
                     </a>
                 </div>
-                <?php if ($st->getPostsCountByFormat('post-format-aside', 'post_format')): ?>
+                <?php if ($st->getPostsCountByFormat('post-format-aside', 'post_format')):
+                    global $term; ?>
                     <div class="stat-col">
-                        <a href="type/knowledge">
-                            <span class="label label-success label-soft">Знания</span>
+                        <a href="/type/knowledge">
+                            <span class="label label-success
+                            <?php if($term->slug != "post-format-aside"): ?>
+                            label-soft
+                            <?php endif; ?>">Знания</span>
                             <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-aside',
                                     'post_format') ?></span>
                         </a>
@@ -25,8 +29,11 @@ $st = $GLOBALS['st'];
                 <?php endif; ?>
                 <?php if ($st->getPostsCountByFormat('post-format-image', 'post_format')): ?>
                     <div class="stat-col">
-                        <a href="type/test">
-                            <span class="label label-success">Тесты</span>
+                        <a href="/type/test">
+                            <span class="label label-success
+                            <?php if($term->slug != "post-format-image"): ?>
+                            label-soft
+                            <?php endif; ?>">Тесты</span>
                             <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-image',
                                     'post_format') ?></span>
                         </a>
@@ -34,8 +41,11 @@ $st = $GLOBALS['st'];
                 <?php endif; ?>
                 <?php if ($st->getPostsCountByFormat('post-format-chat', 'post_format')): ?>
                     <div class="stat-col">
-                        <a href="type/poll">
-                            <span class="label label-success">Голосования</span>
+                        <a href="/type/poll">
+                            <span class="label label-success
+                            <?php if($term->slug != "post-format-chat"): ?>
+                            label-soft
+                            <?php endif; ?>">Голосования</span>
                             <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-chat',
                                     'post_format'); ?></span>
                         </a>
@@ -43,8 +53,11 @@ $st = $GLOBALS['st'];
                 <?php endif; ?>
                 <?php if ($st->getPostsCountByFormat('post-format-gallery', 'post_format')): ?>
                     <div class="stat-col">
-                        <a href="type/task">
-                            <span class="label label-success">Задачи</span>
+                        <a href="/type/task">
+                            <span class="label label-success
+                            <?php if($term->slug != "post-format-gallery"): ?>
+                            label-soft
+                            <?php endif; ?>">Задачи</span>
                             <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-gallery',
                                     'post_format'); ?></span>
                         </a>
@@ -58,8 +71,11 @@ $st = $GLOBALS['st'];
                     } else {
                         $data->class = "";
                     }
-                    $data->number_of_posts = getMyPostCount();
-                    loadView('my', $data);
+                    $my_post_number = getMyPostCount();
+                    if($my_post_number) {
+                        $data->number_of_posts = $my_post_number;
+                        loadView('my', $data);
+                    }
                 }
                 ?>
                 <div class="stat-col">

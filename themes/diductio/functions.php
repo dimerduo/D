@@ -396,6 +396,7 @@ $settings = array();
 $settings['stat_table'] = $wpdb->get_blog_prefix() . 'user_add_info';
 $stat_count = $wpdb->get_row("SELECT COUNT(`id`) AS `count` FROM `{$settings['stat_table']}`");
 $settings['stat_table_count'] = $stat_count->count;
+$settings['post_formats_slug'] = array('post-format-aside','post-format-chat','post-format-gallery','post-format-image');
 unset($stat_count);
 $diductio = Diductio::gi();
 $diductio->settings = $settings;

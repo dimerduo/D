@@ -73,6 +73,9 @@ class Statistic extends Diductio
         add_action('istochniki-header', function (){
 			$this->renderHeaderStatistic('knowledge');
 		});
+        add_action('archive-header', function (){
+            $this->renderHeaderStatistic('knowledge');
+        });
 
         //peoples statistic
         add_action('all-peoples-header', function (){

@@ -17,19 +17,27 @@
  */
 
 get_header(); 
-$cat_id =get_query_var('cat') ; ?>
+$cat_id =get_query_var('cat') ;
+$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
+?>
 	<section id="primary" class="content-area">
-		<div id="statistic" class="hentry">
-			<div class="stat-col">
-				<span class="label label-success label-soft">Массивы</span>
-				<span class="label label-success"><?=get_category($cat_id)->category_count;?></span>
-			</div>
-			<?php
+		<?php
+		//Если страница пост формата то выводить только статистику
+		if(in_array($term->slug, Diductio::gi()->settings['post_formats_slug'])): ?>
+			<?php do_action('archive-header'); ?>
+		<?php else:?>
+			<div id="statistic" class="hentry">
+				<div class="stat-col">
+					<span class="label label-success label-soft">Массивы</span>
+					<span class="label label-success"><?=get_category($cat_id)->category_count;?></span>
+				</div>
+				<?php
 				if (function_exists('getSubsriberView')) {
-					echo getSubsriberView('category'); 
+					echo getSubsriberView('category');
 				}
-			?>
-		</div>
+				?>
+			</div>
+		<?php endif;?>
 		<main id="main" class="site-main" role="main">
 		<?php if ( have_posts() ) : ?>
 
