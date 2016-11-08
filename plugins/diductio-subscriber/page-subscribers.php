@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * Template Name: Все люди
  * Данный шаблон страницы выводит всех пользователей, метки и рубрики, на которые подписан залогиненый юзер.
@@ -22,7 +22,7 @@ if(!empty($subscriber_list)) {
 	    'role__in'      => $roles,
 	    'fields'    => 'all_with_meta',
 	    'include'    => $subscriber_list,
-	    'number'    => 999999  
+	    'number'    => 999999
 	);
 	$user_count_query = new WP_User_Query($count_args);
 	$user_count = $user_count_query->get_results();
@@ -30,7 +30,7 @@ if(!empty($subscriber_list)) {
 	// count the number of users found in the query
 	$total_users = $user_count ? count($user_count) : 1;
 } else {
-	$total_users = 0;	
+	$total_users = 0;
 }
 // grab the current page number and set to 1 if no page number is set
 $page = max(1,get_query_var('paged'));
@@ -46,7 +46,7 @@ $args  = array(
     'role__in'      => $roles,
     'number'    => $users_per_page,
     'include'   => $subscriber_list,
-    'offset'    => $offset // skip the number of users that we have per page  
+    'offset'    => $offset // skip the number of users that we have per page
 );
 // Create the WP_User_Query object
 
@@ -104,7 +104,7 @@ get_header(); ?>
 					<a href="<?php get_home_url(); ?>/people-recently">
 						<span class="label label-important-soft">Прошли</span>
 						<span class="label label-important"><?=$st->finished_study_users;?></span>
-					</a>	
+					</a>
 				</div>
 				<div class="stat-col">
 					<span class="label label-important-soft">Прогресс</span>
@@ -114,7 +114,7 @@ get_header(); ?>
 					<a href="<?=get_home_url(); ?>">
 						<span class="label label-success label-soft">Массивы</span>
 						<span class="label label-success"><?=$st->get_all_arrays();?></span>
-					</a>	
+					</a>
 				</div>
 			</div>
 	    </div>
@@ -123,8 +123,8 @@ get_header(); ?>
 				<header class="entry-header">
 					<h1 class="entry-title">Мои подписки</h1>
 					<div class="entry-content all-users">
-						
-							<?php 
+
+							<?php
 								// User Loop
 								if ( ! empty( $user_query->results ) ) {
 									foreach ( $user_query->results as $user ) {
@@ -168,7 +168,7 @@ get_header(); ?>
 			?>
 			<nav class="navigation pagination custom-page-wrapper" role="navigation">
 			<div class="nav-links custom-pagination">
-				<?php 
+				<?php
 				echo paginate_links( $page_args);
 				?>
 			</div>
