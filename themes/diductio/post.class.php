@@ -44,9 +44,6 @@ class Post extends Diductio
 		/* Add custom filter. */
 		add_filter('request', Array($this, 'my_post_format_request'));
 
-		/* Escape html hook */
-//		add_filter('esc_html', Array($this, 'rename_post_formats'));
-
 		add_filter('gettext_with_context', Array($this, 'rename_post_formats_2'), 10, 4);
 	}
 
@@ -166,39 +163,41 @@ class Post extends Diductio
 		return $qvs;
 	}
 
-	function rename_post_formats($safe_text)
-	{
-		switch ($safe_text) {
-			case 'Изображение':
-				return 'Тест';
-				break;
-			case 'Чат':
-				return 'Голосование';
-				break;
-			case 'Галерею':
-				return 'Задача';
-				break;
-			case 'Цитата':
-				return 'Читка';
-				break;
-		}
-
-		return $safe_text;
-	}
-
+	/**
+	 * Change translation of hte Post Formats
+	 * @param $translation
+	 * @param $text
+	 * @param $context
+	 *
+	 * @return mixed
+	 */
 	function rename_post_formats_2($translation, $text, $context)
 	{
-		$names = array(
-			'Aside' => 'Знание',
-			'Chat' => 'Голосование',
-			'Image' => 'Тест',
-			'Gallery' => 'Задача',
-			'Изображения' => ''
-		);
 
+		//change translations in the Admin Panel
 		if ($context == 'Post format') {
+			$names = array(
+				'Aside' => 'Знание',
+				'Chat' => 'Голосование',
+				'Image' => 'Тест',
+				'Gallery' => 'Задача',
+				'Изображения' => ''
+			);
 			$translation = str_replace(array_keys($names), array_values($names), $text);
 		}
+
+		//change translations of the Post format archive title
+		if($context == 'post format archive title') {
+			$post_format_titles = array(
+				'Asides' => "Знания",
+				'Chats' => "Голосования",
+				'Images' => "Тесты",
+				'Galleries' => "Задачи"
+			);
+
+			$translation = str_replace(array_keys($post_format_titles), array_values($post_format_titles), $text);
+		}
+
 		return $translation;
 	}
 }

@@ -88,16 +88,16 @@ class Admin extends Diductio
 
     /**
      * Функция пересчёта статистики (ajax)
-     *
      */
-    public  function  stat_recount($start = 0)
+    public  function  stat_recount()
     {
         global $wpdb;
 
-        $limit  = 40;
+        $limit  = 1;
         $stat_count = Diductio::gi()->settings['stat_table_count'];
-        $start = (int)$start;
+        $start = (int)$_POST['start'];
         $end = $start + $limit;
+
         $table =  Diductio::gi()->settings['stat_table'];
         $sql = "SELECT * FROM `{$table}` LIMIT $start, $end";
         $results = $wpdb->get_results($sql);
@@ -118,6 +118,9 @@ class Admin extends Diductio
             $out['status'] = ($results_count < $limit) ? 'done' : 'working';
             $out['percent'] = ($results_count < $limit) ? 100 : round((100 * $end) / $stat_count, 2);
             $out['start'] = $end;
+        } else {
+            $out['status']  = 'done';
+            $out['percent'] = 100;
         }
         echo json_encode($out);
         wp_die();
