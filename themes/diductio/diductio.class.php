@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * Class Diductio - main class of the Diductio Template
+ */
 class Diductio
 {
+	/**
+	 * @var static table name
+	 */
 	public $stat_table;
 
+	/**
+	 * @var post object
+	 */
 	public $post;
 
 	/**
@@ -16,15 +25,24 @@ class Diductio
 	 */
 	public $settings;
 
+	/**
+	 * Diductio constructor {empty - singleton}
+	 */
 	public function __construct()
 	{
 		
 	}
 
+	/**
+	 *  Diductio clone (can't clone - singleton)
+	 */
 	private function __clone()
 	{
 	}
 
+	/**
+	 * @return Singleton
+	 */
 	public static function getInstance()
 	{
 		if (null === static::$instance) {
@@ -34,6 +52,9 @@ class Diductio
 		return static::$instance;
 	}
 
+	/**
+	 * @return Singleton
+	 */
 	public static function gi()
 	{
 		return self::getInstance();
@@ -66,6 +87,11 @@ class Diductio
 		);
 	}
 
+	/**
+	 * Loading HTML view to the template
+	 * @param $view_name - file name
+	 * @param bool $data - add some data
+	 */
 	public function loadView($view_name, $data = false)
 	{
 		$view_path = get_template_directory() . DIRECTORY_SEPARATOR . "view" . DIRECTORY_SEPARATOR . "{$view_name}.php";

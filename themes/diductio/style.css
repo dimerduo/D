@@ -1759,11 +1759,13 @@ a.post-thumbnail:focus {
 	letter-spacing: 0.04em;
 	margin-bottom: 1.5em;
 	text-transform: uppercase;
+	display: none;
 }
 
 .author-title {
 	clear: none;
 }
+
 
 .author-bio {
 	font-size: 12px;
@@ -1785,6 +1787,11 @@ a.post-thumbnail:focus {
 	border-bottom: 1px solid #333;
 }
 
+.author-title > a {
+	text-decoration: none;
+	border-bottom: none;
+}
+
 .author-description a:hover,
 .author-description a:focus {
 	border-bottom: 0;
@@ -1796,6 +1803,7 @@ a.post-thumbnail:focus {
 
 .author-link {
 	white-space: nowrap;
+	display: none;
 }
 
 .author-link:after {
@@ -4531,8 +4539,8 @@ p > video {
 	}
 
 	.author-info {
-		margin: 0 10%;
-		padding: 10% 0;
+		margin: 0 5%;
+		padding: 5% 0;
 	}
 
 	.author-info .avatar {

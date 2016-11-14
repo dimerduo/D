@@ -41,43 +41,7 @@ $user_query = new WP_User_Query($args);
 get_header(); ?>
 
 	<div id="primary" class="content-area">
-	    <div id="statistic" class="hentry">
-	    	<div class="public_statistic row precent-row">
-				<div class="stat-col">
-					<a href="<?php get_home_url(); ?>/people">
-						<span class="label label-important">Люди</span>
-						<span class="label label-important"><?=$st->get_all_users();?></span>
-					</a>
-				</div>
-				<div class="stat-col">
-					<a href="<?php get_home_url(); ?>/people-active">
-						<span class="label label-important-soft">Проходят</span>
-						<span class="label label-important"><?=$st->active_studies_users;?></span>
-					</a>
-				</div>
-				<div class="stat-col">
-					<a href="<?php get_home_url(); ?>/people-recently">
-						<span class="label label-important-soft">Прошли</span>
-						<span class="label label-important"><?=$st->finished_study_users;?></span>
-					</a>	
-				</div>
-				<div class="stat-col">
-					<span class="label label-important-soft">Прогресс</span>
-					<span class="label label-important"><?=$st->get_progress();?> %</span>
-				</div>
-				<div class="stat-col">
-					<a href="<?=get_home_url(); ?>">
-						<span class="label label-success label-soft">Массивы</span>
-						<span class="label label-success"><?=$st->get_all_arrays();?></span>
-					</a>	
-				</div>
-				<!--<div class="stat-col">
-				   <a href="/plus">
-					<span class="label label-orange">+</span>
-				   </a>
-				</div>-->
-			</div>
-	    </div>
+	  	<?php do_action('all-peoples-header'); ?>
 		<main id="main" class="site-main" role="main">
 			<article id="users-page" class="page type-page status-publish hentry">
 				<header class="entry-header">

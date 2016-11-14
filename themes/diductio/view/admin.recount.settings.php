@@ -6,7 +6,7 @@
         </th>
         <td>
             <button type="button" class="button button-primary" id="statistic-recount">Обновить</button>
-<!--            <span style="display: inline-block;padding-top: 4px;display: none; ">Текст</span>-->
+            <span id="recount-precent" style="display: inline-block;padding-top: 4px;display: none; "></span>
         </td>
     </tr>
     </tbody>
