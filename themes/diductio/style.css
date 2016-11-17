@@ -6034,6 +6034,12 @@ div.accordion > h3.accordion-title:before {
 .accordion-title {
     margin-bottom: 5px !important;
 }
+.accordion h3.black {
+	color: black;
+}
+.accordion h3.grey {
+   color: rgba(51, 51, 51, 0.7);
+}
 /* (9) Добавление "[+]" и "[-]" в аккордеон end */
 
 

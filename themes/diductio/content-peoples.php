@@ -1,6 +1,6 @@
 <?php
 /**
- * The template used for displaying page content
+ * The template used for displaying content in the peoples page (each user view)
  *
  * @package WordPress
  * @subpackage Twenty_Fifteen

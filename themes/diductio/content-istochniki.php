@@ -1,6 +1,6 @@
 <?php
 /**
- * The template used for displaying page content
+ * The template showing preview block of the source page (http://dev.diductio.ru/source)
  *
  * @package WordPress
  * @subpackage Twenty_Fifteen
