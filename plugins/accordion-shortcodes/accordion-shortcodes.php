@@ -290,7 +290,8 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			$table_name           = Diductio::gi()->settings['stat_table'];
 			$accordion_part_users = $dUser->getUserByAccordionItem( $post_id, $ids['accourdion_count'] );
 			//check if have some user's who doesn't passed any item
-			$sql = "SELECT COUNT(`id`) as `count` FROM `{$table_name}` WHERE `post_id` = {$post_id} AND `checked_lessons` = 0";
+			$sql  = "SELECT COUNT(`id`) as `count` FROM `{$table_name}` ";
+			$sql .= "WHERE `post_id` = {$post_id} AND  NOT FINd_IN_SET ({$ids['accourdion_count']}, `checked_lessons`) > 0";
 			$lazy_students = $wpdb->get_row($sql);
 
 			if(in_array( $user_id, $accordion_part_users ) ) {
