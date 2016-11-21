@@ -6037,6 +6037,9 @@ div.accordion > h3.accordion-title:before {
 .accordion h3.black {
 	color: black !important;
 }
+.accordion h3.green {
+	color: rgba(92, 184 , 92, 1) !important;
+}
 .accordion h3.grey {
    color: rgba(51, 51, 51, 0.7) !important;
 }

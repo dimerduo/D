@@ -289,10 +289,18 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			$user_id              = get_current_user_id();
 			$table_name           = Diductio::gi()->settings['stat_table'];
 			$accordion_part_users = $dUser->getUserByAccordionItem( $post_id, $ids['accourdion_count'] );
+			//check if have some user's who doesn't passed any item
+			$sql = "SELECT COUNT(`id`) as `count` FROM `{$table_name}` WHERE `post_id` = {$post_id} AND `checked_lessons` = 0";
+			$lazy_students = $wpdb->get_row($sql);
 
-			if ( $accordion_part_users ) {
-				$accordion_class = ( in_array( $user_id, $accordion_part_users ) ) ? 'black' : 'grey';
+			if(in_array( $user_id, $accordion_part_users ) ) {
+				$accordion_class = (!$lazy_students->count) ? 'grey' : 'black' ;
+			} else {
+				$accordion_class = ($accordion_part_users) ? 'green' : '';
 			}
+
+
+
 			$accordion_title = sprintf( '<%1$s id="%3$s" class="accordion-title%5$s%6$s" role="tab" aria-controls="%4$s" aria-selected="false" aria-expanded="false">%2$s</%1$s>',
 				$tag ? $this->check_html_tag( $tag ) : $this->title_tag,
 				$title ? $title : '<span style="color:red;">' . __( 'Please enter a title attribute',
