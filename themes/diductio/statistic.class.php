@@ -83,6 +83,7 @@ class Statistic extends Diductio {
 
 		//ajax methods
 		add_action( 'wp_ajax_show_more_statistic', array( $this, 'get_more_statistic' ) );
+		add_action( 'wp_ajax_nopriv_show_more_statistic', array( $this, 'get_more_statistic' ) );
 
 	}
 
@@ -555,6 +556,11 @@ class Statistic extends Diductio {
 			$result[] = $tmp;
 		}
 		unset($tmp);
+
+		// sort array by progress
+		usort($result, function($a, $b) {
+			return $b['progress'] - $a['progress'];
+		});
 
 		if($result) {
 			$json['status'] = 'ok';
