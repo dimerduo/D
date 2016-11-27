@@ -6,8 +6,7 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-global $wp_roles;
-
+global $wp_roles, $post;
 $roles = array();
 foreach ($wp_roles->roles as $rKey => $rvalue) {
 	$roles[] = $rKey;
@@ -43,13 +42,19 @@ get_header(); ?>
 							<?php 
 								// User Loop
 								if ( ! empty( $active_users_array->results ) ) {
-									foreach ( $active_users_array->results as $user ) {
+									$end = (count($active_users_array->results ) < 3)
+										? count($active_users_array->results )
+										: 3 /* hardcode */;
+									for ($i=0; $i < $end ; $i++) {
+										$user = $active_users_array->results[$i];
 										$user_link = get_site_url() . "/people/" . $user->data->user_nicename;
-
 										printf("<div class='inline'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
+
 									}
+									unset($end);
 								}
 							?>
+							<div data-postID="<?=$post->ID;?>" data-user-group="active" class="inline more-statistic">...</div>
 						</div>
 					</div>
 			<?php endif; ?>
@@ -58,16 +63,22 @@ get_header(); ?>
 						<span class="label label-success label-soft">Прошли</span>
 						<span class="label label-success"><?=$post_statistic['done'];?></span>
 						<div class="inline profile_avatars">
-							<?php 
-								// User Loop
-								if ( ! empty( $done_users_array->results ) ) {
-									foreach ( $done_users_array->results as $user ) {
-										$user_link = get_site_url() . "/people/" . $user->data->user_nicename;
-
-										printf("<div class='inline'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
-									}
+						<?php 
+							// User Loop
+							if ( ! empty( $done_users_array->results ) ) {
+								$end = (count($done_users_array->results) < 3)
+									? count($done_users_array->results)
+									: 3 /* hardcode */;
+								for ($i=0; $i < $end ; $i++)
+								{ 
+									$user = $done_users->results[$i];
+									$user_link = get_site_url() . "/people/" . $user->data->user_nicename;
+									printf("<div class='inline'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
 								}
-							?>
+								unset($end);
+							}
+						?>
+							<div data-postID="<?=$post->ID;?>" data-user-group="done" class="inline more-statistic">...</div>
 						</div>
 					</div>
 			<?php endif; ?>
@@ -109,7 +120,6 @@ get_header(); ?>
 								}  
 							?>
 						<!-- (4) Вставка добавления избранного в начало записи end -->
-
 					</div>
 		</div>
 		<main id="main" class="site-main" role="main">

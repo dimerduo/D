@@ -30,7 +30,6 @@ class User extends Diductio {
 
 	/**
 	 * Getting all users by some knowledge lesson(accordion item)
-	 *
 	 * @param int $post_id - post ID
 	 * @param int $lesson_part - lesson part of the knowledge
 	 */
@@ -50,5 +49,20 @@ class User extends Diductio {
 		} else {
 			return array();
 		}
+	}
+
+	/*
+	 * Getting user data such as avatar, link
+	 * @param int $user_id  user ID
+	 */
+	public function getUserData($user_id)
+	{
+		$user_info = get_user_by('id', $user_id);
+		$result['username'] = $user_info->user_nicename;
+		$result['avatar'] = get_avatar($user_id, 24);
+		$result['user_link'] = get_site_url() . "/people/" /*hardcode*/ . $user_info->user_nicename;
+		$result['user_id']  = $user_id;
+
+		return $result;
 	}
 }

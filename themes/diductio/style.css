@@ -6768,3 +6768,32 @@ a.lazy-load-youtube {
 
 }
 /*Глобальное. Правки планшетной версии end*/
+
+.more-statistic {
+	background-color: rgba(230, 126, 34, 0.86);
+	width: 24px;
+	height: 24px;
+	vertical-align: middle;
+	text-align: center;
+	color: white;
+	line-height: 12px;
+	border-radius: 15px;
+}
+
+.more-statistic:hover {
+	cursor: pointer;
+}
+.users-post-progress-container {
+	display: none;
+}
+.users-post-progress-container .post-users-stat > header > div {
+	display: inline-block;
+	margin-right: 7px;
+}
+
+div.loading {
+	text-align: center;
+}
+
+
+

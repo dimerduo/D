@@ -322,8 +322,7 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			}
 			if ( is_user_logged_in() ) {
 				$checkbox_html = "<div class='col-md-1' style='height:0;'><div style='height: 22px;' class='checkbox'>
-   <input 
-   type='checkbox'
+   <input type='checkbox'
    class='accordion-checkbox'
    id= 'checkbox-" . $ids['accourdion_count'] . "'
    data-accordion-count ='" . $ids['accourdion_count'] . "'
@@ -336,12 +335,26 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			} else {
 				$checkbox_html = "";
 			}
-			$accordion_content = sprintf( '<%1$s id="%3$s" class="accordion-content" role="tabpanel" aria-labelledby="%4$s" aria-hidden="true">%2$s %5$s</%1$s>',
+
+			//Render accordion passed users block
+			$passed_users = "<div class='passed_users profile_avatars'>";
+			foreach ($accordion_part_users as $acc_user) {
+				$acc_user_info = $dUser->getUserData($acc_user);
+				$passed_users .= "<div class='inline'>";
+				$passed_users .= "<a href='{$acc_user_info['user_link']}'>";
+				$passed_users .= $acc_user_info['avatar'];
+				$passed_users .= "</a>";
+				$passed_users .= "</div>";
+			}
+			$passed_users .= "</div>";
+
+			$accordion_content = sprintf( '<%1$s id="%3$s" class="accordion-content" role="tabpanel" aria-labelledby="%4$s" aria-hidden="true">%6$s %2$s %5$s</%1$s>',
 				$this->content_tag,
 				do_shortcode( $content ),
 				$ids['content'],
 				$ids['title'],
-				$checkbox_html
+				$checkbox_html,
+				$passed_users
 			);
 			if ( $accordion_content ) {
 				$GLOBALS['accordion_exsit'] = true;
