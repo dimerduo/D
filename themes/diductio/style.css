@@ -6632,8 +6632,12 @@ div.precent-row {
   margin-right: 12px !important;
 }
 .profile_avatars > div.inline {
-  margin-right: 7px;  
+  margin-right: 7px;
 }
+.profile_avatars > div.last-inline {
+	margin-right: 0;
+}
+
 .profile_avatars > div.inline img{
   margin-bottom: 0px;  
 }

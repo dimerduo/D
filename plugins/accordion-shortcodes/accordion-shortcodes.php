@@ -293,11 +293,20 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			$sql  = "SELECT COUNT(`id`) as `count` FROM `{$table_name}` ";
 			$sql .= "WHERE `post_id` = {$post_id} AND  NOT FINd_IN_SET ({$ids['accourdion_count']}, `checked_lessons`) > 0";
 			$lazy_students = $wpdb->get_row($sql);
-
 			if(in_array( $user_id, $accordion_part_users ) ) {
 				$accordion_class = (!$lazy_students->count) ? 'grey' : 'black' ;
 			} else {
-				$accordion_class = ($accordion_part_users) ? 'green' : '';
+				if(is_user_logged_in()) {
+					$accordion_class = ($accordion_part_users) ? 'green' : '';
+				} else {
+					if($accordion_part_users && !$lazy_students) {
+						$accordion_class = 'grey';
+					} elseif ($accordion_part_users && $lazy_students) {
+						$accordion_class = 'green';
+					} else {
+						$accordion_class = '';
+					}
+				}
 			}
 
 

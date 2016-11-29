@@ -544,7 +544,7 @@ class Statistic extends Diductio {
 		$post_id      = $_POST['post_id'];
 		$user_group = $_POST['user_group'];
 		$post_stat    = $this->get_course_info( $post_id );
-		$target_users = $user_group == 'active' ? $post_stat['active_users'] : $post_stat['done_users'];
+		$target_users = array_merge($post_stat['active_users'],$post_stat['done_users']);
 		$result = array();
 		foreach ( $target_users as $user ) {
 			$user_info = get_user_by('id', $user);
@@ -559,7 +559,7 @@ class Statistic extends Diductio {
 
 		// sort array by progress
 		usort($result, function($a, $b) {
-			return $b['progress'] - $a['progress'];
+			return $a['progress'] - $b['progress'];
 		});
 
 		if($result) {
