@@ -299,9 +299,9 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 				if(is_user_logged_in()) {
 					$accordion_class = ($accordion_part_users) ? 'green' : '';
 				} else {
-					if($accordion_part_users && !$lazy_students) {
+					if($accordion_part_users && !$lazy_students->count) {
 						$accordion_class = 'grey';
-					} elseif ($accordion_part_users && $lazy_students) {
+					} elseif ($accordion_part_users && $lazy_students->count) {
 						$accordion_class = 'green';
 					} else {
 						$accordion_class = '';
