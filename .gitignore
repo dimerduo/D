@@ -15,6 +15,7 @@ plugins/theme-check
 plugins/wordfence/
 plugins/yandex-metrica/
 plugins/wp-captcha/
+plugins/onlyregistered
 
 
 

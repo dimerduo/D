@@ -6034,6 +6034,15 @@ div.accordion > h3.accordion-title:before {
 .accordion-title {
     margin-bottom: 5px !important;
 }
+.accordion h3.black {
+	color: black !important;
+}
+.accordion h3.green {
+	color: rgba(92, 184 , 92, 1) !important;
+}
+.accordion h3.grey {
+   color: rgba(51, 51, 51, 0.7) !important;
+}
 /* (9) Добавление "[+]" и "[-]" в аккордеон end */
 
 
@@ -6623,8 +6632,12 @@ div.precent-row {
   margin-right: 12px !important;
 }
 .profile_avatars > div.inline {
-  margin-right: 7px;  
+  margin-right: 7px;
 }
+.profile_avatars > div.last-inline {
+	margin-right: 0;
+}
+
 .profile_avatars > div.inline img{
   margin-bottom: 0px;  
 }
@@ -6759,3 +6772,32 @@ a.lazy-load-youtube {
 
 }
 /*Глобальное. Правки планшетной версии end*/
+
+.more-statistic {
+	background-color: rgba(230, 126, 34, 0.86);
+	width: 24px;
+	height: 24px;
+	vertical-align: middle;
+	text-align: center;
+	color: white;
+	line-height: 12px;
+	border-radius: 15px;
+}
+
+.more-statistic:hover {
+	cursor: pointer;
+}
+.users-post-progress-container {
+	display: none;
+}
+.users-post-progress-container .post-users-stat > header > div {
+	display: inline-block;
+	margin-right: 7px;
+}
+
+div.loading {
+	text-align: center;
+}
+
+
+

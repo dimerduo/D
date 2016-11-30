@@ -915,6 +915,7 @@ function my_scripts_method() {
 // (13 глобальный) Опции JS по умолчанию
  $didaction_object = array(
   'child_theme_url' => get_stylesheet_directory_uri(),
+  'ajax_path' => admin_url('admin-ajax.php'),
  );
 
  wp_localize_script( 'diductio-script', 'diductioObject', $didaction_object );
