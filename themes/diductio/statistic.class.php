@@ -548,7 +548,7 @@ class Statistic extends Diductio {
 		$result = array();
 		foreach ( $target_users as $user ) {
 			$user_info = get_user_by('id', $user);
-			$tmp['username'] = $user_info->user_nicename;
+			$tmp['username'] = $user_info->display_name;
 			$tmp['avatar'] = get_avatar($user, 24);
 			$tmp['user_link'] = get_site_url() . "/people/" /*hardcode*/ . $user_info->user_nicename;
 			$tmp['user_id']  = $user;
@@ -613,6 +613,6 @@ class Statistic extends Diductio {
 		}
 		$lessons_checked = count( explode( ',', $lessons_checked ) );
 
-		return ( $lessons_checked * 100 ) / $lessons_count;
+		return round(( $lessons_checked * 100 ) / $lessons_count , 2);
 	}
 }
