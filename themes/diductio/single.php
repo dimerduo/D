@@ -45,8 +45,8 @@ get_header(); ?>
 									$end = (count($active_users_array->results ) < 3)
 										? count($active_users_array->results )
 										: 3 /* hardcode */;
-									for ($i=1; $i <= $end ; $i++) {
-										$additional_class = $i == $end ? 'last-inline' : '' ;
+									for ($i=0; $i < $end ; $i++) {
+										$additional_class = ($i +1 == $end) ? 'last-inline' : '' ;
 										$user = $active_users_array->results[$i];
 										$user_link = get_site_url() . "/people/" . $user->data->user_nicename;
 										printf("<div class='inline {$additional_class}'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
@@ -70,9 +70,9 @@ get_header(); ?>
 								$end = (count($done_users_array->results) < 3)
 									? count($done_users_array->results)
 									: 3 /* hardcode */;
-								for ($i=1; $i <= $end ; $i++)
+								for ($i=0; $i < $end ; $i++)
 								{
-									$additional_class = $i == $end ? 'last-inline' : '' ;
+									$additional_class = ($i +1 == $end) ? 'last-inline' : '' ;
 									$user = $done_users_array->results[$i];
 									$user_link = get_site_url() . "/people/" . $user->data->user_nicename;
 									printf("<div class='inline {$additional_class}'><a href='%s'>%s</a></div>",$user_link, get_avatar($user->data->user_email, 24 ));
