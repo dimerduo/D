@@ -124,8 +124,14 @@ $st = $GLOBALS['st'];
                 </div>
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people-active">
-                        <span class="label label-important<?php if(!is_page('people-active')): ?>-soft<?php endif; ?>">Проходят</span>
+                        <span class="label label-important<?php if(!is_page('people-active')): ?>-soft<?php endif; ?>">Заняты</span>
                         <span class="label label-important"><?= $st->active_studies_users; ?></span>
+                    </a>
+                </div>
+                <div class="stat-col">
+                    <a href="<?php get_home_url(); ?>/peoples-free">
+                        <span class="label label-important<?php if(!is_page('people-free')): ?>-soft<?php endif; ?>">Свободны</span>
+                        <span class="label label-important"><?= $st->free_peoples_count; ?></span>
                     </a>
                 </div>
                 <div class="stat-col">

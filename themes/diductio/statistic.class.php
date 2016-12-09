@@ -36,6 +36,16 @@ class Statistic extends Diductio {
 	public $finished_study_ids = 0;
 
 	/**
+	 * @int peoples count who doesn't have any active knowledges
+	 */
+	public $free_peoples_count  = 0;
+
+	/**
+	 * @var array peoples who is activate learning something
+	 */
+	public  $busy_peoples = 0;
+
+	/**
 	 * Statistic constructor.
 	 */
 	function __construct() {
@@ -43,6 +53,8 @@ class Statistic extends Diductio {
 		$this->done   = 0;
 		$this->count_arrays();
 		$this->do_actions();
+		$this->busy_peoples = $this->get_busy_peoples();
+		$this->free_peoples_count = $this->get_free_peoples();
 	}
 
 	/**
@@ -102,7 +114,8 @@ class Statistic extends Diductio {
 		}
 	}
 
-	private function count_arrays() {
+	private function count_arrays()
+	{
 		global $current_user, $wpdb;
 
 		$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
@@ -174,81 +187,13 @@ class Statistic extends Diductio {
 	/**
 	 *  Получить количество постов в источнике
 	 */
-	public function get_istochiki_count() {
+	public function get_istochiki_count()
+	{
 		return wp_count_terms( 'post_tag' );
 	}
 
-	/*
-		public function get_rating($rating_type = 'global', $uid = false) {
-			global $current_user, $wpdb;
-
-			if ($uid) {
-				$current_user =  get_userdata( $uid );
-			}
-
-			$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-			$sql   = "SELECT * FROM `$table_name` WHERE `checked_lessons` != '0' ";
-			$progress = $wpdb->get_results($sql);
-
-			//моя функция
-			$count_c = 0;
-			$count_l = 0;
-			foreach($progress as $k => $v){
-				$count_c = $count_c + count(explode(',', $v->checked_lessons));
-				$count_l = $count_l + $v -> lessons_count;
-
-			}
-			//и Всё!
-			//остальное 'магия'
-
-			$users_statistick = array();
-			$passed_courses = 0;
-			if($progress) {
-				foreach ($progress as $key => $value) {
-					$lessons_count = $value->lessons_count;
-					if($value->checked_lessons != 0) {
-						$checked_lessons = count(explode(',', $value->checked_lessons));
-					} else {
-						$checked_lessons = 0;
-					}
-					if($lessons_count != $checked_lessons) {
-						unset($progress[$key]);
-					} else {
-						if(isset($users_statistick[$value->user_id])) {
-							$users_statistick[$value->user_id] ++;
-						} else {
-							$users_statistick[$value->user_id]  = 1;
-						}
-					}
-				}
-
-				$user_count  = count($users_statistick);
-				$all_div_counts = 0;
-
-				foreach ($users_statistick as $key => $value) {
-					$massiv_counts = $value;
-					$div_value = ($massiv_counts * 100)/ $this->get_all_arrays();
-					$all_div_counts += $div_value;
-					$users_statistick[$key]  =  array ( 'passed' => $value, 'passed_div' =>$div_value );
-				}
-				if(!empty($all_div_counts)) {
-					if($rating_type =='global') {
-					  //return round($all_div_counts/$user_count, 2);
-					  return round( ($count_c/$count_l)*100, 2);
-					} else {
-						return round($users_statistick[$current_user->ID]['passed_div'],2);
-					}
-				} else {
-					return 0;
-				}
-			} else {
-				return 0;
-			}
-		}
-	*/
-
-
-	public function get_progress() {
+	public function get_progress()
+	{
 		global $wpdb;
 
 
@@ -272,12 +217,12 @@ class Statistic extends Diductio {
 
 
 	/**
-	 * Возвращает пользователей
+	 * Возвращает всю статистику по пользователям
+	 * @param  string $flag - флаг поиска : активные, закончили и все пользователи если не задан флаг
 	 */
 	public function get_all_users( $flag = false ) {
 		if ( ! $flag ) {
 			$users = get_users();
-
 			return count( $users );
 		} else {
 			global $wpdb;
@@ -285,10 +230,9 @@ class Statistic extends Diductio {
 			$finished_users   = array();
 			$inprogress_users = array();
 
-
 			$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 			$sql        = "SELECT * FROM `$table_name` ";
-			$progress   = $wpdb->get_results( $sql );
+			$progress   = $wpdb->get_results($sql);
 
 			foreach ( $progress as $key => $value ) {
 				$lessons_count = $value->lessons_count;
@@ -303,14 +247,11 @@ class Statistic extends Diductio {
 					$statistic_array[ $key ]['status']  = 'unfinised';
 					$statistic_array[ $key ]['pos_id']  = $value->post_id;
 					$statistic_array[ $key ]['user_id'] = $value->user_id;
-
 				} else {
 					$statistic_array[ $key ]['status']  = 'finished';
 					$statistic_array[ $key ]['pos_id']  = $value->post_id;
 					$statistic_array[ $key ]['user_id'] = $value->user_id;
 				}
-
-
 			}
 
 			foreach ( $statistic_array as $key => $value ) {
@@ -334,7 +275,41 @@ class Statistic extends Diductio {
 		}
 	}
 
-	public function get_div_studying_progress( $uid = false ) {
+	/**
+	 * Return an array of the busy peoples
+	 * @return
+	 */
+	public function get_busy_peoples()
+	{
+		global $wpdb;
+
+		$stat_table = Diductio::gi()->settings['stat_table'];
+		$sql  = "SELECT *, ";
+		$sql .= "IF(`checked_lessons` = 0, 0,(LENGTH(`checked_lessons`) - LENGTH(REPLACE(`checked_lessons`, ',', '')) + 1) ) as `checked_count` ";
+		$sql .= "FROM {$stat_table} ";
+		$sql .= "HAVING `lessons_count` != `checked_count`";
+		$busy_people = $wpdb->get_results($sql, ARRAY_A);
+		$result = array();
+
+		foreach ($busy_people as $people) {
+			$result[$people['user_id']]= $people['user_id'];
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Return count of the free users.
+	 * @return int - count of the free users
+	 */
+	public function get_free_peoples()
+	{
+		return $this->get_all_users() - count($this->busy_peoples);
+	}
+
+
+	public function get_div_studying_progress( $uid = false )
+	{
 		global $current_user, $wpdb;
 
 		if ( $uid ) {
@@ -588,7 +563,7 @@ class Statistic extends Diductio {
 			return false;
 		}
 
-		$table = Diductio::gi()->settings['stat_table'];;
+		$table = Diductio::gi()->settings['stat_table'];
 		$sql = "SELECT * FROM `{$table}` WHERE ";
 		$sql .= "`post_id` = {$post_id} AND `user_id` = $user_id";
 		$result   = $wpdb->get_row( $sql, 'ARRAY_A' );
