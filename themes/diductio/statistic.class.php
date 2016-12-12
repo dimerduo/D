@@ -93,6 +93,11 @@ class Statistic extends Diductio {
 			$this->renderHeaderStatistic( 'peoples' );
 		} );
 
+		//personal area statistic
+		add_action( 'progress-page-header', function () {
+			$this->renderHeaderStatistic( 'personal-area' );
+		} );
+
 		//ajax methods
 		add_action( 'wp_ajax_show_more_statistic', array( $this, 'get_more_statistic' ) );
 		add_action( 'wp_ajax_nopriv_show_more_statistic', array( $this, 'get_more_statistic' ) );

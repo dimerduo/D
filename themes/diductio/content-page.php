@@ -22,7 +22,7 @@
 		<?php elseif(is_page('progress')):
 			$current_user = wp_get_current_user(); ?>
 			<div  class="avatar inline "><?=get_avatar( $current_user->user_email, 96 );?></div>		
-			<div class="inline" style="margin-left:20px;"> 
+			<div class="inline" style="margin-bottom: 20px;">
 				<h1 class="entry-title"><?php print_r($current_user->data->display_name); ?></h1>
 				<div class="about"><?=get_user_meta($current_user->ID,'description')[0];?></div>
 			</div>

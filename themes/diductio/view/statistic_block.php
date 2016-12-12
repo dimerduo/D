@@ -1,5 +1,7 @@
 <?php
-$st = $GLOBALS['st'];
+global $st;
+$user_statistic = $st->get_user_info();
+
 ?>
 <div id="statistic" class="hentry">
     <?php switch ($data->type):
@@ -114,7 +116,7 @@ $st = $GLOBALS['st'];
                 </div>
             </div>
             <?php break; ?>
-        <?php case 'peoples': ?>
+        <?php case 'peoples':?>
             <div class="public_statistic row precent-row">
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people">
@@ -151,6 +153,31 @@ $st = $GLOBALS['st'];
                     </a>
                 </div>
             </div>
+            <?php break; ?>
+            <?php case('personal-area'):
+                global $dUser;
+                $subscription_count = $dUser->getSubscriptionsCount();
+                $comment_count = $dUser->get_comments_count();
+                ?>
+
+                <div class="public_statistic row precent-row">
+                    <div class="stat-col" style="margin-right: 11px;">
+                        <span class="label label-success label-soft">Прогресс</span>
+                        <span class="label label-success"><?=$user_statistic['in_progress'];?></span>
+                    </div>
+                    <div class="stat-col" style="margin-right: 11px;">
+                        <a href="/comments">
+                            <span class="label label-success label-soft">Активность</span>
+                            <span class="label label-success"><?=$comment_count;?></span>
+                        </a>
+                    </div>
+                    <div class="stat-col" style="margin-right: 11px;">
+                        <a href="/subscription">
+                            <span class="label label-success label-soft">Подписки</span>
+                            <span class="label label-success"><?=$subscription_count;?></span>
+                        </a>
+                    </div>
+                </div>
             <?php break; ?>
         <?php endswitch; ?>
 </div>

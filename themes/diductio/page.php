@@ -53,49 +53,10 @@ get_header(); ?>
 				</div>
 			</div>
 		</div> -->
-	<?php elseif(is_page('progress')): 
+	<?php elseif(is_page('progress')):
 		$user_statistic = $st->get_user_info();
+		do_action('progress-page-header');
 	?>
-	<div id="statistic" class="hentry">
-		<div class="public_statistic row precent-row">
-			<div class="stat-col" style="margin-right: 11px;">
-					<span class="label label-success label-soft">Активных</span>
-					<span class="label label-success"><?=$user_statistic['in_progress'];?></span>
-			</div>
-			<div class="stat-col" style="margin-right: 11px;">
-					<span class="label label-success label-soft">Пройденных</span>
-					<span class="label label-success"><?=$user_statistic['done'];?></span>
-			</div>
-			<?php if ( is_user_logged_in() ): ?>
-				<?php $wts = get_user_work_times();?>
-				<div class="stat-col" style="margin-right: 11px;">
-					<span class="label label-important label-important-soft">Требуется</span>
-					<span class="label label-important">
-						<?php print_r(floor($wts['nocomplete']/60))?>ч : 
-						<?php print_r($wts['nocomplete']%60)?>м
-					</span>
-				</div>
-
-				<div class="stat-col" style="margin-right: 11px;">
-					<span class="label label-important label-important-soft">Пройденно</span>
-					<span class="label label-important">
-						<?php print_r(floor($wts['complete']/60))?>ч : 
-						<?php print_r($wts['complete'] %60)?>м
-					</span>
-				</div>
-			<?php endif;?>
-
-
-			<div class="stat-col" style="margin-right: 11px;">
-				<?php if ( is_user_logged_in() ): ?>
-					<span class="label label-important label-important-soft">Мой прогресс</span>
-					<span class="label label-important"><?=$st->get_div_studying_progress();?> %</span>
-				<?php else: ?>
-					<span><span class="label label-important label-important-soft">Прогресс </span> <a href="<?php get_home_url(); ?>/wp-login.php" class="more-link link-style-1"><span class="label label-important" style="text-decoration:underline;">?</span></a></span>
-				<?php endif;?>
-			</div>
-		</div> 
-	</div>
 	<?php endif; ?>
 		<main id="main" class="site-main" role="main">
 

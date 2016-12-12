@@ -442,6 +442,7 @@ function wpfp_is_user_can_edit() {
 }
 
 function wpfp_remove_favorite_link($post_id) {
+	return false;
     if (wpfp_is_user_can_edit()) {
         $wpfp_options = wpfp_get_options();
         $class = 'wpfp-link remove-parent';

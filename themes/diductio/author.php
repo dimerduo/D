@@ -116,9 +116,6 @@
 				            $curses_count ++;
 				        }
 				        endwhile;
-				        if($curses_count == 0) {
-				            echo "<li>Нету активных массивов</li>";
-				        }
 				        echo "</ul>";
 					?>
 					<?php  moya_zachetka();?>

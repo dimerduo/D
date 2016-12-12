@@ -65,4 +65,34 @@ class User extends Diductio {
 
 		return $result;
 	}
+
+	/**
+	 * Get users subscriptions count
+	 * @param false|int $id - If ID provided function will return subscription count of specific user. If not, count of current logged user
+	 * @return int - Subscriptions count
+	 */
+	public function getSubscriptionsCount($id = false)
+	{
+		$id = get_current_user_id();
+		$subscriber_list = get_user_meta($id, 'subscribe_to')[0];
+		$tag_list = get_user_meta($id, 'signed_tags')[0];
+		$category_list = get_user_meta($id, 'signed_categories')[0];
+		$count = count($subscriber_list) + count($tag_list) + count($category_list);
+
+		return $count;
+	}
+
+	/**
+	 * Return comments count of the user
+	 * @param bool|int $id Return current user comments count if ID is not specified, and needed user comment count if ID specified
+	 * @return int
+	 */
+	public function get_comments_count($id = false)
+	{
+		$user_ID = $id ? $id : get_current_user_id();
+		$comment_args = array(
+			'author__in' => $user_ID
+		);
+		return count(get_comments($comment_args));
+	}
 }
