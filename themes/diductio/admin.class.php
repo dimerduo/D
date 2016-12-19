@@ -93,7 +93,7 @@ class Admin extends Diductio
     {
         global $wpdb;
 
-        $limit  = 1;
+        $limit  = 20;
         $stat_count = Diductio::gi()->settings['stat_table_count'];
         $start = (int)$_POST['start'];
         $end = $start + $limit;

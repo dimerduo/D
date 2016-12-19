@@ -27,6 +27,7 @@ class Post extends Diductio
 	{
 		add_action('before_delete_post', Array($this, 'onPostDelete'));
 		add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
+		add_action('init', Array($this,'rewrite_mode'));
 	}
 
 	/**
@@ -45,6 +46,7 @@ class Post extends Diductio
 		add_filter('request', Array($this, 'my_post_format_request'));
 
 		add_filter('gettext_with_context', Array($this, 'rename_post_formats_2'), 10, 4);
+
 	}
 
 	/**
@@ -199,6 +201,16 @@ class Post extends Diductio
 		}
 
 		return $translation;
+	}
+
+	/**
+	 * Rewrite rules of the theme
+	 */
+	public function rewrite_mode()
+	{
+		add_rewrite_tag('%username%', '([^&]+)');
+		add_rewrite_rule('^(subscription)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
+		add_rewrite_rule('^(comments)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
 	}
 }
 

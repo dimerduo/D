@@ -4,6 +4,7 @@
  * Данный шаблон страницы выводит всех пользователей на сайте, которые проходят какие-либо массивы
 */
 global $st, $wp_roles;
+
 if(is_page('people-active')) {
 	$user_in = $st->get_all_users('active_users');
 } else {

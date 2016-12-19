@@ -18,45 +18,24 @@
         $post_per_page = wpfp_get_option("post_per_page");
         $page = intval(get_query_var('paged'));
 
-        $qry = array('post__in' => $favorite_post_ids, 'posts_per_page'=> $post_per_page, 'orderby' => 'post__in', 'paged' => $page);
+        $qry = array(
+            'post__in' => $favorite_post_ids,
+            'posts_per_page'=> $post_per_page,
+            'orderby' => 'post__in',
+            'paged' => $page,
+        );
         // custom post type support can easily be added with a line of code like below.
         // $qry['post_type'] = array('post','page');
         query_posts($qry);
-
         // Подготовка данных для проверки пройден ли курс полностью, для того чтобы убрать его из страницы "Мои массивы"
         // для того чтобы убрать его из страницы "Мои массивы"
-        global $wpdb;
-        $user_id = get_current_user_id();
-        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-        $curses_count = 0;
         echo "<ul>";
         while ( have_posts() ) : the_post();
-        $my_array_post_id = get_the_ID();
-        $sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
-        $sql .= "AND `post_id` = '{$my_array_post_id}'";
-        $progress = $wpdb->get_row($sql);
-        $lessons_count = $progress -> lessons_count;
-
-        if($progress->checked_lessons != 0) 
-        {
-            $checked_lessons = explode(',', $progress->checked_lessons);
-            $checked_lessons_count = count($checked_lessons);
-        } else {
-            $checked_lessons_count = 0;
-        }
-        //проверка если курс пройден не полностью, то показывать его на странице 
-        // "Мои массивы", в противном случае, курс будет показан на странице "Моя зачётка"
-		if($lessons_count != $checked_lessons_count ) {
             echo "<li><a href='".get_permalink(). get_first_unchecked_lesson(get_the_ID()) ."' title='". get_the_title() ."'>" . get_the_title() ."</a> ";
                 wpfp_remove_favorite_link(get_the_ID());
-                diductio_add_progress(get_the_ID());            
+                diductio_add_progress(get_the_ID());
             echo "</li>";
-            $curses_count ++;
-        }
         endwhile;
-        if($curses_count == 0) {
-            echo "<li>Мои массивы пусты</li>";
-        }
         echo "</ul>";
 
         echo '<div class="navigation">';

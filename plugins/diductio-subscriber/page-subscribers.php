@@ -1,12 +1,17 @@
 <?php
 /*
- * Template Name: Все люди
- * Данный шаблон страницы выводит всех пользователей, метки и рубрики, на которые подписан залогиненый юзер.
+ * Template Name: Подписки
+ * Данный шаблон страницы выводит подписки пользователя
 */
-global $wp_roles;
+global $wp_roles,$wp_query;
 
-$logged_user_id = get_current_user_id();
-
+if($wp_query->query_vars['username']) {
+	$username = $wp_query->query_vars['username'];
+	$user_data = get_user_by('slug',$username);
+	$logged_user_id = $user_data->ID;
+}  else {
+	$logged_user_id = get_current_user_id();
+}
 
 $subscriber_list = get_user_meta($logged_user_id, 'subscribe_to');
 $roles = array();

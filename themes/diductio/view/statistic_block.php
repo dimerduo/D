@@ -1,7 +1,7 @@
 <?php
 global $st;
-$user_statistic = $st->get_user_info();
-
+$user_id = $data->user_id;
+$user_statistic = $st->get_user_info($user_id);
 ?>
 <div id="statistic" class="hentry">
     <?php switch ($data->type):
@@ -156,23 +156,24 @@ $user_statistic = $st->get_user_info();
             <?php break; ?>
             <?php case('personal-area'):
                 global $dUser;
-                $subscription_count = $dUser->getSubscriptionsCount();
-                $comment_count = $dUser->get_comments_count();
+                $subscription_count = $dUser->getSubscriptionsCount($user_id);
+                $comment_count = $dUser->get_comments_count($user_id);
                 ?>
 
                 <div class="public_statistic row precent-row">
                     <div class="stat-col" style="margin-right: 11px;">
                         <span class="label label-success label-soft">Прогресс</span>
                         <span class="label label-success"><?=$user_statistic['in_progress'];?></span>
+                        <span class="label label-success"><?=$data->pecent;?> %</span>
                     </div>
                     <div class="stat-col" style="margin-right: 11px;">
-                        <a href="/comments">
+                        <a href="/comments<?=$data->custom_url;?>">
                             <span class="label label-success label-soft">Активность</span>
                             <span class="label label-success"><?=$comment_count;?></span>
                         </a>
                     </div>
                     <div class="stat-col" style="margin-right: 11px;">
-                        <a href="/subscription">
+                        <a href="/subscription<?=$data->custom_url;?>">
                             <span class="label label-success label-soft">Подписки</span>
                             <span class="label label-success"><?=$subscription_count;?></span>
                         </a>

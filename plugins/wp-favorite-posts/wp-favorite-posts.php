@@ -203,9 +203,13 @@ function wpfp_list_favorite_posts( $args = array() ) {
     if ( !empty($user) ) {
         if ( wpfp_is_user_favlist_public($user) )
             $favorite_post_ids = wpfp_get_users_favorites($user);
-
     } else {
-        $favorite_post_ids = wpfp_get_users_favorites();
+        $theme_name = wp_get_theme()->get('Name');
+        if($theme_name == 'Diductio') {
+            $favorite_post_ids = $GLOBALS['st']->get_knowledges(get_current_user_id(), 'active');
+        } else{
+            $favorite_post_ids = wpfp_get_users_favorites();
+        }
     }
 
 	if ( @file_exists(TEMPLATEPATH.'/wpfp-page-template.php') || @file_exists(STYLESHEETPATH.'/wpfp-page-template.php') ):
