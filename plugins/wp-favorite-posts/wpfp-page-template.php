@@ -1,4 +1,6 @@
 <?php
+    $user_id = get_current_user_id();
+
     $wpfp_before = "";
     echo "<div class='wpfp-span'>";
     if (!empty($user)) {
@@ -31,7 +33,12 @@
         // для того чтобы убрать его из страницы "Мои массивы"
         echo "<ul>";
         while ( have_posts() ) : the_post();
-            echo "<li><a href='".get_permalink(). get_first_unchecked_lesson(get_the_ID()) ."' title='". get_the_title() ."'>" . get_the_title() ."</a> ";
+            $author_id = get_the_author_meta('ID');
+            if($author_id === $user_id) {
+                $add_string = '<small class="is_author"> автор </small>';
+            }
+
+            echo "<li><a href='".get_permalink(). get_first_unchecked_lesson(get_the_ID()) ."' title='". get_the_title() ."'>" . get_the_title() . $add_string ."</a> ";
                 wpfp_remove_favorite_link(get_the_ID());
                 diductio_add_progress(get_the_ID());
             echo "</li>";

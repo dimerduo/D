@@ -10,10 +10,12 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-get_header(); ?>
+get_header();
+?>
 
 	<div id="primary" class="content-area">
-	<?php if(is_page('dlya-chego-ehto-nuzhno')): ?>
+	<?php if(is_page('comments')): ?>
+		<?php do_action('progress-comments-header'); ?>
 	<?php elseif(is_page('progress')):
 		$user_statistic = $st->get_user_info();
 		do_action('progress-page-header');

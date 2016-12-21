@@ -104,6 +104,12 @@
             add_action('author-page-header', function () {
                 $this->renderHeaderStatistic('personal-area');
             });
+            add_action('progress-comments-header', function () {
+                $this->renderHeaderStatistic('personal-area');
+            });
+            add_action('progress-subscribers-header', function () {
+                $this->renderHeaderStatistic('personal-area');
+            });
 
             //ajax methods
             add_action('wp_ajax_show_more_statistic', array($this, 'get_more_statistic'));
@@ -532,7 +538,14 @@
             switch ($type) {
                 case 'personal-area':
                     global $author, $st;
-                    $user_id          = $author ? $author->ID : get_current_user_id();
+
+                    if (get_query_var('username') && !$author) {
+                        $author = get_user_by('slug', get_query_var('username'));
+                        $user_id = $author->ID;
+                    } else {
+                        $user_id = $author ? $author->ID : get_current_user_id();
+                    }
+
                     $progress_percent = $st->get_knowledges($user_id, 'active');
                     if ($progress_percent) {
                         $tmp_precent = 0;
@@ -544,10 +557,12 @@
                         $percent = 0;
                     }
 
-                    $data->pecent = $percent;
-                    $data->custom_url = '';
+                    $data->pecent       = $percent;
+                    $data->custom_url   = '';
+                    $data->progress_url = '/progress';
                     if ($user_id != get_current_user_id()) {
-                        $data->custom_url = '/' . $author->user_nicename;
+                        $data->custom_url   = '/' . $author->user_nicename;
+                        $data->progress_url = '/people/' . $author->user_nicename;
                     }
                     $data->user_id = $user_id;
                     break;

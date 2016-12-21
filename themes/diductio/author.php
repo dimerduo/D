@@ -34,16 +34,22 @@
     <?php do_action('author-page-header'); ?>
     <main id="main" class="site-main" role="main">
         <header class="page-header" id="author-page">
-            <div class="avatar inline "><?= get_avatar($author_info->user_email, 96); ?></div>
+            <div class="avatar inline ">
+                <?= get_avatar($author_info->user_email, 96); ?>
+                <h1 style="margin-left: 20px;" class="inline entry-title"><?php print_r($author_info->data->display_name); ?></h1>
+            </div>
             <div class="inline" style="margin-bottom:20px;">
-                <h1 class="entry-title"><?php print_r($author_info->data->display_name); ?></h1>
                 <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
             </div>
             <div class="wpfp-span">
                 <?php
                     echo "<ul>";
                     while (have_posts()) : the_post();
-                        echo "<li><a href='" . get_permalink() . get_first_unchecked_lesson(get_the_ID()) . "' title='" . get_the_title() . "'>" . get_the_title() . "</a> ";
+                        $author_id = get_the_author_meta('ID');
+                        if($author_id === $user_id) {
+                            $add_string = '<small class="is_author"> автор </small>';
+                        }
+                        echo "<li><a href='" . get_permalink() . get_first_unchecked_lesson(get_the_ID()) . "' title='" . get_the_title() . "'>" . get_the_title() . $add_string ."</a> ";
                         diductio_add_progress(get_the_ID(), $user_id);
                         echo "</li>";
                     endwhile;

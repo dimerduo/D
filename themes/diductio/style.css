@@ -2648,11 +2648,11 @@ p > video {
  * the meta tag. See https://core.trac.wordpress.org/ticket/25888.
  */
 @-ms-viewport {
-	width: device-width;
+	/*width: device-width;*/
 }
 
 @viewport {
-	width: device-width;
+	/*width: device-width;*/
 }
 
 /**
@@ -6218,7 +6218,6 @@ a.remove-parent {
   -moz-animation: check 0.8s;
   -o-animation: check 0.8s;
   animation: check 0.8s;
-  /*border-color: #6aa;*/
   border-color: rgba(204, 51, 0, 1.0);;
 }
 .checkbox.checkbox-alt label:hover:after, .checkbox-alt.checkbox-alt label:hover:after {
@@ -6260,7 +6259,7 @@ div.my-comment {
   padding-top: 10px;
 }
 div.my-comment:not(:first-child) {
-  border-top: 1px solid #eaeaea; */
+  border-top: 1px solid #eaeaea;
   border-top: 1px solid rgba(51, 51, 51, 0.1);
 }
 div.my-comment-head {
@@ -6747,6 +6746,7 @@ a.lazy-load-youtube {
   .comments-area {
 	 margin-left: 0 !important;
    }
+
 }
 /* (29) Глобальное. Правки мобильной версии end */
 
@@ -6799,5 +6799,13 @@ div.loading {
 	text-align: center;
 }
 
-
+small.is_author {
+	font-family: "Noto Serif", serif;
+	font-weight: 500;
+	margin-left: 20px !important;
+	padding-left: 20px;
+	font-size: 12px;
+	display: inline-block;
+	color: rgba(51, 51, 51, 0.7);
+}
 
