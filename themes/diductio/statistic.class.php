@@ -675,7 +675,7 @@
                 $results[$key]['progress'] = $this->count_progress($result['lessons_count'], $result['checked_lessons']);
             }
             usort($results, function ($a, $b) {
-                return $b['progress'] - $a['progress'];
+                return $a['progress'] - $b['progress'];
             });
 
             if ($user_id && $type != 'all') {

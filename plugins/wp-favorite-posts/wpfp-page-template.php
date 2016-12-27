@@ -16,7 +16,6 @@
     endif;
 
     if ($favorite_post_ids) {
-		$favorite_post_ids = array_reverse($favorite_post_ids);
         $post_per_page = wpfp_get_option("post_per_page");
         $page = intval(get_query_var('paged'));
 

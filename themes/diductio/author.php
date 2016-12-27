@@ -18,7 +18,7 @@
     $author            = get_user_by('slug', get_query_var('author_name'));
     $user_id           = $author->ID;
     $author_info       = get_userdata($user_id);
-    $favorite_post_ids = $st->get_knowledges($user_id, 'active');
+    $favorite_post_ids = $st->get_knowledges($user_id);
     $post_per_page     = wpfp_get_option("post_per_page");
     $page              = intval(get_query_var('paged'));
     $qry               = array(
