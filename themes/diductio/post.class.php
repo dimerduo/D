@@ -137,6 +137,7 @@
                 'chat'    => 'poll',
                 'gallery' => 'task',
                 'image'   => 'test',
+                'quote'   => 'project',
             );
 
             return $slugs;

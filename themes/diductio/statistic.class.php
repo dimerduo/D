@@ -464,6 +464,7 @@
                 }
                 $out['done']        = $done;
                 $out['in_progress'] = $in_progress;
+                $out['all'] = $done + $in_progress;
             } else {
                 $out['done']        = 0;
                 $out['in_progress'] = 0;
@@ -645,7 +646,7 @@
         public function count_progress($lessons_count, $lessons_checked)
         {
             if ( ! $lessons_checked || ! $lessons_count) {
-                return false;
+                return 0;
             }
             $lessons_checked = count(explode(',', $lessons_checked));
 
@@ -668,6 +669,14 @@
             $sql = "SELECT {$select} FROM `{$table_name}` ";
             $sql .= $user_id ? "WHERE `user_id` = {$user_id} " : '';
             $results = $wpdb->get_results($sql, ARRAY_A);
+
+            //sorting
+            foreach ($results as $key => $result) {
+                $results[$key]['progress'] = $this->count_progress($result['lessons_count'], $result['checked_lessons']);
+            }
+            usort($results, function ($a, $b) {
+                return $b['progress'] - $a['progress'];
+            });
 
             if ($user_id && $type != 'all') {
                 $done   = array();

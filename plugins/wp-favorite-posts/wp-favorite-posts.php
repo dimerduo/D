@@ -206,7 +206,7 @@ function wpfp_list_favorite_posts( $args = array() ) {
     } else {
         $theme_name = wp_get_theme()->get('Name');
         if($theme_name == 'Diductio') {
-            $favorite_post_ids = $GLOBALS['st']->get_knowledges(get_current_user_id(), 'active');
+            $favorite_post_ids = $GLOBALS['st']->get_knowledges(get_current_user_id());
         } else{
             $favorite_post_ids = wpfp_get_users_favorites();
         }

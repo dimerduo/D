@@ -53,6 +53,18 @@
                         </a>
                     </div>
                 <?php endif; ?>
+                <?php if ($st->getPostsCountByFormat('post-format-quote', 'post_format')): ?>
+                    <div class="stat-col">
+                        <a href="/type/project">
+                            <span class="label label-success
+                            <?php if ($term->slug != "post-format-quote"): ?>
+                            label-soft
+                            <?php endif; ?>">Проект</span>
+                            <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-quote',
+                                    'post_format'); ?></span>
+                        </a>
+                    </div>
+                <?php endif; ?>
                 <?php if ($st->getPostsCountByFormat('post-format-gallery', 'post_format')): ?>
                     <div class="stat-col">
                         <a href="/type/task">
@@ -88,15 +100,6 @@
                         <?php endif; ?>
                         ">Проходят</span>
                         <span class="label label-success"><?= $st->active; ?></span>
-                    </a>
-                </div>
-                <div class="stat-col">
-                    <a href="/array-recently">
-                        <span class="label label-success
-                        <?php if ( ! is_page('array-recently')): ?>
-                        label-soft
-                        <?php endif; ?>">Прошли</span>
-                        <span class="label label-success"><?= $st->done; ?></span>
                     </a>
                 </div>
                 <div class="stat-col">
@@ -168,7 +171,7 @@
                     <a href="<?= $data->progress_url; ?>">
                         <span
                             class="label label-success <?php if ( is_page('comments') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
-                        <span class="label label-success"><?= $user_statistic['in_progress']; ?></span>
+                        <span class="label label-success"><?= $user_statistic['all']; ?></span>
                         <span class="label label-success"><?= $data->pecent; ?> %</span>
                     </a>
                 </div>
@@ -186,6 +189,11 @@
                         <span class="label label-success"><?= $subscription_count; ?></span>
                     </a>
                 </div>
+                <?php
+                    if (function_exists('getSubsriberView') && $user_id != get_current_user_id()) {
+                        echo getSubsriberView('author');
+                    }
+                ?>
             </div>
             <?php break; ?>
         <?php endswitch; ?>
