@@ -1,6 +1,6 @@
 <?php 
 /*
- * Template Name: Сейчас проходя
+ * Template Name: Сейчас проходят
  * Данный шаблон страницы выводит всех пользователей на сайте, которые проходят какие-либо массивы
 */
 global $st, $wp_roles;
@@ -8,12 +8,12 @@ global $st, $wp_roles;
 if(is_page('people-active')) {
 	$user_in = $st->get_all_users('active_users');
 } else {
-	$user_in = $st->get_all_users('finished_users');
+	$exclude_of = $st->busy_peoples;
 }
 
 $roles = array();
 foreach ($wp_roles->roles as $rKey => $rvalue) {
- 	$roles[] = $rKey;
+	$roles[] = $rKey;
 }
 // The Query
 $args = array(
@@ -23,6 +23,11 @@ $args = array(
 if ($user_in) {
 	$args['include'] = $user_in;
 }
+if($exclude_of){
+	$args['exclude'] = $exclude_of;
+}
+//print_r($args);exit;
+
 $user_query = new WP_User_Query( $args );
 
 

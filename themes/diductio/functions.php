@@ -396,6 +396,7 @@ $settings = array();
 $settings['stat_table'] = $wpdb->get_blog_prefix() . 'user_add_info';
 $stat_count = $wpdb->get_row("SELECT COUNT(`id`) AS `count` FROM `{$settings['stat_table']}`");
 $settings['stat_table_count'] = $stat_count->count;
+$settings['view_path'] = get_stylesheet_directory()."/view/";
 $settings['post_formats_slug'] = array('post-format-aside','post-format-chat','post-format-gallery','post-format-image');
 unset($stat_count);
 $diductio = Diductio::gi();
@@ -545,45 +546,12 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 			<ul>
 			<?php 
 			if ( is_user_logged_in() ) {
+				global $st, $dUser;
 				$user_ID = get_current_user_id();
-				$favorites_array = get_user_meta($user_ID, 'wpfp_favorites');
-				$comment_args = array(
-					'author__in' => $user_ID
-					);
-				$comments_count = count(get_comments($comment_args));
-				if($favorites_array) {	
-					$fav_count = 0;
-					$moya_zachetka_items_count  = 0 ;
-					global $wpdb;
-			        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-					foreach ($favorites_array[0] as $fav_key => $fav_value) {
-
-						$my_array_post_id = $fav_value;
-				        $sql  = "SELECT * FROM `$table_name` WHERE `user_id` = '{$user_ID}' ";
-				        $sql .= "AND `post_id` = '{$my_array_post_id}'";
-				        $progress = $wpdb->get_row($sql);
-						if($progress) {
-		        			$lessons_count = $progress -> lessons_count;
-		        			if($progress->checked_lessons != 0) {
-		        				$checked_lessons = explode(',', $progress->checked_lessons);
-		        				$checked_lessons_count = count($checked_lessons);
-		        			} else {
-		        				$checked_lessons_count = 0;
-		        			}
-		        			if($lessons_count  != $checked_lessons_count) {
-		        				$fav_count++;
-		        			} else {
-		        				$moya_zachetka_items_count ++ ;
-		        			}
-						}
-					}
-				} else {
-					$fav_count = 0;
-					$moya_zachetka_items_count = 0;
-				}
-				
-				$subscription_count = getSubscriptionsCount();
-				echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>".$fav_count."</span></a></li>";
+				$user_statistic = $st->get_user_info($user_ID);
+				$comments_count = $dUser->get_comments_count($user_ID);
+				$subscription_count = $dUser->getSubscriptionsCount($user_ID);
+				echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>".$user_statistic['all']."</span></a></li>";
 				echo "<li><a href='/subscription'>Мои подписки <span class='label label-success right-count'>".$subscription_count."</span></a></li>";
 				// echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
 				echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>".$comments_count."</span></a></li>";
@@ -632,7 +600,7 @@ class WP_Widget_Meta_Mod extends WP_Widget {
 
 // (21) Редактирование виджета "Свежие комментарии"
 
-add_shortcode( 'my_comments', 'get_my_comments' );
+//add_shortcode( 'my_comments', 'get_my_comments' );
 /**
  * Recent_Comments widget class
  *
@@ -1418,19 +1386,4 @@ add_action( 'wp_before_admin_bar_render', 'my_tweaked_admin_bar' );
 
 	return $wts;
   }
-
-  function getSubscriptionsCount()
-  {
-  	$count = 0;
-  	$id = get_current_user_id();
-  	$subscriber_list = get_user_meta($id, 'subscribe_to')[0];
-  	$tag_list = get_user_meta($id, 'signed_tags')[0];
-  	$category_list = get_user_meta($id, 'signed_categories')[0];
-  	// delete_user_meta($id,'subscribe_to');exit;
-  	$count = count($subscriber_list) + count($tag_list) + count($category_list);
-
-   	return $count;
-  }
-
-
 ?>
