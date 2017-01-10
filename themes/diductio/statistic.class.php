@@ -118,7 +118,9 @@
         }
 
         /**
-         * @param bool $status - get posts count by status | publish by default
+         * Return array of the posts by status.
+         *
+         * @param string $status - get posts count by status | publish by default
          * @return mixed posts array
          */
         public function get_all_arrays($status = false)
@@ -203,7 +205,10 @@
         }
 
         /**
-         *  Получить количество постов в источнике
+         *  Return posts count in some source.
+         *  Получить количество постов в источнике.
+         *
+         * @return int  - posts count
          */
         public function get_istochiki_count()
         {
@@ -430,7 +435,13 @@
         }
 
         /**
-         *  Возвращает информацию по статистике пользователя пройденные и активные
+         *  Возвращает информацию по статистике пользователя пройденные и активные.
+         *
+         * @param int $id - ID пользователя. Если параметр не был отправлен, то берётся ID залогиненого пользователя
+         * @return array $out - статистический массив, в котором:
+         *                int   done - количество пройденных массивов(постов)
+         *                int in_progress - количество массивов, которые сейчас проходит пользователь
+         *                int all - все
          */
         public function get_user_info($id = false)
         {
@@ -464,7 +475,7 @@
                 }
                 $out['done']        = $done;
                 $out['in_progress'] = $in_progress;
-                $out['all'] = $done + $in_progress;
+                $out['all']         = $done + $in_progress;
             } else {
                 $out['done']        = 0;
                 $out['in_progress'] = 0;
@@ -540,8 +551,8 @@
                 case 'personal-area':
                     global $author, $st;
 
-                    if (get_query_var('username') && !$author) {
-                        $author = get_user_by('slug', get_query_var('username'));
+                    if (get_query_var('username') && ! $author) {
+                        $author  = get_user_by('slug', get_query_var('username'));
                         $user_id = $author->ID;
                     } else {
                         $user_id = $author ? $author->ID : get_current_user_id();
@@ -598,15 +609,6 @@
                 return $a['progress'] - $b['progress'];
             });
 
-            if ($result) {
-                $json['status'] = 'ok';
-                $json['data']   = $result;
-            } else {
-                $json['status'] = 'error';
-            }
-
-            echo json_encode($json);
-            die();
         }
 
         /**
@@ -672,7 +674,8 @@
 
             //sorting
             foreach ($results as $key => $result) {
-                $results[$key]['progress'] = $this->count_progress($result['lessons_count'], $result['checked_lessons']);
+                $results[$key]['progress'] = $this->count_progress($result['lessons_count'],
+                    $result['checked_lessons']);
             }
             usort($results, function ($a, $b) {
                 return $a['progress'] - $b['progress'];
@@ -698,5 +701,31 @@
             }
 
             return $$type;
+        }
+
+
+        function get_users_by_post($post_id)
+        {
+            global $dUser;
+
+            $post_stat = $this->get_course_info($post_id);
+            $result       = array();
+            if ($post_stat['active_users'] || $post_stat['done_users']) {
+                $target_users = array_merge($post_stat['active_users'], $post_stat['done_users']);
+                foreach ($target_users as $user) {
+                    $user_info       = get_user_by('id', $user);
+                    $tmp             = $dUser->getUserData($user_info->ID);
+                    $tmp['progress'] = $this->get_user_progress_by_post($post_id, $user);
+                    $result[]        = $tmp;
+                }
+                unset($tmp);
+
+                // sort array by progress
+                usort($result, function ($a, $b) {
+                    return $a['progress'] - $b['progress'];
+                });
+            }
+
+            return $result;
         }
     }
