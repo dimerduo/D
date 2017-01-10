@@ -38,9 +38,10 @@
                 <?= get_avatar($author_info->user_email, 96); ?>
                 <h1 style="margin-left: 20px;" class="inline entry-title"><?php print_r($author_info->data->display_name); ?></h1>
             </div>
-            <div class="inline" style="margin-bottom:20px;">
+            <div  style="margin-bottom:20px;">
                 <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
             </div>
+            <?php if($favorite_post_ids): ?>
             <div class="wpfp-span">
                 <?php
                     echo "<ul>";
@@ -59,6 +60,9 @@
                     //                    moya_zachetka();
                 ?>
             </div>
+            <?php else: ?>
+                Пользователь на данный момент ничего не проходит.
+            <?php endif; ?>
         </header><!-- .page-header -->
     </main><!-- .site-main -->
 </section><!-- .content-area -->

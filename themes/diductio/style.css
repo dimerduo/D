@@ -6315,6 +6315,10 @@ a.link-style-2, a.link-style-2:visited {
 a.link-style-2:hover{
     text-decoration: none;
 }
+.icon-style-2 {
+	color: #c30;
+	font-size: 14px;
+}
 div.add-to-favor-wrapper .wpfp-span a {
     color: #c30;
     font-size: 16px;
@@ -6808,4 +6812,12 @@ small.is_author {
 	display: inline-block;
 	color: rgba(51, 51, 51, 0.7);
 }
-
+.more-users {
+	text-align: right;
+}
+.more-users > a {
+	margin-right: 15px;
+}
+#display-more-users {
+	font-size: 12px;
+}

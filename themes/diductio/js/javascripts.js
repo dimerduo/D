@@ -15,6 +15,12 @@ $(document).ready(function () {
             moreStatistic(event);
         }
     });
+
+    $('#display-more-users').click( function(){
+        $(this).parent().find('i').toggleClass('glyphicon-plus glyphicon-minus');
+        $(this).toggleText('Развернуть', 'Спрятать');
+        $('.rest-users').slideToggle(600);
+    });
 });
 
 /* (11) Отправка статистических данных для записи в БД */
@@ -162,3 +168,13 @@ var showMoreClass = function(){
     }
 
 };
+
+jQuery.fn.extend({
+    toggleText: function(stateOne, stateTwo) {
+        return this.each(function() {
+            stateTwo = stateTwo || '';
+            $(this).text() !== stateTwo && stateOne ? $(this).text(stateTwo)
+                : $(this).text(stateOne);
+        });
+    }
+});

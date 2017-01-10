@@ -171,7 +171,7 @@
                     <a href="<?= $data->progress_url; ?>">
                         <span
                             class="label label-success <?php if ( is_page('comments') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
-                        <span class="label label-success"><?= $user_statistic['all']; ?></span>
+                        <span class="label label-success"><?= $user_statistic['in_progress']; ?></span>
                         <span class="label label-success"><?= $data->pecent; ?> %</span>
                     </a>
                 </div>

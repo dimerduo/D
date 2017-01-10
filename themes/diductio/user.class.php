@@ -76,14 +76,18 @@
             }
         }
 
-        /*
-         * Getting user data such as avatar, link
-         * @param int $user_id  user ID
+        /**
+         * Getting user data such as avatar, link and etc.
+         * Возвращает дополнительную информацию по пользователю, такую как: аватарка, ссылка на профиль,
+         *
+         * @param1 int $user_id  - ID пользователя.
+         * @return array $result -
          */
         public function getUserData($user_id)
         {
             $user_info           = get_user_by('id', $user_id);
-            $result['username']  = $user_info->user_nicename;
+            $result['nickname']  = $user_info->user_nicename;
+            $result['username']  = $user_info->display_name;
             $result['avatar']    = get_avatar($user_id, 24);
             $result['user_link'] = get_site_url() . "/people/" /*hardcode*/ . $user_info->user_nicename;
             $result['user_id']   = $user_id;

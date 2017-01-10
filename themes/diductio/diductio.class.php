@@ -15,10 +15,21 @@ class Diductio
 	 */
 	public $post;
 
+    /**
+     * @var object user class object
+     */
+    public $user;
+
+    /**
+     * @var object post class object
+     */
+    public $statistic;
+
 	/**
 	 * @var Singleton The reference to *Singleton* instance of this class
 	 */
 	protected static $instance;
+
 
 	/**
 	 * @var  array main setting of the diductio theme
@@ -30,8 +41,32 @@ class Diductio
 	 */
 	public function __construct()
 	{
-		
+
 	}
+
+    /**
+     * Return User class object
+     */
+	public function getUserClass()
+    {
+        return $this->user;
+    }
+
+    /**
+     *  Return Post class object
+     */
+    public function getPostClass()
+    {
+        return $this->post;
+    }
+
+    /**
+     *  Return Statistic class object
+     */
+    public function getStatisticClass()
+    {
+        return $this->statistic;
+    }
 
 	/**
 	 *  Diductio clone (can't clone - singleton)
@@ -99,5 +134,6 @@ class Diductio
 			include_once($view_path);
 		}
 	}
+
 }
 ?>
