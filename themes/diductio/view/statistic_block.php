@@ -59,7 +59,7 @@
                             <span class="label label-success
                             <?php if ($term->slug != "post-format-quote"): ?>
                             label-soft
-                            <?php endif; ?>">Проект</span>
+                            <?php endif; ?>">Проекты</span>
                             <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-quote',
                                     'post_format'); ?></span>
                         </a>
@@ -139,13 +139,6 @@
                     <a href="<?php get_home_url(); ?>/peoples-free">
                         <span class="label label-important<?php if ( ! is_page('people-free')): ?>-soft<?php endif; ?>">Свободны</span>
                         <span class="label label-important"><?= $st->free_peoples_count; ?></span>
-                    </a>
-                </div>
-                <div class="stat-col">
-                    <a href="<?php get_home_url(); ?>/people-recently">
-                        <span
-                            class="label label-important<?php if ( ! is_page('people-recently')): ?>-soft<?php endif; ?>">Прошли</span>
-                        <span class="label label-important"><?= $st->finished_study_users; ?></span>
                     </a>
                 </div>
                 <div class="stat-col">

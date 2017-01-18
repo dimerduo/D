@@ -202,7 +202,7 @@
                     'Chats'     => "Голосования",
                     'Images'    => "Тесты",
                     'Galleries' => "Задачи",
-                    'Quotes' => "Проекты",
+                    'Quotes'    => "Проекты",
                 );
 
                 $translation = str_replace(array_keys($post_format_titles), array_values($post_format_titles), $text);
@@ -219,6 +219,66 @@
             add_rewrite_tag('%username%', '([^&]+)');
             add_rewrite_rule('^(subscription)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
             add_rewrite_rule('^(comments)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
+        }
+
+        /**
+         * Возвращает информацию о прохождении поста (знания)
+         * Return passing information about post (knowledge)
+         *
+         * @param int $user_id           - ID of the user
+         * @param int $post_id - ID of the post (knowledge)
+         * @return
+         */
+        public function get_passing_info_by_post($user_id, $post_id)
+        {
+            global $wpdb;
+            $d_format = 'd.m.Y';
+            $t_format = 'H:i';
+
+
+            $stat_table = Diductio::gi()->settings['stat_table'];
+            $sql = "SELECT * FROM `{$stat_table}` WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
+            $row = $wpdb->get_row($sql, ARRAY_A);
+            $passed_lessons = explode(',',$row['checked_lessons']);
+            $lessons_count = $row['lessons_count'];
+            $all_lessons = range(1, $row['lessons_count']);
+            $result['date_string'] = '';
+
+            if($row['checked_at']) {
+                $passed_date = explode(',',$row['checked_at']);
+                $result['started_at'] = array_shift($passed_date);
+
+                $start_date = date($d_format,$result['started_at']);
+                $start_time = date($t_format,$result['started_at']);
+                $start_string = $start_date. ' в ' . $start_time;
+                $result['date_string'] = $start_string;
+
+                if(count($passed_lessons) == $lessons_count) {
+                    $result['is_passed'] = 1;
+                    $result['finished_at'] = end($passed_date);
+                    $finish_date = date($d_format,$result['finished_at']);
+                    $finish_time = date($t_format,$result['finished_at']);
+                    $finish_string = $finish_date. ' в ' . $finish_time;
+                    $result['date_string'] .=  " - " . $finish_string;
+                } else {
+                    $result['is_passed'] = 0;
+                    $unchecked_array = array_diff($all_lessons, $passed_lessons);
+                    $result['first_undone'] = array_shift($unchecked_array);
+                }
+            }
+
+            return $result;
+        }
+
+        /**
+         * Возвращает форматированную строку по пройденным датам поста
+         *
+         * @param array $array - информация о прохождении поста (результат работы функции get_passing_info_by_post() )
+         * @return string $date - отформотированная информация
+         */
+        public function format_passed_date_string($array)
+        {
+
         }
     }
 

@@ -22,21 +22,29 @@
 			$lessons_count = $_POST['lessons_count'];
 			$checked_lessons = implode(',', $_POST['checked_elements']);
 			$table_name = $wpdb->get_blog_prefix() . 'user_add_info';
-			$sql  = "SELECT `id` FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
+			$sql  = "SELECT `id`,`checked_at` FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
 			$sql .= "AND `post_id` = '{$post_id}'";
 			$progress = $thepost = $wpdb->get_row($sql);
+
+			if($progress->checked_at) {
+				$checked_at = $progress->checked_at . ',' . current_time('timestamp');
+			} else {
+				$checked_at = current_time('timestamp');
+			}
+
 			$insert_data = array(
 				'user_id' => $user_id, 
 				'post_id' => $post_id, 
 				'lessons_count' => $lessons_count, 
 				'checked_lessons' => $checked_lessons,
-				'update_at'       => date('Y-m-d H:i:s')
+				'update_at'       => date('Y-m-d H:i:s'),
+				'checked_at'      => $checked_at,
 			);
-			
+
 			if($progress) {
-				$wpdb->update($table_name,$insert_data, array('id' =>$progress->id), array("%d","%d","%d","%s","%s"), array("%d","%d","%d","%s","%s") );
+				$wpdb->update($table_name,$insert_data, array('id' =>$progress->id), array("%d","%d","%d","%s","%s","%s"), array("%d","%d","%d","%s","%s","%s") );
 			} else {
-				$wpdb->insert($table_name, $insert_data, array("%d","%d","%d","%s", "%s"));
+				$wpdb->insert($table_name, $insert_data, array("%d","%d","%d","%s", "%s","%s"));
 			}
 		}
 	}

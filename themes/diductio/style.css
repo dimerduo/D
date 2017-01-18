@@ -6634,15 +6634,33 @@ div.precent-row {
 .footer-statistic > div.stat-col {
   margin-right: 12px !important;
 }
+.profile_avatars {
+	margin-bottom: 10px;
+}
 .profile_avatars > div.inline {
   margin-right: 5px;
 }
 .profile_avatars > div.last-inline {
 	margin-right: 0;
 }
+.profile_avatars > div > a {
+	border-bottom: 0;
+ }
+ .profile_avatars img.avatar {
+	display: inline-block;
+ }
 
+ .profile_avatars span.profile-nicename  {
+	 display: inline-block;
+	 margin-left: 5px;
+	 font-size: 15px;
+ }
 .profile_avatars > div.inline img{
   margin-bottom: 0px;  
+}
+.passed-in {
+	font-size: 14px;
+	margin-left: 10px;
 }
 /* Стилизация страницы все пользователи */
 #users-page div.stat-col {
@@ -6806,8 +6824,8 @@ div.loading {
 small.is_author {
 	font-family: "Noto Serif", serif;
 	font-weight: 500;
-	margin-left: 20px !important;
-	padding-left: 20px;
+	margin-left: 10px !important;
+	padding-left: 0px;
 	font-size: 12px;
 	display: inline-block;
 	color: rgba(51, 51, 51, 0.7);
@@ -6820,4 +6838,8 @@ small.is_author {
 }
 #display-more-users {
 	font-size: 12px;
+}
+.passing_date {
+	font-size: 12px;
+	margin-left: 10px;
 }

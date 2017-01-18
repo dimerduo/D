@@ -6,7 +6,7 @@
      * @subpackage Twenty_Fifteen
      * @since      Twenty Fifteen 1.0
      */
-    global $wp_roles, $post, $dUser, $st;
+    global $wp_roles, $post, $dUser, $st, $dPost;
     $roles = array();
     foreach ($wp_roles->roles as $rKey => $rvalue) {
         $roles[] = $rKey;
@@ -129,12 +129,17 @@
         <div id="user-activity" class="row">
             <?php $posts_users = $st->get_users_by_post($post->ID); ?>
             <?php
-                $end = count($posts_users) >= 4 ?  4 : count($posts_users);
-                for ($i = 0; $i < $end; $i++): ?>
-                <div class="col-sm-12 col-md-6">
+                $end = count($posts_users) >= 2 ?  2 : count($posts_users);
+                for ($i = 0; $i < $end; $i++):
+                    $passing_date = $dPost->get_passing_info_by_post($posts_users[$i]['user_id'], $post->ID);
+                    ?>
+                <div class="col-sm-12 col-md-12">
                     <div>
-                        <?=$posts_users['avatar'];?>
-                        <span><?=$posts_users[$i]['username'];?></span>
+                        <a href="<?=$posts_users[$i]['user_link'];?>">
+                            <?=$posts_users[$i]['avatar'];?>
+                            <span><?=$posts_users[$i]['username'];?></span>
+                        </a>
+                        <span class="passing_date"><?=$passing_date['date_string'];?></span>
                     </div>
                     <div class="progress">
                         <div class="progress-bar " role="progressbar" aria-valuenow="<?=$posts_users[$i]['progress'];?>" aria-valuemin="0" aria-valuemax="100" style="width:<?=$posts_users[$i]['progress'];?>%;">
@@ -143,21 +148,25 @@
                     </div>
                 </div>
             <?php endfor; ?>
-            <?php if(count($posts_users) > 4): ?>
+            <?php if(count($posts_users) > 2): ?>
                 <div class="row">
                     <div class="col-md-4 col-md-offset-8 more-users">
-                        <i style="font-size: 10px;" class="glyphicon glyphicon-plus icon-style-2" aria-hidden="true"></i>
                         <a id="display-more-users" class="link-style-2" href="javascript:void(0);">
                             Развернуть
                         </a>
                     </div>
                 </div>
                 <div class="rest-users" style="display: none;">
-                <?php    for ($i = 4; $i < count($posts_users); $i++): ?>
-                    <div class="col-sm-12 col-md-6">
+                <?php    for ($i = 2; $i < count($posts_users); $i++):
+                    $passing_date = $dPost->get_passing_info_by_post($posts_users[$i]['user_id'], $post->ID);
+                    ?>
+                    <div class="col-sm-12 col-md-12">
                         <div>
-                            <?=$posts_users['avatar'];?>
-                            <span><?=$posts_users[$i]['username'];?></span>
+                            <a href="<?=$posts_users[$i]['user_link'];?>">
+                                <?=$posts_users[$i]['avatar'];?>
+                                <span class="passing_date"><?=$posts_users[$i]['username'];?></span>
+                            </a>
+                            <span><?=$passing_date['date_string'];?></span>
                         </div>
                         <div class="progress">
                             <div class="progress-bar " role="progressbar" aria-valuenow="<?=$posts_users[$i]['progress'];?>" aria-valuemin="0" aria-valuemax="100" style="width:<?=$posts_users[$i]['progress'];?>%;">

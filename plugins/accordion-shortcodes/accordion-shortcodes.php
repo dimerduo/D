@@ -347,12 +347,20 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 
 			//Render accordion passed users block
 			$passed_users = "<div class='passed_users profile_avatars'>";
-			foreach ($accordion_part_users as $acc_user) {
-				$acc_user_info = $dUser->getUserData($acc_user);
-				$passed_users .= "<div class='inline'>";
+            foreach ($accordion_part_users as $acc_user) {
+
+                //user info
+                $acc_user_info = $dUser->getUserData($acc_user);
+				$passed_users .= "<div class='inline profile'>";
 				$passed_users .= "<a href='{$acc_user_info['user_link']}'>";
 				$passed_users .= $acc_user_info['avatar'];
+				$passed_users .= '<span class="profile-nicename">'. $acc_user_info['username'] .'</span>';
 				$passed_users .= "</a>";
+
+                $passed_date = $GLOBALS['dUser']->get_accordion_passed_date($acc_user, $post_id, $ids['accourdion_count']);
+                if($passed_date) {
+                    $passed_users .='<span class="passed-in">' .  $passed_date . '</span>';
+                }
 				$passed_users .= "</div>";
 			}
 			$passed_users .= "</div>";

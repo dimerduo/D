@@ -550,7 +550,6 @@
             switch ($type) {
                 case 'personal-area':
                     global $author, $st;
-
                     if (get_query_var('username') && ! $author) {
                         $author  = get_user_by('slug', get_query_var('username'));
                         $user_id = $author->ID;

@@ -167,4 +167,37 @@
                 $this->get_comments($user_id);
             }
         }
+
+        /**
+         * Return accordion element (knowledge part) passed datetime.
+         * Возвращает время и дату указанной части аккордион элемента (части знания).
+         *
+         * @param int $user_id - User ID
+         * @param int $post_id - Post ID
+         * @param int $accordion_element - Accordion (knowledge) element number
+         * @return string|bool - Date or false if something goes wrong
+         */
+        public function get_accordion_passed_date($user_id, $post_id, $accordion_element)
+        {
+            global $wpdb;
+
+            $table = Diductio::gi()->settings['stat_table'];
+            $sql  = "SELECT * FROM `{$table}` ";
+            $sql .= "WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
+
+            $progress = $wpdb->get_row($sql);
+
+            if($progress->checked_at) {
+                //TODO. Добавить формат в основной класс
+                $d_format = 'd.m.Y';
+                $t_format = 'H:i';
+                $date = date($d_format,$progress->checked_at);
+                $time = date($t_format,$progress->checked_at);
+                $result = $date . ' в ' . $time;
+            } else {
+                $result = false;
+            }
+
+            return $result;
+        }
     }
