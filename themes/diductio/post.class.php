@@ -218,14 +218,21 @@
         {
             add_rewrite_tag('%username%', '([^&]+)');
             add_rewrite_rule('^(subscription)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
-            add_rewrite_rule('^(comments)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
+            add_rewrite_rule(
+                '^(activity)/([^/]*)/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]',
+                'top');
+            add_rewrite_rule(
+                '^(activity)/([^/]*)/page/?([0-9]{1,})/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]','top'
+            );
         }
 
         /**
          * Возвращает информацию о прохождении поста (знания)
          * Return passing information about post (knowledge)
          *
-         * @param int $user_id           - ID of the user
+         * @param int $user_id - ID of the user
          * @param int $post_id - ID of the post (knowledge)
          * @return
          */
@@ -236,34 +243,35 @@
             $t_format = 'H:i';
 
 
-            $stat_table = Diductio::gi()->settings['stat_table'];
-            $sql = "SELECT * FROM `{$stat_table}` WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
-            $row = $wpdb->get_row($sql, ARRAY_A);
-            $passed_lessons = explode(',',$row['checked_lessons']);
-            $lessons_count = $row['lessons_count'];
-            $all_lessons = range(1, $row['lessons_count']);
+            $stat_table            = Diductio::gi()->settings['stat_table'];
+            $sql                   = "SELECT * FROM `{$stat_table}` WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
+            $row                   = $wpdb->get_row($sql, ARRAY_A);
+            $passed_lessons        = explode(',', $row['checked_lessons']);
+            $lessons_count         = $row['lessons_count'];
+            $all_lessons           = range(1, $row['lessons_count']);
             $result['date_string'] = '';
 
-            if($row['checked_at']) {
-                $passed_date = explode(',',$row['checked_at']);
+            if ($row['checked_at']) {
+                $passed_date          = explode(',', $row['checked_at']);
                 $result['started_at'] = array_shift($passed_date);
 
-                $start_date = date($d_format,$result['started_at']);
-                $start_time = date($t_format,$result['started_at']);
-                $start_string = $start_date. ' в ' . $start_time;
+                $start_date            = date($d_format, $result['started_at']);
+                $start_time            = date($t_format, $result['started_at']);
+                $start_string          = $start_date . ' в ' . $start_time;
                 $result['date_string'] = $start_string;
 
-                if(count($passed_lessons) == $lessons_count) {
-                    $result['is_passed'] = 1;
+                if (count($passed_lessons) == $lessons_count) {
+                    $result['is_passed']   = 1;
                     $result['finished_at'] = end($passed_date);
-                    $finish_date = date($d_format,$result['finished_at']);
-                    $finish_time = date($t_format,$result['finished_at']);
-                    $finish_string = $finish_date. ' в ' . $finish_time;
-                    $result['date_string'] .=  " - " . $finish_string;
+                    $finish_date           = date($d_format, $result['finished_at']);
+                    $finish_time           = date($t_format, $result['finished_at']);
+                    $finish_string         = $finish_date . ' в ' . $finish_time;
+                    $result['date_string'] .= " - " . $finish_string;
                 } else {
-                    $result['is_passed'] = 0;
-                    $unchecked_array = array_diff($all_lessons, $passed_lessons);
+                    $result['is_passed']    = 0;
+                    $unchecked_array        = array_diff($all_lessons, $passed_lessons);
                     $result['first_undone'] = array_shift($unchecked_array);
+                    $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
                 }
             }
 
@@ -279,6 +287,41 @@
         public function format_passed_date_string($array)
         {
 
+        }
+
+        public function get_accordion_element_title($post_id, $element_number)
+        {
+            $element_number -=1;
+            $content_post = get_post($post_id);
+            $content      = $content_post->post_content;
+            $title        = '';
+            preg_match_all("/\[accordion-item title='\s*([^']*)\s*'\]/", $content, $output_array);
+            if ($output_array[1]) {
+                $title = $output_array[1][$element_number];
+            }
+
+            return $title;
+        }
+
+        public function get_posts_by_type($user_id, $limit)
+        {
+            global $wpdb;
+            $table = Diductio::gi()->settings['stat_table'];
+            $sql   = "SELECT * FROM `{$table}` WHERE ";
+            $sql .= "`user_id` = $user_id ";
+            $sql .= "LIMIT 5";
+            $result = $wpdb->get_results($sql, 'ARRAY_A');
+            foreach ($result as $item) {
+                $tmpPost = get_post($item['post_id']);
+                $passing_info = $this->get_passing_info_by_post($user_id, $item['post_id']);
+                if($passing_info['first_undone']) {
+                    $tmp_title = $this->get_accordion_element_title($item['post_id'], $passing_info['first_undone']);
+                    $tmpPost->stoped_on = "На этапе: " . $tmp_title;
+                }
+                $post_array[] = $tmpPost;
+            }
+
+            return $post_array;
         }
     }
 

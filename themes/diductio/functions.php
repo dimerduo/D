@@ -602,23 +602,76 @@
                         $user_statistic     = $st->get_user_info($user_ID);
                         $comments_count     = $dUser->get_comments_count($user_ID);
                         $subscription_count = $dUser->getSubscriptionsCount($user_ID);
-                        echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>" . $user_statistic['in_progress'] . "</span></a></li>";
+                        $progress_percent = $st->get_knowledges($user_ID, 'active');
+                        if ($progress_percent) {
+                            $tmp_precent = 0;
+                            foreach ($progress_percent as $item) {
+                                $tmp_precent += $st->get_user_progress_by_post($item, $user_ID);
+                            }
+                            $percent = round($tmp_precent / count($progress_percent), 2);
+                        } else {
+                            $percent = 0;
+                        }
+
+                        //My progress
+                        $my_progress = "<li>";
+                            $my_progress .= "<a href='/progress'>";
+                                $my_progress .= "Мой прогресс";
+                                $my_progress .= "<div style='float: right; margin-right: 0;' class='stat-col'>";
+                                    $my_progress .= "<span class='label label-success label-soft'>" . $user_statistic['in_progress'] ."</span>";
+                                    $my_progress .= "<span style='margin-left: 5px;' class='label label-success label-soft'>" . $percent ." %</span>";
+                                $my_progress .= "</div>";
+                        $my_progress .= "</a>";
+                        $my_progress .= "</li>";
+
+                        echo $my_progress;
+                        unset($my_progress);
+                        $knowledges = $GLOBALS['dPost']->get_posts_by_type($user_ID, 5);
+                        if($knowledges) {
+//                            $know_str  = "<ul>";
+                            foreach ($knowledges as $knowledge) {
+                                $know_str .= "<li class='widget-my-project-list'>";
+                                    $know_str .= "<div><a class='link-style-1' href='#'>". $knowledge->post_title ."</a></div>";
+                                    if($knowledge->stoped_on) {
+                                        $know_str .= "<div class='progress-on'>". $knowledge->stoped_on ."</div>";
+                                    }
+                                $know_str .= "</li>";
+                            }
+//                            $know_str .= "<ul>";
+                            echo $know_str;
+                        }
+//                        echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>" . $user_statistic['in_progress'] . "</span></a></li>";
                         echo "<li><a href='/subscription'>Мои подписки <span class='label label-success right-count'>" . $subscription_count . "</span></a></li>";
                         // echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
                         echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>" . $comments_count . "</span></a></li>";
-                        echo "<li><a href='/wp-admin/profile.php'>Мой профиль</a></li>";
+
+                        //My profile and login out
+                        $my_profile  = "<li class='row'>";
+                            $my_profile .= "<div class='col-md-6 col-sm-6'>";
+                                $my_profile .= "<a href='/wp-admin/profile.php'>";
+                                $my_profile .= "Мой профиль";
+                                $my_profile .= "</a>";
+                            $my_profile .= "</div>";
+                        if ( is_user_logged_in()) {
+                                $my_profile .=  "<div style='text-align: right;' class='col-md-6 col-sm-6'>";
+                                $my_profile .=  wp_loginout(false, 0);
+                                $my_profile .=  "</div>";
+                            }
+                        $my_profile .="</li>";
+                        echo $my_profile;
+                        unset($my_profile);
                     }
 
                 ?>
                 <?php
                     if ( ! is_user_logged_in()) {
                         wp_register();
+                        echo "<li>";
+                            wp_loginout();
+                        echo "</li>";
                     }
                 ?>
-                <li><?php wp_loginout(); ?></li>
-                <?php
 
-                ?>
             </ul>
             <?php
             echo $args['after_widget'];
@@ -982,7 +1035,7 @@
     }
 
     // (15) Вывод прогресса в "Мои курсы"
-    function diductio_add_progress($post_id, $uid = false)
+    function diductio_add_progress($post_id, $uid = false, $render = true)
     {
         global $wpdb;
 
@@ -1020,8 +1073,11 @@
 					 			</div>
 							</div>";
         }
-
-        echo $progress_html;
+        if($render) {
+            echo $progress_html;
+        } else {
+            return $progress_html;
+        }
     }
 
     // (16) Добавление хвоста в URL для правильного открытия нужного место в уроке

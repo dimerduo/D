@@ -140,10 +140,18 @@
         {
             $view_path = Diductio::gi()->settings['view_path'];
             $id        = $user_id ?: get_current_user_id();
+            $page = (get_query_var('page')) ? get_query_var('page') : 1;
+            $limit = 2; /* Hardcode */
+            $offset = ($page * $limit) - $limit;
+
 
             $args = array(
+                'offset'=>$offset,
                 'author__in' => $id,
+                'number'=>$limit,
             );
+            $total_comments = get_comments(array('orderby' => 'post_date' , 'order' => 'DESC', 'author__in'=>$id, 'status' => 'approve'));
+            $pages = ceil(count($total_comments)/2);
 
             $user_comments = get_comments($args);
             if (file_exists($view_path . "my_comments_page.php")) {

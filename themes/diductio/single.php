@@ -164,9 +164,9 @@
                         <div>
                             <a href="<?=$posts_users[$i]['user_link'];?>">
                                 <?=$posts_users[$i]['avatar'];?>
-                                <span class="passing_date"><?=$posts_users[$i]['username'];?></span>
+                                <span><?=$posts_users[$i]['username'];?></span>
                             </a>
-                            <span><?=$passing_date['date_string'];?></span>
+                            <span class="passing_date"><?=$passing_date['date_string'];?></span>
                         </div>
                         <div class="progress">
                             <div class="progress-bar " role="progressbar" aria-valuenow="<?=$posts_users[$i]['progress'];?>" aria-valuemin="0" aria-valuemax="100" style="width:<?=$posts_users[$i]['progress'];?>%;">

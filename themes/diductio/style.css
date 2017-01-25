@@ -6255,8 +6255,9 @@ a.remove-parent {
   text-align: justify;
 }
 div.my-comment {
-  padding-bottom: 10px;
-  padding-top: 10px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 0;
 }
 div.my-comment:not(:first-child) {
   border-top: 1px solid #eaeaea;
@@ -6842,4 +6843,17 @@ small.is_author {
 .passing_date {
 	font-size: 12px;
 	margin-left: 10px;
+}
+
+.public-page-statistic-box .progress {
+	margin-bottom: 0;
+}
+
+.widget-my-project-list a {
+	font-size: 15px;
+}
+
+.widget-my-project-list .progress-on {
+	font-size: 14px;
+	color: black;
 }

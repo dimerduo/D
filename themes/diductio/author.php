@@ -43,7 +43,7 @@
                 <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
             </div>
             <?php if ($favorite_post_ids): ?>
-                <div class="wpfp-span">
+                <div class="wpfp-span public-page-statistic-box">
                     <?php
                         echo "<ul>";
                         while (have_posts()) : the_post();
@@ -53,10 +53,25 @@
                             }
                             $passing_date = $dPost->get_passing_info_by_post($author_id, get_the_ID());
                             $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
-                            echo "<li><a href='" . get_permalink() . get_first_unchecked_lesson(get_the_ID()) . "' title='" . get_the_title() . "'>" . get_the_title() . $add_string . "</a> " . $passing_string;
-                            diductio_add_progress(get_the_ID(), $user_id);
+                            $on_knowledge = $passing_date['undone_title']
+                                ?  '<span class="on-knowldedge"> На этапе ' . $passing_date['undone_title'] . '</span>'
+                                : '';
 
-                            echo "</li>";
+                            $li  = "</li>";
+                                $li .= "<a href='". get_permalink() . get_first_unchecked_lesson(get_the_ID()) ." ";
+                                $li .= "title='" . get_the_title() . "'  '>";
+                                    $li .= get_the_title();
+                                    //Is author string
+                                    $li .= $add_string;
+                                $li .= "</a>";
+                                //Showing start-end date
+                                $li .= $passing_string;
+                                //Progress bar
+                                $li .= diductio_add_progress(get_the_ID(), $user_id, false);
+                                //Show on what knowledge user is now
+                                $li .= $on_knowledge;
+                            $li .=  "</li>";
+                            echo $li;
                         endwhile;
                         echo "</ul>";
                     ?>

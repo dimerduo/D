@@ -137,7 +137,7 @@
                 </div>
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/peoples-free">
-                        <span class="label label-important<?php if ( ! is_page('people-free')): ?>-soft<?php endif; ?>">Свободны</span>
+                        <span class="label label-important<?php if ( ! is_page('peoples-free')): ?>-soft<?php endif; ?>">Свободны</span>
                         <span class="label label-important"><?= $st->free_peoples_count; ?></span>
                     </a>
                 </div>
@@ -169,7 +169,7 @@
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
-                    <a href="/comments<?= $data->custom_url; ?>">
+                    <a href="/activity<?= $data->custom_url; ?>">
                         <span
                             class="label label-success <?php if ( ! is_page('comments')): ?>label-soft<?php endif; ?>">Активность</span>
                         <span class="label label-success"><?= $comment_count; ?></span>

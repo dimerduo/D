@@ -14,6 +14,21 @@
 				<div class="divider"></div>
 			</div>
 		<?php endforeach; ?>
+		 <?php
+
+		 $args = array(
+			 'base'         => @add_query_arg('page','%#%'),
+			 'format'       => '?page=%#%',
+			 'total'        => $pages,
+			 'current'      => $page,
+			 'show_all'     => False,
+			 'end_size'     => 1,
+			 'mid_size'     => 2,
+			 'prev_next'    => True,
+			 'prev_text'    => __('Previous'),
+			 'next_text'    => __('Next'),
+			 'type'         => 'plain');
+		 ?>
 	<?php else: ?>
 		<h2>На данный момент вы не добавили комментарии</h2>
 	<?php endif; ?>

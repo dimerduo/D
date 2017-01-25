@@ -2,7 +2,7 @@
     $user_id = get_current_user_id();
 
     $wpfp_before = "";
-    echo "<div class='wpfp-span'>";
+    echo "<div class='wpfp-span public-page-statistic-box'>";
     if (!empty($user)) {
         if (wpfp_is_user_favlist_public($user)) {
             $wpfp_before = "$user's Favorite Posts.";
@@ -37,10 +37,31 @@
                 $add_string = '<small class="is_author"> автор </small>';
             }
 
-            echo "<li><a href='".get_permalink(). get_first_unchecked_lesson(get_the_ID()) ."' title='". get_the_title() ."'>" . get_the_title() . $add_string ."</a> ";
-                wpfp_remove_favorite_link(get_the_ID());
-                diductio_add_progress(get_the_ID());
-            echo "</li>";
+            $passing_date = $GLOBALS['dPost']->get_passing_info_by_post($author_id, get_the_ID());
+            $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
+            $on_knowledge = $passing_date['undone_title']
+                ?  '<span class="on-knowldedge"> На этапе ' . $passing_date['undone_title'] . '</span>'
+                : '';
+
+            $li  = "<li>";
+                $li .= "<a href='". get_permalink(). get_first_unchecked_lesson(get_the_ID()) ."'";
+                $li .= "title='". get_the_title() ."' >";
+                    $li .= get_the_title();
+                    //Is author page
+                    $li .= $add_string;
+                $li .= "</a>";
+                //Showing start-end date
+                $li .= $passing_string;
+                //Progress bar
+                $li .= diductio_add_progress(get_the_ID(), $user_id, false);
+                //Show on what knowledge user is now
+                $li .= $on_knowledge;
+            $li .="</li>";
+
+            echo $li;
+//            echo "<li><a href='".get_permalink(). get_first_unchecked_lesson(get_the_ID()) ."' title='". get_the_title() ."'>" . get_the_title() . $add_string ."</a> ";
+//                wpfp_remove_favorite_link(get_the_ID());
+//            echo "</li>";
         endwhile;
         echo "</ul>";
 
