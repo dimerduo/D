@@ -641,9 +641,9 @@
                             echo $know_str;
                         }
 //                        echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>" . $user_statistic['in_progress'] . "</span></a></li>";
-                        echo "<li><a href='/subscription'>Мои подписки <span class='label label-success right-count'>" . $subscription_count . "</span></a></li>";
+//                        echo "<li><a href='/subscription'>Мои подписки <span class='label label-success right-count'>" . $subscription_count . "</span></a></li>";
                         // echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
-                        echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>" . $comments_count . "</span></a></li>";
+//                        echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>" . $comments_count . "</span></a></li>";
 
                         //My profile and login out
                         $my_profile  = "<li class='row'>";

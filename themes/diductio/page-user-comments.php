@@ -41,17 +41,14 @@
     <?php do_action('page-user-comments-header'); ?>
 
     <main id="main" class="site-main" role="main">
-        <article class="post-10 page type-page status-publish hentry row">
-            <header class="entry-header">
-                <h1 class="entry-title"><?= $title; ?></h1>
-            </header>
-            <div class="entry-content">
+        <header class="page-header">
+            <h1 class="entry-title"><?=$title;?></h1>
+        </header>
                 <?php
                     // Include the page content template.
                     get_template_part('content', 'user-comments');
                 ?>
-            </div>
-        </article>
+
         <?php
             $args = array(
                 'format'    => 'page/%#%',
