@@ -208,4 +208,31 @@
 
             return $result;
         }
+
+        /**
+         * Check if user is free
+         * @param $user_id
+         */
+        public function is_free($user_id)
+        {
+            global $wpdb;
+
+            $table = Diductio::getInstance()->settings['stat_table'];
+            $sql  = "SELECT * FROM `{$table}` ";
+            $sql .= "WHERE `user_id` = $user_id";
+            $is_free = true;
+            $result = $wpdb->get_results($sql);
+
+            if($result) {
+                foreach($result as $item)
+                {
+                    $checked_lessons = count(explode(',',$item->checked_lessons));
+                    if($checked_lessons != $item->lessons_count) {
+                        $is_free = false;
+                    }
+                }
+            }
+
+            return $is_free;
+        }
     }
