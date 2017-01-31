@@ -597,7 +597,7 @@
             <ul>
                 <?php
                     if (is_user_logged_in()) {
-                        global $st, $dUser;
+                        global $st, $dUser, $dPost;
                         $user_ID            = get_current_user_id();
                         $user_statistic     = $st->get_user_info($user_ID);
                         $comments_count     = $dUser->get_comments_count($user_ID);
@@ -626,14 +626,22 @@
 
                         echo $my_progress;
                         unset($my_progress);
-                        $knowledges = $GLOBALS['dPost']->get_posts_by_type($user_ID, 5);
+                        $post_ids = $st->get_knowledges($user_ID, 'active');
+                        $qry  = array(
+                            'include'       => implode(',', $post_ids),
+                            'posts_per_page' => 5,
+                            'orderby'        => 'post__in'
+                        );
+                        $knowledges = get_posts($qry, ARRAY_A);
                         if($knowledges) {
 //                            $know_str  = "<ul>";
                             foreach ($knowledges as $knowledge) {
                                 $know_str .= "<li class='widget-my-project-list'>";
                                     $know_str .= "<div><a class='link-style-1' href='#'>". $knowledge->post_title ."</a></div>";
-                                    if($knowledge->stoped_on) {
-                                        $know_str .= "<div class='progress-on'>". $knowledge->stoped_on ."</div>";
+                                    $pass_info = $dPost->get_passing_info_by_post($user_ID, $knowledge->ID);
+                                    if($pass_info['undone_title']) {
+                                        $stoped_on = $dPost->get_accordion_element_title($knowledge->ID, $pass_info['first_undone']);
+                                        $know_str .= "<div class='progress-on'>".  $stoped_on ."</div>";
                                     }
                                 $know_str .= "</li>";
                             }

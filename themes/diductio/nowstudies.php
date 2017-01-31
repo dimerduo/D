@@ -4,8 +4,8 @@
  * Данный шаблон страницы выводит всех пользователей на сайте, которые проходят какие-либо массивы
 */
 global $st, $wp_roles;
-
 if(is_page('people-active')) {
+
 	$user_in = $st->get_all_users('active_users');
 } else {
 	$exclude_of = $st->busy_peoples;
@@ -26,8 +26,8 @@ if ($user_in) {
 if($exclude_of){
 	$args['exclude'] = $exclude_of;
 }
-//print_r($args);exit;
 
+if(!empty($args['include']) || !empty($args['exclude']) ):
 $user_query = new WP_User_Query( $args );
 
 
@@ -57,6 +57,7 @@ get_header(); ?>
 			</article>
 		</main><!-- .site-main -->
 	</div><!-- .content-area -->
-
+<?php else: ?>
+<?php endif; ?>
 <?php get_footer(); ?>
 
