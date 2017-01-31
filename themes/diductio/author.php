@@ -57,7 +57,7 @@
                                 ?  '<span class="on-knowldedge"> На этапе: ' . $passing_date['undone_title'] . '</span>'
                                 : '';
 
-                            $li  = "</li>";
+                            $li  = "<li>";
                                 $li .= "<a href='". get_permalink() . get_first_unchecked_lesson(get_the_ID()) ." ";
                                 $li .= "title='" . get_the_title() . "'  '>";
                                     $li .= get_the_title();

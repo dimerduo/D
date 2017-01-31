@@ -641,7 +641,7 @@
                                     $pass_info = $dPost->get_passing_info_by_post($user_ID, $knowledge->ID);
                                     if($pass_info['undone_title']) {
                                         $stoped_on = $dPost->get_accordion_element_title($knowledge->ID, $pass_info['first_undone']);
-                                        $know_str .= "<div class='progress-on'>".  $stoped_on ."</div>";
+                                        $know_str .= "<div class='progress-on'>На этапе: ".  $stoped_on ."</div>";
                                     }
                                 $know_str .= "</li>";
                             }
