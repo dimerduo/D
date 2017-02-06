@@ -250,7 +250,6 @@
             $lessons_count         = $row['lessons_count'];
             $all_lessons           = range(1, $row['lessons_count']);
             $result['date_string'] = '';
-
             if ($row['checked_at']) {
                 $passed_date          = explode(',', $row['checked_at']);
                 $result['started_at'] = array_shift($passed_date);
@@ -273,6 +272,10 @@
                     $result['first_undone'] = array_shift($unchecked_array);
                     $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
                 }
+            } else {
+                // Если пользователь просто добавил массив в избранное
+                $result['first_undone'] = 1;
+                $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
             }
 
             return $result;

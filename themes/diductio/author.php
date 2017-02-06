@@ -58,8 +58,8 @@
                                 : '';
 
                             $li  = "<li>";
-                                $li .= "<a href='". get_permalink() . get_first_unchecked_lesson(get_the_ID()) ." ";
-                                $li .= "title='" . get_the_title() . "'  '>";
+                                $li .= "<a href='". get_permalink() . get_first_unchecked_lesson(get_the_ID()) ."'";
+                                $li .= "title='" . get_the_title() . "'>";
                                     $li .= get_the_title();
                                     //Is author string
                                     $li .= $add_string;

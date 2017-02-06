@@ -636,8 +636,9 @@
                         if($knowledges) {
 //                            $know_str  = "<ul>";
                             foreach ($knowledges as $knowledge) {
+                                $link = get_permalink($knowledge->ID) . get_first_unchecked_lesson($knowledge->ID);
                                 $know_str .= "<li class='widget-my-project-list'>";
-                                    $know_str .= "<div><a class='link-style-1' href='#'>". $knowledge->post_title ."</a></div>";
+                                    $know_str .= "<div><a class='link-style-1' href='{$link}'>". $knowledge->post_title ."</a></div>";
                                     $pass_info = $dPost->get_passing_info_by_post($user_ID, $knowledge->ID);
                                     if($pass_info['undone_title']) {
                                         $stoped_on = $dPost->get_accordion_element_title($knowledge->ID, $pass_info['first_undone']);
