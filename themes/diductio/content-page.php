@@ -24,7 +24,7 @@
 			<div  class="avatar inline ">
 				<?=get_avatar( $current_user->user_email, 96 );?></div>
 		        <h1 style="margin-left: 20px;" class="inline entry-title"><?php print_r($current_user->data->display_name); ?></h1>
-		    <div class="inline" style="margin-bottom: 20px;">
+		    <div style="margin-bottom: 20px;">
 				<div class="about"><?=get_user_meta($current_user->ID,'description')[0];?></div>
 			</div>
 		<?php endif; ?>

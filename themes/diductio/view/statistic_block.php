@@ -163,7 +163,7 @@
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="<?= $data->progress_url; ?>">
                         <span
-                            class="label label-success <?php if ( is_page('comments') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
+                            class="label label-success <?php if ( is_page('activity') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
                         <span class="label label-success"><?= $user_statistic['in_progress']; ?></span>
                         <span class="label label-success"><?= $data->pecent; ?> %</span>
                     </a>
@@ -171,7 +171,7 @@
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="/activity<?= $data->custom_url; ?>">
                         <span
-                            class="label label-success <?php if ( ! is_page('comments')): ?>label-soft<?php endif; ?>">Активность</span>
+                            class="label label-success <?php if ( ! is_page('activity')): ?>label-soft<?php endif; ?>">Активность</span>
                         <span class="label label-success"><?= $comment_count; ?></span>
                     </a>
                 </div>
