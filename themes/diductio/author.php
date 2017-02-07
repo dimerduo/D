@@ -51,7 +51,7 @@
                             if ($author_id === $user_id) {
                                 $add_string = '<small class="is_author"> автор </small>';
                             }
-                            $passing_date = $dPost->get_passing_info_by_post($author_id, get_the_ID());
+                            $passing_date = $dPost->get_passing_info_by_post($user_id, get_the_ID());
                             $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
                             $on_knowledge = $passing_date['undone_title']
                                 ?  '<span class="on-knowldedge"> На этапе: ' . $passing_date['undone_title'] . '</span>'

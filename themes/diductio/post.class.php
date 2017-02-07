@@ -224,7 +224,7 @@
                 'top');
             add_rewrite_rule(
                 '^(activity)/([^/]*)/page/?([0-9]{1,})/?$',
-                'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]','top'
+                'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]', 'top'
             );
         }
 
@@ -273,9 +273,11 @@
                     $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
                 }
             } else {
-                // Если пользователь просто добавил массив в избранное
-                $result['first_undone'] = 1;
-                $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
+                if ($row['checked_lessons'] == 0) {
+                    // Если пользователь просто добавил массив в избранное
+                    $result['first_undone'] = 1;
+                    $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
+                }
             }
 
             return $result;
@@ -294,7 +296,7 @@
 
         public function get_accordion_element_title($post_id, $element_number)
         {
-            $element_number -=1;
+            $element_number -= 1;
             $content_post = get_post($post_id);
             $content      = $content_post->post_content;
             $title        = '';
@@ -315,10 +317,11 @@
             $sql .= "LIMIT 5";
             $result = $wpdb->get_results($sql, 'ARRAY_A');
             foreach ($result as $item) {
-                $tmpPost = get_post($item['post_id']);
+                $tmpPost      = get_post($item['post_id']);
                 $passing_info = $this->get_passing_info_by_post($user_id, $item['post_id']);
-                if($passing_info['first_undone']) {
-                    $tmp_title = $this->get_accordion_element_title($item['post_id'], $passing_info['first_undone']);
+                if ($passing_info['first_undone']) {
+                    $tmp_title          = $this->get_accordion_element_title($item['post_id'],
+                        $passing_info['first_undone']);
                     $tmpPost->stoped_on = "На этапе: " . $tmp_title;
                 }
                 $post_array[] = $tmpPost;
