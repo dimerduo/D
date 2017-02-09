@@ -59,7 +59,7 @@
                             <span class="label label-success
                             <?php if ($term->slug != "post-format-quote"): ?>
                             label-soft
-                            <?php endif; ?>">Проект</span>
+                            <?php endif; ?>">Проекты</span>
                             <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-quote',
                                     'post_format'); ?></span>
                         </a>
@@ -136,16 +136,9 @@
                     </a>
                 </div>
                 <div class="stat-col">
-                    <a href="<?php get_home_url(); ?>/peoples-free">
-                        <span class="label label-important<?php if ( ! is_page('people-free')): ?>-soft<?php endif; ?>">Свободны</span>
+                    <a href="<?php get_home_url(); ?>/people-free">
+                        <span class="label label-important<?php if ( ! is_page('peoples-free')): ?>-soft<?php endif; ?>">Свободны</span>
                         <span class="label label-important"><?= $st->free_peoples_count; ?></span>
-                    </a>
-                </div>
-                <div class="stat-col">
-                    <a href="<?php get_home_url(); ?>/people-recently">
-                        <span
-                            class="label label-important<?php if ( ! is_page('people-recently')): ?>-soft<?php endif; ?>">Прошли</span>
-                        <span class="label label-important"><?= $st->finished_study_users; ?></span>
                     </a>
                 </div>
                 <div class="stat-col">
@@ -170,15 +163,15 @@
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="<?= $data->progress_url; ?>">
                         <span
-                            class="label label-success <?php if ( is_page('comments') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
+                            class="label label-success <?php if ( is_page('activity') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
                         <span class="label label-success"><?= $user_statistic['in_progress']; ?></span>
                         <span class="label label-success"><?= $data->pecent; ?> %</span>
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
-                    <a href="/comments<?= $data->custom_url; ?>">
+                    <a href="/activity<?= $data->custom_url; ?>">
                         <span
-                            class="label label-success <?php if ( ! is_page('comments')): ?>label-soft<?php endif; ?>">Активность</span>
+                            class="label label-success <?php if ( ! is_page('activity')): ?>label-soft<?php endif; ?>">Активность</span>
                         <span class="label label-success"><?= $comment_count; ?></span>
                     </a>
                 </div>

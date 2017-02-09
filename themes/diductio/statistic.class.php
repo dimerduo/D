@@ -110,6 +110,9 @@
             add_action('progress-subscribers-header', function () {
                 $this->renderHeaderStatistic('personal-area');
             });
+            add_action('page-user-comments-header', function () {
+                $this->renderHeaderStatistic('personal-area');
+            });
 
             //ajax methods
             add_action('wp_ajax_show_more_statistic', array($this, 'get_more_statistic'));
@@ -550,7 +553,6 @@
             switch ($type) {
                 case 'personal-area':
                     global $author, $st;
-
                     if (get_query_var('username') && ! $author) {
                         $author  = get_user_by('slug', get_query_var('username'));
                         $user_id = $author->ID;

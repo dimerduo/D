@@ -18,7 +18,7 @@ $(document).ready(function () {
 
     $('#display-more-users').click( function(){
         $(this).parent().find('i').toggleClass('glyphicon-plus glyphicon-minus');
-        $(this).toggleText('Развернуть', 'Спрятать');
+        $(this).toggleText('Развернуть', 'Свернуть');
         $('.rest-users').slideToggle(600);
     });
 });

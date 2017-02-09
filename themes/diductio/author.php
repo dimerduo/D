@@ -13,7 +13,7 @@
      * @since      Twenty Fifteen 1.0
      */
     get_header();
-    global $wpdb, $st;
+    global $wpdb, $st, $dPost;
     $cat_id            = get_query_var('cat');
     $author            = get_user_by('slug', get_query_var('author_name'));
     $user_id           = $author->ID;
@@ -36,32 +36,51 @@
         <header class="page-header" id="author-page">
             <div class="avatar inline ">
                 <?= get_avatar($author_info->user_email, 96); ?>
-                <h1 style="margin-left: 20px;" class="inline entry-title"><?php print_r($author_info->data->display_name); ?></h1>
+                <h1 style="margin-left: 20px;"
+                    class="inline entry-title"><?php print_r($author_info->data->display_name); ?></h1>
             </div>
-            <div  style="margin-bottom:20px;">
+            <div style="margin-bottom:20px;">
                 <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
             </div>
-            <?php if($favorite_post_ids): ?>
-            <div class="wpfp-span">
-                <?php
-                    echo "<ul>";
-                    while (have_posts()) : the_post();
-                        $author_id = get_the_author_meta('ID');
-                        if($author_id === $user_id) {
-                            $add_string = '<small class="is_author"> автор </small>';
-                        }
-                        echo "<li><a href='" . get_permalink() . get_first_unchecked_lesson(get_the_ID()) . "' title='" . get_the_title() . "'>" . get_the_title() . $add_string ."</a> ";
-                        diductio_add_progress(get_the_ID(), $user_id);
-                        echo "</li>";
-                    endwhile;
-                    echo "</ul>";
-                ?>
-                <?php
-                    //                    moya_zachetka();
-                ?>
-            </div>
+            <?php if ($favorite_post_ids): ?>
+                <div class="wpfp-span public-page-statistic-box">
+                    <?php
+                        echo "<ul>";
+                        while (have_posts()) : the_post();
+                            $author_id = get_the_author_meta('ID');
+                            if ($author_id === $user_id) {
+                                $add_string = '<small class="is_author"> автор </small>';
+                            }
+                            $passing_date = $dPost->get_passing_info_by_post($user_id, get_the_ID());
+                            $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
+                            $on_knowledge = $passing_date['undone_title']
+                                ?  '<span class="on-knowldedge"> На этапе: ' . $passing_date['undone_title'] . '</span>'
+                                : '';
+
+                            $li  = "<li>";
+                                $li .= "<a href='". get_permalink() . get_first_unchecked_lesson(get_the_ID()) ."'";
+                                $li .= "title='" . get_the_title() . "'>";
+                                    $li .= get_the_title();
+                                    //Is author string
+                                    $li .= $add_string;
+                                $li .= "</a>";
+                                //Showing start-end date
+                                $li .= $passing_string;
+                                //Progress bar
+                                $li .= diductio_add_progress(get_the_ID(), $user_id, false);
+                                //Show on what knowledge user is now
+                                $li .= $on_knowledge;
+                            $li .=  "</li>";
+                            echo $li;
+                        endwhile;
+                        echo "</ul>";
+                    ?>
+                    <?php
+                        //                    moya_zachetka();
+                    ?>
+                </div>
             <?php else: ?>
-                Пользователь на данный момент ничего не проходит.
+
             <?php endif; ?>
         </header><!-- .page-header -->
     </main><!-- .site-main -->
