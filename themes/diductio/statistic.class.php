@@ -730,4 +730,24 @@
 
             return $result;
         }
+
+        /**
+         * Возвращает информацию по категориям постов(знаний) которые клиент проходит или проходил
+         * Return all categories information of the posts(knowledges) that user has been passed or passing now
+         *
+         * @param $user_id
+         */
+        function get_categories_stat_by_post($user_id)
+        {
+            global $wpdb;
+
+            $table_name = Diductio::gi()->settings['stat_table'];
+
+            $sql = "SELECT `post_id` FROM `{$table_name}` WHERE `user_id` = {$user_id}";
+            $posts = $wpdb->get_results($sql, ARRAY_A);
+            foreach ($posts as $post) {
+                $p_categories = wp_get_post_categories($post['post_id'], array('fields' => 'names'));
+//                print_r($p_categories);exit;
+            }
+        }
     }

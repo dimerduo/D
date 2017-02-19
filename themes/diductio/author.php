@@ -28,6 +28,10 @@
         'paged'          => $page,
     );
     query_posts($qry);
+
+//Get categories information by user
+$st->get_categories_stat_by_post($user_id);
+
 ?>
 
 <section id="primary" class="content-area">
@@ -35,12 +39,17 @@
     <main id="main" class="site-main" role="main">
         <header class="page-header" id="author-page">
             <div class="avatar inline ">
-                <?= get_avatar($author_info->user_email, 96); ?>
-                <h1 style="margin-left: 20px;"
-                    class="inline entry-title"><?php print_r($author_info->data->display_name); ?></h1>
-            </div>
-            <div style="margin-bottom:20px;">
-                <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
+                <div class="inline">
+                    <?= get_avatar($author_info->user_email, 96); ?>
+                </div>
+                <div style="margin-left: 20px;" class="inline">
+                    <h1 class="entry-title">
+                        <?=$author_info->data->display_name;?>
+                    </h1>
+                    <div class="about">
+                        <?= get_user_meta($author_info->ID, 'description')[0]; ?>
+                    </div>
+                </div>
             </div>
             <?php if ($favorite_post_ids): ?>
                 <div class="wpfp-span public-page-statistic-box">
