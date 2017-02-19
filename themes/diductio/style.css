@@ -6322,7 +6322,7 @@ a.link-style-2:hover{
 }
 div.add-to-favor-wrapper .wpfp-span a {
     color: #c30;
-    font-size: 16px;
+    font-size: 13px;
     border-bottom: 1px dotted #c30 !important;
 }
 div.add-to-favor-wrapper .wpfp-span a:hover {
@@ -6867,4 +6867,13 @@ small.is_author {
 	display: block;
 	margin-bottom: 10px;
 	font-size: 14px;
+}
+
+/* Author page styling */
+#author-page h1.entry-title {
+	font-size: 1.2em;
+}
+/* Author page styling end */
+.add-subscriber {
+	font-size: 13px !important;
 }
