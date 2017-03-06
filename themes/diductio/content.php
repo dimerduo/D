@@ -110,7 +110,7 @@
 					if( $work_time!=0 ): ?>
 					<div class="stat-col">
 						<span class="label label-success label-soft">Время</span>
-						<span class="label label-success"><?=floor($work_time/60)?>ч : <?=$work_time %60?>м</span>
+						<span class="label label-success"><?= $st::ru_months_days($work_time); ?></span>
 					</div>
 				<?php endif; ?>
 
