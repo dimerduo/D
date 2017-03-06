@@ -764,8 +764,8 @@
 			    return '';
 		    }
 
-		    $month_abbr    = 'мec.';
-		    $day_abbr      = 'д.';
+		    $month_abbr    = 'м';
+		    $day_abbr      = 'д';
 		    $days_in_month = 30;
 
 		    $months = floor( $work_time / $days_in_month );
