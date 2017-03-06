@@ -127,7 +127,39 @@
             <!-- (4) Вставка добавления избранного в начало записи end -->
         </div>
         <div id="user-activity" class="row">
-            <?php $posts_users = $st->get_users_by_post($post->ID); ?>
+            <?php
+            $posts_users = $st->get_users_by_post($post->ID);
+
+            // Find total progress
+            $total_progress = 0;
+            foreach ( $posts_users as $user ) {
+            	$num_users = 0;
+	            if ( isset( $user['progress'] )
+	                 && $user['progress'] > 0 // if more than zero
+	            ) {
+		            $total_progress += $user['progress'];
+		            ++$num_users;
+	            }
+
+	            $total_progress = floor( $total_progress / $num_users );
+            }
+
+            ?>
+
+	        <div class="col-sm-12 col-md-12">
+		        <div>
+			        <a name="total">
+				        <!-- <img> for avatar -->
+				        <span>Общий прогресс</span>
+			        </a>
+		        </div>
+		        <div class="progress">
+			        <div class="progress-bar " role="progressbar" aria-valuenow="<?= $total_progress; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?=$posts_users[$i]['progress'];?>%;">
+				        <?= $total_progress; ?> %
+			        </div>
+		        </div>
+	        </div>
+
             <?php
                 $end = count($posts_users) >= 2 ?  2 : count($posts_users);
                 for ($i = 0; $i < $end; $i++):
