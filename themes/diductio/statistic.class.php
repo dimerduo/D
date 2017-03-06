@@ -750,4 +750,38 @@
 //                print_r($p_categories);exit;
             }
         }
+
+	    /**
+	     * Format time in Russian months days
+	     *
+	     * @param {integer} $work_time
+	     *
+	     * @return string
+	     */
+	    public static function ru_months_days( $work_time ) {
+		    $work_time = (int) $work_time;
+		    if ($work_time === 0) {
+			    return '';
+		    }
+
+		    $month_abbr    = 'мec.';
+		    $day_abbr      = 'д.';
+		    $days_in_month = 30;
+
+		    $months = floor( $work_time / $days_in_month );
+		    $days   = floor( $work_time % $days_in_month );
+
+		    $output = '';
+		    if ( $months > 0 ) {
+			    $output .= $months . ' ' . $month_abbr;
+		    }
+		    if ( $months > 0 && $days > 0 ) {
+			    $output .= ', ';
+		    }
+		    if ( $days > 0 ) {
+			    $output .= $days . ' ' . $day_abbr;
+		    }
+
+		    return $output;
+	    }
     }
