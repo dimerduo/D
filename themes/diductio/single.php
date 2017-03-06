@@ -135,14 +135,13 @@
             $num_users = 0;
             foreach ( $posts_users as $user ) {
 	            if ( isset( $user['progress'] )
-	                 && (int) $user['progress'] > 0 // if more than zero
+	                 && $user['progress'] > 0 // if more than zero
 	            ) {
 		            $total_progress += $user['progress'];
 		            ++$num_users;
 	            }
-
-	            $total_progress = floor( $total_progress / $num_users );
             }
+            $total_progress = floor( $total_progress / $num_users );
 
             ?>
 
