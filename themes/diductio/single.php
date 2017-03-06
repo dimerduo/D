@@ -132,10 +132,10 @@
 
             // Find total progress
             $total_progress = 0;
+            $num_users = 0;
             foreach ( $posts_users as $user ) {
-            	$num_users = 0;
 	            if ( isset( $user['progress'] )
-	                 && $user['progress'] > 0 // if more than zero
+	                 && (int) $user['progress'] > 0 // if more than zero
 	            ) {
 		            $total_progress += $user['progress'];
 		            ++$num_users;
