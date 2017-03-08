@@ -141,7 +141,10 @@
 		            ++$num_users;
 	            }
             }
-            $total_progress = floor( $total_progress / $num_users );
+            if ($total_progress > 0
+                && $num_users > 0) {
+	            $total_progress = bcdiv( $total_progress, $num_users, 2 );
+            }
 
             ?>
 
