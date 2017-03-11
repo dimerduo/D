@@ -764,24 +764,28 @@
 			    return '';
 		    }
 
+		    $years_abbr    = 'г';
 		    $month_abbr    = 'м';
 		    $day_abbr      = 'д';
 		    $days_in_month = 30;
+		    $months_in_year = 12;
 
 		    $months = floor( $work_time / $days_in_month );
+		    $years = floor( $months / $months_in_year );
+		    $months = floor( $months % $months_in_year );
 		    $days   = floor( $work_time % $days_in_month );
 
-		    $output = '';
-		    if ( $months > 0 ) {
-			    $output .= $months . ' ' . $month_abbr;
+		    $output = array();
+		    if ( $years > 0 ) {
+		    	array_push( $output, $years . $years_abbr);
 		    }
-		    if ( $months > 0 && $days > 0 ) {
-			    $output .= ', ';
+		    if ( $months > 0 ) {
+			    array_push( $output, $months . $month_abbr);
 		    }
 		    if ( $days > 0 ) {
-			    $output .= $days . ' ' . $day_abbr;
+			    array_push( $output, $days . $day_abbr);
 		    }
 
-		    return $output;
+		    return implode(', ', $output);
 	    }
     }
