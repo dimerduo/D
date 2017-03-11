@@ -400,6 +400,7 @@
             $sql        = "SELECT * FROM `$table_name` WHERE `post_id` = {$course_id}";
             $progress   = $wpdb->get_results($sql);
             if ($progress) {
+            	$users_started = array();
                 foreach ($progress as $key => $value) {
                     $lessons_count = $value->lessons_count;
                     if ($value->checked_lessons != 0) {
@@ -420,12 +421,19 @@
                         $done++;
                     }
                     $les_count = $lessons_count;
+
+                    // Get object with `user_id`->`created_at` date
+	                if (isset( $value->user_id)
+	                    && isset($value->created_at)) {
+	                	$users_started[ $value->user_id ] = $value->created_at;
+	                }
                 }
                 $out['done']         = $done;
                 $out['in_progress']  = $in_progress;
                 $out['les_count']    = get_post_meta($course_id, 'publication_count')[0];
                 $out['active_users'] = $user_active_ids;
                 $out['done_users']   = $user_done_ids;
+                $out['users_started']= $users_started;
             } else {
                 $out['done']         = 0;
                 $out['in_progress']  = 0;

@@ -128,12 +128,21 @@
         </div>
         <div id="user-activity" class="row">
             <?php
+            $current_user_id = get_current_user_id();
+            $current_user_progress = false;
             $posts_users = $st->get_users_by_post($post->ID);
 
             // Find total progress
             $total_progress = 0;
             $num_users = 0;
             foreach ( $posts_users as $user ) {
+            	// Get current user progress
+            	if ( $current_user_id
+	                 && isset( $user['user_id'] )
+	                 && $user['user_id'] === $current_user_id
+	            ) {
+		            $current_user_progress = $user['progress'];
+	            }
 	            if ( isset( $user['progress'] )
 	                 && $user['progress'] > 0 // if more than zero
 	            ) {
@@ -150,7 +159,6 @@
 
 	        <div class="col-sm-12 col-md-12">
 		        <div>
-			        <!-- <img> for avatar -->
 			        <span>Общий прогресс</span>
 		        </div>
 		        <div class="progress">
@@ -160,7 +168,61 @@
 		        </div>
 	        </div>
 
-            <?php
+	        <?php
+	        // Estimated progress
+			$estimated_progress = 0;
+	        $estimated_progress_class = '';
+
+	        if ( isset( $post_statistic['users_started'][ $current_user_id ] ) ) {
+		        $started = $post_statistic['users_started'][ $current_user_id ];
+		        $now     = date_create();
+		        $start   = date_create( $started );
+		        // date_add() modifies $end object
+		        $end     = date_create( $started );
+		        date_add( $end, date_interval_create_from_date_string( $work_time . ' days' ) );
+		        $diff      = date_diff( $now, $start );
+		        $countdown = date_diff( $end, $now );
+
+		        $diff_h_in_days = $diff->h > 0
+			        ? $diff->h / 24
+			        : 0;
+
+		        $estimated_progress = round(
+			        (
+				        ( $diff->days + $diff_h_in_days ) / $work_time
+			        ) * 100,
+			        2
+		        );
+
+		        if ( $estimated_progress > 0 ) {
+
+			        if ( $estimated_progress >= 100 ) {
+				        if ( $current_user_progress === 100 ) {
+					        $estimated_progress_class = 'progress-bar-success';
+				        } else {
+					        $estimated_progress_class = 'progress-bar-danger progress-bar-striped';
+				        }
+			        }
+
+
+			        ?>
+			        <div class="col-sm-12 col-md-12">
+				        <div>
+					        <span>Расчетный прогресс</span>
+					        <span class="passing_date">Еще <?= $st::ru_months_days( $countdown->days ) ?></span>
+				        </div>
+				        <div class="progress">
+					        <div class="progress-bar <?= $estimated_progress_class; ?>" role="progressbar"
+					             aria-valuenow="<?= $estimated_progress; ?>"
+					             aria-valuemin="0" aria-valuemax="100" style="width: <?= $estimated_progress; ?>%;">
+						        <?= $estimated_progress; ?> %
+					        </div>
+				        </div>
+			        </div>
+			        <?php
+		        } // if ( $estimated_progress > 0 )
+	        } // if ( isset( $post_statistic['users_started'][ $current_user_id ] ) )
+
                 $end = count($posts_users) >= 2 ?  2 : count($posts_users);
                 for ($i = 0; $i < $end; $i++):
                     $passing_date = $dPost->get_passing_info_by_post($posts_users[$i]['user_id'], $post->ID);
