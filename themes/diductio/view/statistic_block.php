@@ -145,6 +145,18 @@
                     <span class="label label-important-soft">Прогресс</span>
                     <span class="label label-important"><?= $st->get_progress(); ?> %</span>
                 </div>
+	            <?php
+	            if ( $user_statistic['countdown_days'] > 0 ) {
+		            ?>
+		            <div class="stat-col">
+			            <span class="label label-success label-soft">Еще</span>
+			            <span class="label label-success">
+				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
+			            </span>
+		            </div>
+		            <?php
+	            }
+	            ?>
                 <div class="stat-col">
                     <a href="<?= get_home_url(); ?>">
                         <span class="label label-success label-soft">Массивы</span>
@@ -168,6 +180,18 @@
                         <span class="label label-success"><?= $data->pecent; ?> %</span>
                     </a>
                 </div>
+	            <?php
+	            if ( $user_statistic['countdown_days'] > 0 ) {
+		            ?>
+		            <div class="stat-col">
+			            <span class="label label-success label-soft">Еще</span>
+			            <span class="label label-success">
+				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
+			            </span>
+		            </div>
+		            <?php
+	            }
+	            ?>
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="/activity<?= $data->custom_url; ?>">
                         <span
