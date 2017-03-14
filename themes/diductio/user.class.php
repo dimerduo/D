@@ -188,6 +188,7 @@
         public function get_accordion_passed_date($user_id, $post_id, $accordion_element)
         {
             global $wpdb;
+            global $st;
 
             $table = Diductio::gi()->settings['stat_table'];
             $sql  = "SELECT * FROM `{$table}` ";
@@ -195,7 +196,32 @@
 
             $progress = $wpdb->get_row($sql);
 
-            if($progress->checked_at) {
+            // Human date for previous and current check of task list
+	        if ( isset( $progress->created_at )
+	             && isset( $progress->checked_at )
+	        ) {
+	        	$time_key = $accordion_element - 1; // Fix: bug `$accordion_element` started from 1
+		        $timeline = explode(',', $progress->checked_at);
+		        if ($time_key > 0) {
+		        	$previous = date_create();
+		        	date_timestamp_set($previous, $timeline[ $time_key - 1 ]);
+		        } else {
+			        $previous = date_create( $progress->created_at );
+		        }
+		        $current = date_create();
+		        date_timestamp_set($current, $timeline[$time_key]);
+		        // Diff between current and firs
+		        $diff = date_diff( $current, $previous );
+
+		        if ( $previous < $current ) {
+			        return $diff->days > 0
+			            ? 'Пройдена за ' . $st::ru_months_days( $diff->days )
+				        : 'Пройдена меньше чем за день'
+				        ;
+		        }
+	        }
+
+			if($progress->checked_at) {
                 //TODO. Добавить формат в основной класс
                 $d_format = 'd.m.Y';
                 $t_format = 'H:i';
