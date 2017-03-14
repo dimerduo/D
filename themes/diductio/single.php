@@ -157,7 +157,7 @@
 
             ?>
 
-	        <div class="col-sm-12 col-md-12">
+	        <div class="col-sm-6 col-md-6">
 		        <div>
 			        <span>Общий прогресс</span>
 		        </div>
@@ -206,7 +206,7 @@
 
 
 			        ?>
-			        <div class="col-sm-12 col-md-12">
+			        <div class="col-sm-6 col-md-6">
 				        <div>
 					        <span>Расчетный прогресс</span>
 					        <span class="passing_date">Еще <?= $st::ru_months_days( $countdown->days ) ?></span>
@@ -227,7 +227,7 @@
                 for ($i = 0; $i < $end; $i++):
                     $passing_date = $dPost->get_passing_info_by_post($posts_users[$i]['user_id'], $post->ID);
                     ?>
-                <div class="col-sm-12 col-md-12">
+                <div class="col-sm-6 col-md-6">
                     <div>
                         <a href="<?=$posts_users[$i]['user_link'];?>">
                             <?=$posts_users[$i]['avatar'];?>
@@ -254,7 +254,7 @@
                 <?php    for ($i = 2; $i < count($posts_users); $i++):
                     $passing_date = $dPost->get_passing_info_by_post($posts_users[$i]['user_id'], $post->ID);
                     ?>
-                    <div class="col-sm-12 col-md-12">
+                    <div class="col-sm-6 col-md-6">
                         <div>
                             <a href="<?=$posts_users[$i]['user_link'];?>">
                                 <?=$posts_users[$i]['avatar'];?>
