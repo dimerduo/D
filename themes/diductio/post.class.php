@@ -239,6 +239,8 @@
         public function get_passing_info_by_post($user_id, $post_id)
         {
             global $wpdb;
+            global $st;
+
             $d_format = 'd.m.Y';
             $t_format = 'H:i';
 
@@ -254,18 +256,23 @@
                 $passed_date          = explode(',', $row['checked_at']);
                 $result['started_at'] = array_shift($passed_date);
 
-                $start_date            = date($d_format, $result['started_at']);
-                $start_time            = date($t_format, $result['started_at']);
-                $start_string          = $start_date . ' в ' . $start_time;
-                $result['date_string'] = $start_string;
+	            $now = date_create();
+	            // Active for
+                $start = date_create();
+	            date_timestamp_set($start, $result['started_at'] );
+	            $active_diff = date_diff($now, $start);
+	            $result['date_string'] = 'Активна ' . $st::ru_months_days($active_diff->days);
 
                 if (count($passed_lessons) == $lessons_count) {
                     $result['is_passed']   = 1;
                     $result['finished_at'] = end($passed_date);
-                    $finish_date           = date($d_format, $result['finished_at']);
-                    $finish_time           = date($t_format, $result['finished_at']);
-                    $finish_string         = $finish_date . ' в ' . $finish_time;
-                    $result['date_string'] .= " - " . $finish_string;
+                	// Completed for
+                	$end = date_create();
+	                date_timestamp_set($end, $result['finished_at'] );
+                	$completed_diff = date_diff($start, $end);
+                    $result['date_string'] = $completed_diff->days > 0
+	                    ? 'Пройдена за ' . $st::ru_months_days( $completed_diff->days)
+                        : 'Пройдена меньше чем за день';
                 } else {
                     $result['is_passed']    = 0;
                     $unchecked_array        = array_diff($all_lessons, $passed_lessons);
