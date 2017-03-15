@@ -504,7 +504,7 @@
 	        $now = date_create();
 	        $countdown_days = 0; // total countdown in days
 	        foreach ( $in_progress_posts_created_at as $post_id => $created_at ) {
-		        $work_time += (int) get_post_meta( $post_id, 'work_time', true );
+		        $work_time = (int) get_post_meta( $post_id, 'work_time', true );
 
 		        // date_add() modifies $end object
 		        $end = date_create( $created_at );
@@ -794,7 +794,7 @@
 	    public static function ru_months_days( $work_time ) {
 		    $work_time = (int) $work_time;
 		    if ($work_time === 0) {
-			    return '';
+			    return '0д';
 		    }
 
 		    $years_abbr    = 'г';
