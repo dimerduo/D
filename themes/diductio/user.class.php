@@ -214,10 +214,7 @@
 		        $diff = date_diff( $current, $previous );
 
 		        if ( $previous < $current ) {
-			        return $diff->days > 0
-			            ? 'Пройдена за ' . $st::ru_months_days( $diff->days )
-				        : 'Пройдена меньше чем за день'
-				        ;
+			        return 'Пройдена за ' . $st::ru_months_days( $diff->days );
 		        }
 	        }
 
