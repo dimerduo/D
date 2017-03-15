@@ -267,12 +267,15 @@
                     $result['is_passed']   = 1;
                     $result['finished_at'] = end($passed_date);
                 	// Completed for
-                	$end = date_create();
-	                date_timestamp_set($end, $result['finished_at'] );
+	                if ($result['finished_at']) {
+	                    $end = date_create();
+		                date_timestamp_set($end, $result['finished_at'] );
+	                } else {
+	                	// Fix: if $passed_date array is empty
+	                	$end = date_create( $result['updated_at']);
+	                }
                 	$completed_diff = date_diff($start, $end);
-                    $result['date_string'] = $completed_diff->days > 0
-	                    ? 'Пройдена за ' . $st::ru_months_days( $completed_diff->days)
-                        : 'Пройдена меньше чем за день';
+                    $result['date_string'] = 'Пройдена за ' . $st::ru_months_days( $completed_diff->days);
                 } else {
                     $result['is_passed']    = 0;
                     $unchecked_array        = array_diff($all_lessons, $passed_lessons);
