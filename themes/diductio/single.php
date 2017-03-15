@@ -195,11 +195,14 @@
 		        );
 
 		        if ( $estimated_progress > 0 ) {
+		        	$prefix_word = 'Ещё';
 
 			        if ( $estimated_progress >= 100 ) {
+				        $estimated_progress = 100; // Fix: if $diff->days > $work_time
 				        if ( $current_user_progress === 100 ) {
 					        $estimated_progress_class = 'progress-bar-success';
 				        } else {
+					        $prefix_word = 'Уже';
 					        $estimated_progress_class = 'progress-bar-danger progress-bar-striped';
 				        }
 			        }
@@ -208,8 +211,8 @@
 			        ?>
 			        <div class="col-sm-6 col-md-6">
 				        <div>
-					        <span>Расчетный прогресс</span>
-					        <span class="passing_date">Еще <?= $st::ru_months_days( $countdown->days ) ?></span>
+					        <span>Мой расчетный прогресс</span>
+					        <span class="passing_date"><?= $prefix_word . ' ' . $st::ru_months_days( $countdown->days ) ?></span>
 				        </div>
 				        <div class="progress">
 					        <div class="progress-bar <?= $estimated_progress_class; ?>" role="progressbar"

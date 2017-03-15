@@ -149,7 +149,7 @@
 	            if ( $user_statistic['countdown_days'] > 0 ) {
 		            ?>
 		            <div class="stat-col">
-			            <span class="label label-success label-soft">Еще</span>
+			            <span class="label label-success label-soft">Ещё</span>
 			            <span class="label label-success">
 				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
 			            </span>
@@ -184,7 +184,7 @@
 	            if ( $user_statistic['countdown_days'] > 0 ) {
 		            ?>
 		            <div class="stat-col">
-			            <span class="label label-success label-soft">Еще</span>
+			            <span class="label label-success label-soft">Ещё</span>
 			            <span class="label label-success">
 				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
 			            </span>
