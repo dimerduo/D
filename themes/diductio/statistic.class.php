@@ -400,6 +400,7 @@
             $sql        = "SELECT * FROM `$table_name` WHERE `post_id` = {$course_id}";
             $progress   = $wpdb->get_results($sql);
             if ($progress) {
+            	$users_started = array();
                 foreach ($progress as $key => $value) {
                     $lessons_count = $value->lessons_count;
                     if ($value->checked_lessons != 0) {
@@ -420,12 +421,19 @@
                         $done++;
                     }
                     $les_count = $lessons_count;
+
+                    // Get object with `user_id`->`created_at` date
+	                if (isset( $value->user_id)
+	                    && isset($value->created_at)) {
+	                	$users_started[ $value->user_id ] = $value->created_at;
+	                }
                 }
                 $out['done']         = $done;
                 $out['in_progress']  = $in_progress;
                 $out['les_count']    = get_post_meta($course_id, 'publication_count')[0];
                 $out['active_users'] = $user_active_ids;
                 $out['done_users']   = $user_done_ids;
+                $out['users_started']= $users_started;
             } else {
                 $out['done']         = 0;
                 $out['in_progress']  = 0;
@@ -460,6 +468,7 @@
             $progress   = $wpdb->get_results($sql);
 
             $in_progress = $done = 0;
+	        $in_progress_posts_created_at = array();
             if ($progress) {
                 foreach ($progress as $key => $value) {
                     $lessons_count = $value->lessons_count;
@@ -471,6 +480,12 @@
 
                     if ($lessons_count != $checked_lessons) {
                         $in_progress++;
+
+                        if ( isset( $value->post_id )
+                             && isset( $value->created_at )
+                        ) {
+	                        $in_progress_posts_created_at[ $value->post_id ] = $value->created_at;
+                        }
                     } else {
                         $done++;
                     }
@@ -483,6 +498,24 @@
                 $out['done']        = 0;
                 $out['in_progress'] = 0;
             }
+
+	        // Count days to finish all in progress posts
+	        $work_time = 0;
+	        $now = date_create();
+	        $countdown_days = 0; // total countdown in days
+	        foreach ( $in_progress_posts_created_at as $post_id => $created_at ) {
+		        $work_time = (int) get_post_meta( $post_id, 'work_time', true );
+
+		        // date_add() modifies $end object
+		        $end = date_create( $created_at );
+		        date_add( $end, date_interval_create_from_date_string( $work_time . ' days' ) );
+		        $countdown = date_diff( $end, $now );
+
+		        if ($countdown->days > $countdown_days) {
+		        	$countdown_days = $countdown->days;
+		        }
+	        }
+	        $out['countdown_days'] = $countdown_days;
 
             return $out;
         }
@@ -761,27 +794,31 @@
 	    public static function ru_months_days( $work_time ) {
 		    $work_time = (int) $work_time;
 		    if ($work_time === 0) {
-			    return '';
+			    return '0д';
 		    }
 
+		    $years_abbr    = 'г';
 		    $month_abbr    = 'м';
 		    $day_abbr      = 'д';
 		    $days_in_month = 30;
+		    $months_in_year = 12;
 
 		    $months = floor( $work_time / $days_in_month );
+		    $years = floor( $months / $months_in_year );
+		    $months = floor( $months % $months_in_year );
 		    $days   = floor( $work_time % $days_in_month );
 
-		    $output = '';
-		    if ( $months > 0 ) {
-			    $output .= $months . ' ' . $month_abbr;
+		    $output = array();
+		    if ( $years > 0 ) {
+		    	array_push( $output, $years . $years_abbr);
 		    }
-		    if ( $months > 0 && $days > 0 ) {
-			    $output .= ', ';
+		    if ( $months > 0 ) {
+			    array_push( $output, $months . $month_abbr);
 		    }
 		    if ( $days > 0 ) {
-			    $output .= $days . ' ' . $day_abbr;
+			    array_push( $output, $days . $day_abbr);
 		    }
 
-		    return $output;
+		    return implode(', ', $output);
 	    }
     }
