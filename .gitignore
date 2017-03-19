@@ -21,6 +21,7 @@ plugins/wp-captcha/
 plugins/onlyregistered
 plugins/rewrite-rules-inspector
 plugins/monkeyman-rewrite-analyzer
+plugins/debug-bar
 
 
 
