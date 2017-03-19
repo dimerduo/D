@@ -778,10 +778,24 @@
 
             $sql = "SELECT `post_id` FROM `{$table_name}` WHERE `user_id` = {$user_id}";
             $posts = $wpdb->get_results($sql, ARRAY_A);
+            $categories = [];
             foreach ($posts as $post) {
                 $p_categories = wp_get_post_categories($post['post_id'], array('fields' => 'names'));
-//                print_r($p_categories);exit;
+                $categories[] = $p_categories;
             }
+
+            $cat_result = [];
+            foreach ($categories as $key => $item) {
+                foreach ($item as $sub_item) {
+                    if (array_key_exists($sub_item, $cat_result)) {
+                        $cat_result[$sub_item] += 1;
+                    } else {
+                        $cat_result[$sub_item] = 1;
+                    }
+                }
+            }
+
+            return $cat_result;
         }
 
 	    /**

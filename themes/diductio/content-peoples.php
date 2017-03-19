@@ -6,7 +6,6 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
-
 	global $user, $st, $dUser;
 	$user_statistic = $st->get_user_info($user->ID);
 	$is_free = $dUser->is_free($user->ID);

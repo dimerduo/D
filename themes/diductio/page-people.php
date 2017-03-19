@@ -1,10 +1,9 @@
-<?php 
+<?php
 /*
  * Template Name: Все люди
  * Данный шаблон страницы выводит всех пользователей на сайте
 */
 global $wp_roles;
-
 $roles = array();
 foreach ($wp_roles->roles as $rKey => $rvalue) {
 	$roles[] = $rKey;
@@ -13,7 +12,7 @@ foreach ($wp_roles->roles as $rKey => $rvalue) {
 $count_args  = array(
     'role__in'      => $roles,
     'fields'    => 'all_with_meta',
-    'number'    => 999999      
+    'number'    => 999999
 );
 $user_count_query = new WP_User_Query($count_args);
 $user_count = $user_count_query->get_results();
@@ -33,7 +32,7 @@ $args  = array(
     // search only for Authors role
     'role__in'      => $roles,
     'number'    => $users_per_page,
-    'offset'    => $offset // skip the number of users that we have per page  
+    'offset'    => $offset // skip the number of users that we have per page
 );
 // Create the WP_User_Query object
 $user_query = new WP_User_Query($args);
@@ -47,8 +46,8 @@ get_header(); ?>
 				<header class="entry-header">
 					<h1 class="entry-title">Люди</h1>
 					<div class="entry-content all-users">
-						
-							<?php 
+
+							<?php
 								// User Loop
 								if ( ! empty( $user_query->results ) ) {
 									foreach ( $user_query->results as $user ) {
@@ -59,7 +58,7 @@ get_header(); ?>
 								}
 							?>
 					</div>
-	
+
 				</header>
 			</article>
 			<?php
@@ -89,7 +88,7 @@ get_header(); ?>
 			?>
 			<nav class="navigation pagination custom-page-wrapper" role="navigation">
 			<div class="nav-links custom-pagination">
-				<?php 
+				<?php
 				echo paginate_links( $page_args);
 				?>
 			</div>

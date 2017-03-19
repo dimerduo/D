@@ -1514,7 +1514,8 @@ img.aligncenter {
 .secondary {
 	background-color: #fff;
 	display: none;
-	padding: 0 7.6923%;
+	padding: 0 4.6923%;
+	/*padding: 0 7.6923%;*/
 }
 
 .secondary.toggled-on {
@@ -1574,6 +1575,7 @@ a.post-thumbnail:focus {
 
 .entry-header {
 	padding: 0 7.6923%;
+	/*padding: 0 4.6923%;*/
 }
 
 .entry-title {
@@ -6718,14 +6720,21 @@ a.lazy-load-youtube {
   }
 
   /*Мобильный вид статистики*/
-  div.public_statistic {
-    text-align: center;
-    margin-top: 8px;
-  }
+	div.public_statistic {
+		/*text-align: center;*/
+		margin-top: 8px;
+		margin-left: 0;
+	}
+	.page-header {
+		 margin-left: 0;
+	}
 
   .entry-footer { 
    padding: 2% 5%;
    padding-top: 5%;
+  }
+  .public-page-statistic-box{
+	  margin-left: 18px;
   }
 
   div.stat-col {
@@ -6876,4 +6885,14 @@ small.is_author {
 /* Author page styling end */
 .add-subscriber {
 	font-size: 13px !important;
+}
+
+.personal-area .entry-title {
+	font-size: 1.2em;
+}
+.personal-area {
+	margin-bottom: 10px;
+}
+.user-categories .public_statistic {
+	margin-left: 0px;
 }
