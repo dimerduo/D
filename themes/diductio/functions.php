@@ -1532,4 +1532,21 @@
         return require "view/{$name}.php";
     }
 
+    spl_autoload_register(
+        function ($class) {
+        
+            // Don't interfere with other autoloaders
+            if (0 !== strpos($class, 'Did_')) {
+                return;
+            }
+        
+            $path = __DIR__ . '/' . 'classes' . '/' . str_replace('Did_', '', $class) . '.class' . '.php';
+            if (!file_exists($path)) {
+                return;
+            }
+        
+            require $path;
+        }
+    );
+
     ?>

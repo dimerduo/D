@@ -6778,7 +6778,13 @@ a.lazy-load-youtube {
   .comments-area {
 	 margin-left: 0 !important;
    }
-
+   #recentcomments {
+	   margin-left: 0 !important;
+   }
+   
+   .personal-area > div.avatar > .inline:first-child {
+	   margin-left: 20px;
+   }
 }
 /* (29) Глобальное. Правки мобильной версии end */
 
@@ -6896,3 +6902,4 @@ small.is_author {
 .user-categories .public_statistic {
 	margin-left: 0px;
 }
+

@@ -765,10 +765,13 @@
         }
 
         /**
+         * @Depricated  Use $Did_Categories->fetchCategoriesByUser
+         *
          * Возвращает информацию по категориям постов(знаний) которые клиент проходит или проходил
          * Return all categories information of the posts(knowledges) that user has been passed or passing now
          *
          * @param $user_id
+         * @return $categories;
          */
         function get_categories_stat_by_post($user_id)
         {

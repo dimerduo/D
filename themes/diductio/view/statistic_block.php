@@ -137,7 +137,7 @@
                 </div>
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people-free">
-                        <span class="label label-important<?php if ( ! is_page('peoples-free')): ?>-soft<?php endif; ?>">Свободны</span>
+                        <span class="label label-important<?php if ( !is_page('people-free')): ?>-soft<?php endif; ?>">Свободны</span>
                         <span class="label label-important"><?= $st->free_peoples_count; ?></span>
                     </a>
                 </div>

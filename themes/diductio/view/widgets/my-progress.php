@@ -6,6 +6,7 @@
 ?>
 <ul>
     <!-- My progress view  -->
+    <?php if(is_user_logged_in()): ?>
     <li>
         <a href="/progress">
             Мой прогресс
@@ -36,4 +37,8 @@
         <div style='text-align: right;' class='col-xs-6 col-md-6 col-sm-6'><?=wp_loginout(false, 0);?></div>
     </li>
     <!-- Navigation end -->
+    <?php else: ?>
+        <li><a href="<?=wp_registration_url();?>">Регистрация</a></li>
+        <li><?=wp_loginout(false, 0);?></li>
+    <?php endif; ?>
 </ul>

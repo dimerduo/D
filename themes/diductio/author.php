@@ -30,7 +30,9 @@
     query_posts($qry);
 
 //Get categories information by user
-$category_statistic = $st->get_categories_stat_by_post($user_id);
+$Did_Categories = new Did_Categories();
+$category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value','desc')->max();
+$tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value','desc')->max();
 ?>
 
 <section id="primary" class="content-area">
@@ -44,7 +46,10 @@ $category_statistic = $st->get_categories_stat_by_post($user_id);
                         <h1 class="entry-title"><?=$author_info->data->display_name;?></h1>
                         <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
                         <div class="user-categories" >
-                            <?php view('user-category-static', compact('category_statistic', 'author_info')); ?>
+                            <?php view(
+                                'user-category-static',
+                                compact('category_statistic', 'author_info', 'tag_statistic'));
+                            ?>
                         </div>
                     </div>
                 </div>
