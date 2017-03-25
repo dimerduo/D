@@ -30,6 +30,7 @@
     query_posts($qry);
 
 //Get categories information by user
+$category_statistic = $tag_statistic = array();
 $Did_Categories = new Did_Categories();
 $category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value','desc')->max();
 $tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value','desc')->max();
@@ -42,7 +43,7 @@ $tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value','de
             <div class="personal-area">
                 <div class="avatar inline ">
                     <div class="inline"><?= get_avatar($author_info->user_email, 96); ?></div>
-                    <div style="margin-left: 20px;" class="inline">
+                    <div style="user-info" class="inline">
                         <h1 class="entry-title"><?=$author_info->data->display_name;?></h1>
                         <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
                         <div class="user-categories" >
