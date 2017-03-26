@@ -15,7 +15,14 @@
 
 <div class="col-md-6">
 	<div class="inline"><?=get_avatar( $user->user_email, 32 );?></div>
-	<div class="inline"><a class="link-style-1" href="<?=get_site_url();?>/people/<?=$user->user_nicename?>"><?=$user->display_name?></a><?php if(!$is_free): ?><span class="busy-people">, занят</span><?php endif; ?></div>
+	<div class="inline">
+		<a class="link-style-1" href="<?= get_site_url(); ?>/people/<?= $user->user_nicename ?>"><?= $user->display_name ?></a><?php
+		if ( ! $is_free ) {
+			?><span class="busy-people">, занят еще
+			<?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
+			</span>
+		<?php } ?>
+	</div>
 	<?php if( $user_statistic['in_progress'] || $user_statistic['done'] || $level || $progress): ?>
 	<div class="inline">
 		<div class="stat-col">
