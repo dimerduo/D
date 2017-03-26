@@ -6987,7 +6987,8 @@ small.is_author {
     color: black;
 }
 
-.busy-people {
+.busy-people,
+.formats-counters {
 	font-size: 11px;
 	color: black;
 }

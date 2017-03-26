@@ -804,7 +804,7 @@
 	    /**
 	     * Format time in Russian months days
 	     *
-	     * @param {integer} $work_time
+	     * @param integer $work_time
 	     *
 	     * @return string
 	     */
@@ -837,5 +837,35 @@
 		    }
 
 		    return implode(', ', $output);
+	    }
+
+	    /**
+	     * Get count of posts by post format
+	     *
+	     * @param int $user_id Author id
+	     * @param string $format Post format
+	     *
+	     * @return int
+	     */
+	    static function get_count_posts_by_format( $user_id, $format) {
+		    $args = array(
+			    'numberposts' => -1,
+			    'author' => $user_id,
+			    'post_type'=> 'post',
+			    'post_status' => 'publish',
+			    'order' => 'DESC',
+			    'tax_query' => array(
+				    array(
+					    'taxonomy' => 'post_format',
+					    'field' => 'slug',
+					    'terms' => array( 'post-format-' . $format )
+				    )
+			    ),
+			    // Speedup
+			    'fields' => 'ids',
+			    'no_found_rows' => true,
+		    );
+
+		    return count( get_posts( $args ) );
 	    }
     }
