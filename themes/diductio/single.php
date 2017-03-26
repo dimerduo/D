@@ -194,20 +194,16 @@
 			        2
 		        );
 
-		        if ( $estimated_progress > 0 ) {
+		        if ( $estimated_progress > 0
+		             && $current_user_progress < 100 // Hide estimated progress if user completed all tasks
+		        ) {
 		        	$prefix_word = 'Ещё';
 
 			        if ( $estimated_progress >= 100 ) {
 				        $estimated_progress = 100; // Fix: if $diff->days > $work_time
-				        if ( $current_user_progress === 100 ) {
-					        $estimated_progress_class = 'progress-bar-success';
-				        } else {
-					        $prefix_word = 'Уже';
-					        $estimated_progress_class = 'progress-bar-danger progress-bar-striped';
-				        }
+				        $prefix_word = 'Уже';
+				        $estimated_progress_class = 'progress-bar-danger progress-bar-striped';
 			        }
-
-
 			        ?>
 			        <div class="col-sm-6 col-md-6">
 				        <div>
