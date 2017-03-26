@@ -6988,8 +6988,8 @@ small.is_author {
 }
 
 .busy-people {
-    font-size: 11px;
-    color: rgba(51, 51, 51, 0.7);
+	font-size: 11px;
+	color: black;
 }
 
 .on-knowldedge {
