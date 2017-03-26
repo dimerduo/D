@@ -757,7 +757,7 @@
 
                 // sort array by progress
                 usort($result, function ($a, $b) {
-                    return $a['progress'] - $b['progress'];
+                    return $b['progress'] - $a['progress']; // descending order
                 });
             }
 
