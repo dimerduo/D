@@ -262,21 +262,31 @@
                 $start = date_create();
 	            date_timestamp_set($start, $result['started_at'] );
 	            $active_diff = date_diff($now, $start);
-	            $result['date_string'] = 'Активна ' . $st::ru_months_days($active_diff->days);
 
-                if (count($passed_lessons) == $lessons_count) {
+	            // Completed for
+	            $result['finished_at'] = end($passed_date);
+	            if ($result['finished_at']) {
+		            $end = date_create();
+		            date_timestamp_set($end, $result['finished_at'] );
+	            } else {
+		            // Fix: if $passed_date array is empty
+		            $end = date_create( $result['updated_at']);
+	            }
+	            $completed_diff = date_diff($start, $end);
+
+	            // Is in time
+	            $work_time = (int) get_post_meta( $post_id, 'work_time', true ); // days
+				$in_time = $work_time - $completed_diff->days;
+				$label_class = $in_time >= 0
+					? 'label-success'
+					: 'label-warning';
+				$in_time = '&nbsp;<span class="label label-soft ' . $label_class . '">' . $in_time . '</span>';
+
+	            $result['date_string'] = 'Активна ' . $st::ru_months_days($active_diff->days) . $in_time;
+
+	            if (count($passed_lessons) == $lessons_count) {
                     $result['is_passed']   = 1;
-                    $result['finished_at'] = end($passed_date);
-                	// Completed for
-	                if ($result['finished_at']) {
-	                    $end = date_create();
-		                date_timestamp_set($end, $result['finished_at'] );
-	                } else {
-	                	// Fix: if $passed_date array is empty
-	                	$end = date_create( $result['updated_at']);
-	                }
-                	$completed_diff = date_diff($start, $end);
-                    $result['date_string'] = 'Пройдена за ' . $st::ru_months_days( $completed_diff->days);
+                    $result['date_string'] = 'Пройдена за ' . $st::ru_months_days( $completed_diff->days) . $in_time;
                 } else {
                     $result['is_passed']    = 0;
                     $unchecked_array        = array_diff($all_lessons, $passed_lessons);
