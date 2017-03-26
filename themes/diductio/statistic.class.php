@@ -448,11 +448,13 @@
         /**
          *  Возвращает информацию по статистике пользователя пройденные и активные.
          *
-         * @param int $id - ID пользователя. Если параметр не был отправлен, то берётся ID залогиненого пользователя
+         * @param int|bool $id - ID пользователя. Если параметр не был отправлен, то берётся ID залогиненого пользователя
          * @return array $out - статистический массив, в котором:
          *                int   done - количество пройденных массивов(постов)
          *                int in_progress - количество массивов, которые сейчас проходит пользователь
          *                int all - все
+         *                int countdown_days - осталось (или просрочено) дней
+         *                int overdue_tasks - просрочено задач
          */
         public function get_user_info($id = false)
         {
@@ -503,6 +505,7 @@
 	        $work_time = 0;
 	        $now = date_create();
 	        $countdown_days = 0; // total countdown in days
+	        $overdue_tasks = 0;
 	        foreach ( $in_progress_posts_created_at as $post_id => $created_at ) {
 		        $work_time = (int) get_post_meta( $post_id, 'work_time', true );
 
@@ -514,8 +517,12 @@
 		        if ($countdown->days > $countdown_days) {
 		        	$countdown_days = $countdown->days;
 		        }
+		        if ($countdown->invert === 0) {
+		        	++$overdue_tasks;
+		        }
 	        }
 	        $out['countdown_days'] = $countdown_days;
+	        $out['overdue_tasks'] = $overdue_tasks;
 
             return $out;
         }

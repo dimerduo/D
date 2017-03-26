@@ -13,27 +13,12 @@ $is_free        = $dUser->is_free( $user->ID );
 //$level = $st->get_rating('local', $user->ID);
 $progress = $st->get_div_studying_progress( $user->ID );
 
-// Get info about user posts formats
-$post_format_ru = array(
-	'aside' => 'знаний',
-	'quote' => 'проектов',
-	'gallery' => 'галерей',
-	'chat' => 'чатов',
+
+$tasks_counters = array(
+	'in_progress' => $user_statistic['in_progress'],
+	'overdue' => $user_statistic['overdue_tasks']
 );
 
-$post_counter = array(
-	'aside'   => $st::get_count_posts_by_format( $user->ID, 'aside' ),
-	'quote'   => $st::get_count_posts_by_format( $user->ID, 'quote' ),
-	'gallery' => $st::get_count_posts_by_format( $user->ID, 'gallery' ),
-	'chat'    => $st::get_count_posts_by_format( $user->ID, 'chat' ),
-);
-
-$formats_counters_arr = array();
-foreach ( $post_counter as $name => $counter ) {
-	if ( $counter > 0 ) {
-		$formats_counters_arr[] = $post_format_ru[ $name ] . ' ' . $counter;
-	}
-}
 ?>
 
 <div class="col-md-6">
@@ -45,7 +30,20 @@ foreach ( $post_counter as $name => $counter ) {
 			<?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
 			</span>
 		<?php } ?>
-		<div class="formats-counters"><?= implode(', ', $formats_counters_arr); ?></div>
+		<div class="tasks-counters">
+			<?php if ( $tasks_counters['in_progress'] > 0 ) {
+				?>активных <?= $tasks_counters['in_progress']; ?><?php
+			}
+			if ( $tasks_counters['in_progress'] > 0
+			     && $tasks_counters['overdue'] > 0
+			) {
+				echo ", ";
+			}
+			if ( $tasks_counters['overdue'] > 0 ) {
+				?><span class="error">просроченных <?= $tasks_counters['overdue']; ?></span><?php
+			}
+			?>
+		</div>
 	</div>
 	<?php
 	// Warning this output was hidden, see: themes/diductio/style.css:6568
