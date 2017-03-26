@@ -228,14 +228,15 @@
             );
         }
 
-        /**
-         * Возвращает информацию о прохождении поста (знания)
-         * Return passing information about post (knowledge)
-         *
-         * @param int $user_id - ID of the user
-         * @param int $post_id - ID of the post (knowledge)
-         * @return
-         */
+	    /**
+	     * Возвращает информацию о прохождении поста (знания)
+	     * Return passing information about post (knowledge)
+	     *
+	     * @param int $user_id - ID of the user
+	     * @param int $post_id - ID of the post (knowledge)
+	     *
+	     * @return mixed
+	     */
         public function get_passing_info_by_post($user_id, $post_id)
         {
             global $wpdb;
