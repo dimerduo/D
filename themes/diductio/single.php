@@ -151,24 +151,26 @@
 	            }
             }
             if ($total_progress > 0
-                && $num_users > 1) {
+                && $num_users > 1
+            ) {
 	            $total_progress = round( $total_progress / $num_users, 2 );
+	            ?>
+
+	            <div class="col-sm-6 col-md-6">
+		            <div>
+			            <span>Общий прогресс</span>
+		            </div>
+		            <div class="progress">
+			            <div class="progress-bar " role="progressbar" aria-valuenow="<?= $total_progress; ?>"
+			                 aria-valuemin="0" aria-valuemax="100" style="width: <?= $total_progress; ?>%;">
+				            <?= $total_progress; ?> %
+			            </div>
+		            </div>
+	            </div>
+
+	            <?php
             }
 
-            ?>
-
-	        <div class="col-sm-6 col-md-6">
-		        <div>
-			        <span>Общий прогресс</span>
-		        </div>
-		        <div class="progress">
-			        <div class="progress-bar " role="progressbar" aria-valuenow="<?= $total_progress; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $total_progress; ?>%;">
-				        <?= $total_progress; ?> %
-			        </div>
-		        </div>
-	        </div>
-
-	        <?php
 	        // Estimated progress
 			$estimated_progress = 0;
 	        $estimated_progress_class = '';
