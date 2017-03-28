@@ -1369,13 +1369,15 @@
         }
 
         add_filter('the_content', 'remove_br_accordion');
-        add_action('wpfp_after_add', 'add_post_to_statistic');
+        add_action('wpfp_after_add', 'add_post_to_statistic', 10, 2);
 
-        function add_post_to_statistic($post_id)
+        function add_post_to_statistic($post_id, $user_id = false)
         {
-            global $current_user, $wpdb;
-            $user_id    = $current_user->ID;
-            $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+	        global $current_user, $wpdb;
+	        $user_id    = $user_id
+		        ? $user_id
+		        : $current_user->ID;
+	        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
             $wpdb->insert(
                 $table_name,
                 array(
