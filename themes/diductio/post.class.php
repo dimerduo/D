@@ -26,6 +26,7 @@
         public function addActions()
         {
             add_action('before_delete_post', Array($this, 'onPostDelete'));
+	        add_action( 'save_post', array( $this, 'on_save_post' ) );
             add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
             add_action('init', Array($this, 'rewrite_mode'));
         }
@@ -48,6 +49,31 @@
             add_filter('gettext_with_context', Array($this, 'rename_post_formats_2'), 10, 4);
 
         }
+
+	    /**
+	     * On after save post action
+	     * call `wpfp_after_add` action for new post
+	     *
+	     * @param int $post_id
+	     */
+	    public function on_save_post( $post_id ) {
+		    global $wpdb;
+
+		    $user_id = (int) get_post_field( 'post_author', $post_id );
+
+		    $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		    $sql        = "SELECT count(*)" .
+		                  "FROM `{$table_name}`" .
+		                  "WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
+		    $count      = (int) $wpdb->get_var( $sql );
+
+		    if ( $count === 0 ) {
+			    do_action( 'wpfp_after_add',
+				    $post_id,
+				    $user_id
+			    );
+		    }
+	    }
 
         /**
          * Function run after post update in Admin Panel
@@ -278,9 +304,9 @@
 	            $work_time = (int) get_post_meta( $post_id, 'work_time', true ); // days
 				$in_time = $work_time - $completed_diff->days;
 				$label_class = $in_time >= 0
-					? 'label-success'
-					: 'label-warning';
-				$in_time = '&nbsp;<span class="label label-soft ' . $label_class . '">' . $in_time . '</span>';
+					? 'success'
+					: 'error';
+	            $in_time = '&nbsp;<span class="' . $label_class . '">(' . $in_time . ')</span>';
 
 	            $result['date_string'] = 'Активна ' . $st::ru_months_days($active_diff->days) . $in_time;
 
