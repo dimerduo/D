@@ -6611,7 +6611,8 @@ iframe {
 }
 
 .all-users img {
-    margin-bottom: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .all-users .stat-col {
