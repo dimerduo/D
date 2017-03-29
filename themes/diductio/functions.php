@@ -1,4 +1,5 @@
 <?php
+
     /**
      * Twenty Fifteen functions and definitions
      * Set up the theme and provides some helper functions, which are used in the
@@ -593,96 +594,36 @@
             if ($title) {
                 echo $args['before_title'] . $title . $args['after_title'];
             }
-            ?>
-            <ul>
-                <?php
-                    if (is_user_logged_in()) {
-                        global $st, $dUser, $dPost;
-                        $user_ID            = get_current_user_id();
-                        $user_statistic     = $st->get_user_info($user_ID);
-                        $comments_count     = $dUser->get_comments_count($user_ID);
-                        $subscription_count = $dUser->getSubscriptionsCount($user_ID);
-                        $progress_percent = $st->get_knowledges($user_ID, 'active');
-                        if ($progress_percent) {
-                            $tmp_precent = 0;
-                            foreach ($progress_percent as $item) {
-                                $tmp_precent += $st->get_user_progress_by_post($item, $user_ID);
-                            }
-                            $percent = round($tmp_precent / count($progress_percent), 2);
-                        } else {
-                            $percent = 0;
-                        }
-
-                        //My progress
-                        $my_progress = "<li>";
-                            $my_progress .= "<a href='/progress'>";
-                                $my_progress .= "Мой прогресс";
-                                $my_progress .= "<div style='float: right; margin-right: 0;' class='stat-col'>";
-                                    $my_progress .= "<span class='label label-success label-soft'>" . $user_statistic['in_progress'] ."</span>";
-                                    $my_progress .= "<span style='margin-left: 5px;' class='label label-success label-soft'>" . $percent ." %</span>";
-                                $my_progress .= "</div>";
-                        $my_progress .= "</a>";
-                        $my_progress .= "</li>";
-
-                        echo $my_progress;
-                        unset($my_progress);
-                        $post_ids = $st->get_knowledges($user_ID, 'active');
-                        $qry  = array(
-                            'include'       => implode(',', $post_ids),
-                            'posts_per_page' => 5,
-                            'orderby'        => 'post__in'
-                        );
-                        $knowledges = get_posts($qry, ARRAY_A);
-                        if($knowledges) {
-//                            $know_str  = "<ul>";
-                            foreach ($knowledges as $knowledge) {
-                                $link = get_permalink($knowledge->ID) . get_first_unchecked_lesson($knowledge->ID);
-                                $know_str .= "<li class='widget-my-project-list'>";
-                                    $know_str .= "<div><a class='link-style-1' href='{$link}'>". $knowledge->post_title ."</a></div>";
-                                    $pass_info = $dPost->get_passing_info_by_post($user_ID, $knowledge->ID);
-                                    if($pass_info['undone_title']) {
-                                        $stoped_on = $dPost->get_accordion_element_title($knowledge->ID, $pass_info['first_undone']);
-                                        $know_str .= "<div class='progress-on'>На этапе: ".  $stoped_on ."</div>";
-                                    }
-                                $know_str .= "</li>";
-                            }
-//                            $know_str .= "<ul>";
-                            echo $know_str;
-                        }
-//                        echo "<li><a href='/progress'>Мой прогресс <span class='label label-success right-count'>" . $user_statistic['in_progress'] . "</span></a></li>";
-//                        echo "<li><a href='/subscription'>Мои подписки <span class='label label-success right-count'>" . $subscription_count . "</span></a></li>";
-                        // echo "<li><a href='/moya-zachetka'>Моя зачетка <span class='label label-success right-count'>".$moya_zachetka_items_count."</span></a></li>";
-//                        echo "<li><a href='/comments'>Мои комментарии <span class='label label-success right-count'>" . $comments_count . "</span></a></li>";
-
-                        //My profile and login out
-                        $my_profile  = "<li class='row'>";
-                            $my_profile .= "<div class='col-md-6 col-sm-6'>";
-                                $my_profile .= "<a href='/wp-admin/profile.php'>";
-                                $my_profile .= "Мой профиль";
-                                $my_profile .= "</a>";
-                            $my_profile .= "</div>";
-                        if ( is_user_logged_in()) {
-                                $my_profile .=  "<div style='text-align: right;' class='col-md-6 col-sm-6'>";
-                                $my_profile .=  wp_loginout(false, 0);
-                                $my_profile .=  "</div>";
-                            }
-                        $my_profile .="</li>";
-                        echo $my_profile;
-                        unset($my_profile);
+            if (is_user_logged_in()) {
+                global $st, $dUser, $dPost;
+                $user_ID            = get_current_user_id();
+                $user_statistic     = $st->get_user_info($user_ID);
+                $comments_count     = $dUser->get_comments_count($user_ID);
+                $subscription_count = $dUser->getSubscriptionsCount($user_ID);
+                $progress_percent = $st->get_knowledges($user_ID, 'active');
+                $percent = 0;
+                if ($progress_percent) {
+                    $tmp_precent = 0;
+                    foreach ($progress_percent as $item) {
+                        $tmp_precent += $st->get_user_progress_by_post($item, $user_ID);
                     }
+                    $percent = round($tmp_precent / count($progress_percent), 2);
+                }
 
-                ?>
-                <?php
-                    if ( ! is_user_logged_in()) {
-                        wp_register();
-                        echo "<li>";
-                            wp_loginout();
-                        echo "</li>";
-                    }
-                ?>
-
-            </ul>
-            <?php
+                //Get knowledges
+                $post_ids = $st->get_knowledges($user_ID, 'active');
+                $knowledges = [];
+                if($post_ids) {
+                    $qry  = array(
+                        'posts_per_page' => 5,
+                        'limit' => 5,
+                        'orderby' => 'ID',
+                        'post__in' => $post_ids,
+                    );
+                    $knowledges = get_posts($qry, ARRAY_A);
+                }
+            }
+            view('widgets/my-progress', compact('args','title','user_ID','user_statistic', 'percent', 'knowledges'));
             echo $args['after_widget'];
         }
 
@@ -1428,13 +1369,15 @@
         }
 
         add_filter('the_content', 'remove_br_accordion');
-        add_action('wpfp_after_add', 'add_post_to_statistic');
+        add_action('wpfp_after_add', 'add_post_to_statistic', 10, 2);
 
-        function add_post_to_statistic($post_id)
+        function add_post_to_statistic($post_id, $user_id = false)
         {
-            global $current_user, $wpdb;
-            $user_id    = $current_user->ID;
-            $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+	        global $current_user, $wpdb;
+	        $user_id    = $user_id
+		        ? $user_id
+		        : $current_user->ID;
+	        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
             $wpdb->insert(
                 $table_name,
                 array(
@@ -1576,5 +1519,36 @@
 
             return $wts;
         }
+
+    // Helper functions starts here, other will removed into classes
+    /**
+     * Include view of the diductio
+     * @param string $name - Name of the View
+     * @param mixed  $data - Delegated data to the View
+     *
+     * @return mixed - included page content
+     */
+    function view($name, $data)
+    {
+        extract($data);
+        return require "view/{$name}.php";
+    }
+
+    spl_autoload_register(
+        function ($class) {
+        
+            // Don't interfere with other autoloaders
+            if (0 !== strpos($class, 'Did_')) {
+                return;
+            }
+        
+            $path = __DIR__ . '/' . 'classes' . '/' . str_replace('Did_', '', $class) . '.class' . '.php';
+            if (!file_exists($path)) {
+                return;
+            }
+        
+            require $path;
+        }
+    );
 
     ?>

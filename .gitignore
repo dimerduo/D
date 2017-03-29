@@ -1,3 +1,6 @@
+# IDE
+/.idea/
+
 cache/
 plugins/backupwordpress/
 plugins/rustolat/
@@ -18,6 +21,7 @@ plugins/wp-captcha/
 plugins/onlyregistered
 plugins/rewrite-rules-inspector
 plugins/monkeyman-rewrite-analyzer
+plugins/debug-bar
 
 
 
@@ -25,7 +29,7 @@ plugins/monkeyman-rewrite-analyzer
 themes/twentyfifteen/
 
 uploads/
-languages/
+/languages/
 themes/index.php
 /index.php
 wflogs/

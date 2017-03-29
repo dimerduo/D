@@ -400,6 +400,7 @@
             $sql        = "SELECT * FROM `$table_name` WHERE `post_id` = {$course_id}";
             $progress   = $wpdb->get_results($sql);
             if ($progress) {
+            	$users_started = array();
                 foreach ($progress as $key => $value) {
                     $lessons_count = $value->lessons_count;
                     if ($value->checked_lessons != 0) {
@@ -420,12 +421,19 @@
                         $done++;
                     }
                     $les_count = $lessons_count;
+
+                    // Get object with `user_id`->`created_at` date
+	                if (isset( $value->user_id)
+	                    && isset($value->created_at)) {
+	                	$users_started[ $value->user_id ] = $value->created_at;
+	                }
                 }
                 $out['done']         = $done;
                 $out['in_progress']  = $in_progress;
                 $out['les_count']    = get_post_meta($course_id, 'publication_count')[0];
                 $out['active_users'] = $user_active_ids;
                 $out['done_users']   = $user_done_ids;
+                $out['users_started']= $users_started;
             } else {
                 $out['done']         = 0;
                 $out['in_progress']  = 0;
@@ -440,11 +448,13 @@
         /**
          *  Возвращает информацию по статистике пользователя пройденные и активные.
          *
-         * @param int $id - ID пользователя. Если параметр не был отправлен, то берётся ID залогиненого пользователя
+         * @param int|bool $id - ID пользователя. Если параметр не был отправлен, то берётся ID залогиненого пользователя
          * @return array $out - статистический массив, в котором:
          *                int   done - количество пройденных массивов(постов)
          *                int in_progress - количество массивов, которые сейчас проходит пользователь
          *                int all - все
+         *                int countdown_days - осталось (или просрочено) дней
+         *                int overdue_tasks - просрочено задач
          */
         public function get_user_info($id = false)
         {
@@ -460,6 +470,7 @@
             $progress   = $wpdb->get_results($sql);
 
             $in_progress = $done = 0;
+	        $in_progress_posts_created_at = array();
             if ($progress) {
                 foreach ($progress as $key => $value) {
                     $lessons_count = $value->lessons_count;
@@ -471,6 +482,12 @@
 
                     if ($lessons_count != $checked_lessons) {
                         $in_progress++;
+
+                        if ( isset( $value->post_id )
+                             && isset( $value->created_at )
+                        ) {
+	                        $in_progress_posts_created_at[ $value->post_id ] = $value->created_at;
+                        }
                     } else {
                         $done++;
                     }
@@ -483,6 +500,29 @@
                 $out['done']        = 0;
                 $out['in_progress'] = 0;
             }
+
+	        // Count days to finish all in progress posts
+	        $work_time = 0;
+	        $now = date_create();
+	        $countdown_days = 0; // total countdown in days
+	        $overdue_tasks = 0;
+	        foreach ( $in_progress_posts_created_at as $post_id => $created_at ) {
+		        $work_time = (int) get_post_meta( $post_id, 'work_time', true );
+
+		        // date_add() modifies $end object
+		        $end = date_create( $created_at );
+		        date_add( $end, date_interval_create_from_date_string( $work_time . ' days' ) );
+		        $countdown = date_diff( $end, $now );
+
+		        if ($countdown->days > $countdown_days) {
+		        	$countdown_days = $countdown->days;
+		        }
+		        if ($countdown->invert === 0) {
+		        	++$overdue_tasks;
+		        }
+	        }
+	        $out['countdown_days'] = $countdown_days;
+	        $out['overdue_tasks'] = $overdue_tasks;
 
             return $out;
         }
@@ -724,7 +764,7 @@
 
                 // sort array by progress
                 usort($result, function ($a, $b) {
-                    return $a['progress'] - $b['progress'];
+                    return $b['progress'] - $a['progress']; // descending order
                 });
             }
 
@@ -732,10 +772,13 @@
         }
 
         /**
+         * @Depricated  Use $Did_Categories->fetchCategoriesByUser
+         *
          * Возвращает информацию по категориям постов(знаний) которые клиент проходит или проходил
          * Return all categories information of the posts(knowledges) that user has been passed or passing now
          *
          * @param $user_id
+         * @return $categories;
          */
         function get_categories_stat_by_post($user_id)
         {
@@ -745,43 +788,91 @@
 
             $sql = "SELECT `post_id` FROM `{$table_name}` WHERE `user_id` = {$user_id}";
             $posts = $wpdb->get_results($sql, ARRAY_A);
+            $categories = [];
             foreach ($posts as $post) {
                 $p_categories = wp_get_post_categories($post['post_id'], array('fields' => 'names'));
-//                print_r($p_categories);exit;
+                $categories[] = $p_categories;
             }
+
+            $cat_result = [];
+            foreach ($categories as $key => $item) {
+                foreach ($item as $sub_item) {
+                    if (array_key_exists($sub_item, $cat_result)) {
+                        $cat_result[$sub_item] += 1;
+                    } else {
+                        $cat_result[$sub_item] = 1;
+                    }
+                }
+            }
+
+            return $cat_result;
         }
 
 	    /**
 	     * Format time in Russian months days
 	     *
-	     * @param {integer} $work_time
+	     * @param integer $work_time
 	     *
 	     * @return string
 	     */
 	    public static function ru_months_days( $work_time ) {
 		    $work_time = (int) $work_time;
 		    if ($work_time === 0) {
-			    return '';
+			    return '0д';
 		    }
 
+		    $years_abbr    = 'г';
 		    $month_abbr    = 'м';
 		    $day_abbr      = 'д';
 		    $days_in_month = 30;
+		    $months_in_year = 12;
 
 		    $months = floor( $work_time / $days_in_month );
+		    $years = floor( $months / $months_in_year );
+		    $months = floor( $months % $months_in_year );
 		    $days   = floor( $work_time % $days_in_month );
 
-		    $output = '';
-		    if ( $months > 0 ) {
-			    $output .= $months . ' ' . $month_abbr;
+		    $output = array();
+		    if ( $years > 0 ) {
+		    	array_push( $output, $years . $years_abbr);
 		    }
-		    if ( $months > 0 && $days > 0 ) {
-			    $output .= ', ';
+		    if ( $months > 0 ) {
+			    array_push( $output, $months . $month_abbr);
 		    }
 		    if ( $days > 0 ) {
-			    $output .= $days . ' ' . $day_abbr;
+			    array_push( $output, $days . $day_abbr);
 		    }
 
-		    return $output;
+		    return implode(', ', $output);
+	    }
+
+	    /**
+	     * Get count of posts by post format
+	     *
+	     * @param int $user_id Author id
+	     * @param string $format Post format
+	     *
+	     * @return int
+	     */
+	    static function get_count_posts_by_format( $user_id, $format) {
+		    $args = array(
+			    'numberposts' => -1,
+			    'author' => $user_id,
+			    'post_type'=> 'post',
+			    'post_status' => 'publish',
+			    'order' => 'DESC',
+			    'tax_query' => array(
+				    array(
+					    'taxonomy' => 'post_format',
+					    'field' => 'slug',
+					    'terms' => array( 'post-format-' . $format )
+				    )
+			    ),
+			    // Speedup
+			    'fields' => 'ids',
+			    'no_found_rows' => true,
+		    );
+
+		    return count( get_posts( $args ) );
 	    }
     }

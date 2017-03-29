@@ -26,6 +26,7 @@
         public function addActions()
         {
             add_action('before_delete_post', Array($this, 'onPostDelete'));
+	        add_action( 'save_post', array( $this, 'on_save_post' ) );
             add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
             add_action('init', Array($this, 'rewrite_mode'));
         }
@@ -48,6 +49,31 @@
             add_filter('gettext_with_context', Array($this, 'rename_post_formats_2'), 10, 4);
 
         }
+
+	    /**
+	     * On after save post action
+	     * call `wpfp_after_add` action for new post
+	     *
+	     * @param int $post_id
+	     */
+	    public function on_save_post( $post_id ) {
+		    global $wpdb;
+
+		    $user_id = (int) get_post_field( 'post_author', $post_id );
+
+		    $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
+		    $sql        = "SELECT count(*)" .
+		                  "FROM `{$table_name}`" .
+		                  "WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
+		    $count      = (int) $wpdb->get_var( $sql );
+
+		    if ( $count === 0 ) {
+			    do_action( 'wpfp_after_add',
+				    $post_id,
+				    $user_id
+			    );
+		    }
+	    }
 
         /**
          * Function run after post update in Admin Panel
@@ -228,17 +254,20 @@
             );
         }
 
-        /**
-         * Возвращает информацию о прохождении поста (знания)
-         * Return passing information about post (knowledge)
-         *
-         * @param int $user_id - ID of the user
-         * @param int $post_id - ID of the post (knowledge)
-         * @return
-         */
+	    /**
+	     * Возвращает информацию о прохождении поста (знания)
+	     * Return passing information about post (knowledge)
+	     *
+	     * @param int $user_id - ID of the user
+	     * @param int $post_id - ID of the post (knowledge)
+	     *
+	     * @return mixed
+	     */
         public function get_passing_info_by_post($user_id, $post_id)
         {
             global $wpdb;
+            global $st;
+
             $d_format = 'd.m.Y';
             $t_format = 'H:i';
 
@@ -254,18 +283,36 @@
                 $passed_date          = explode(',', $row['checked_at']);
                 $result['started_at'] = array_shift($passed_date);
 
-                $start_date            = date($d_format, $result['started_at']);
-                $start_time            = date($t_format, $result['started_at']);
-                $start_string          = $start_date . ' в ' . $start_time;
-                $result['date_string'] = $start_string;
+	            $now = date_create();
+	            // Active for
+                $start = date_create();
+	            date_timestamp_set($start, $result['started_at'] );
+	            $active_diff = date_diff($now, $start);
 
-                if (count($passed_lessons) == $lessons_count) {
+	            // Completed for
+	            $result['finished_at'] = end($passed_date);
+	            if ($result['finished_at']) {
+		            $end = date_create();
+		            date_timestamp_set($end, $result['finished_at'] );
+	            } else {
+		            // Fix: if $passed_date array is empty
+		            $end = date_create( $result['updated_at']);
+	            }
+	            $completed_diff = date_diff($start, $end);
+
+	            // Is in time
+	            $work_time = (int) get_post_meta( $post_id, 'work_time', true ); // days
+				$in_time = $work_time - $completed_diff->days;
+				$label_class = $in_time >= 0
+					? 'success'
+					: 'error';
+	            $in_time = '&nbsp;<span class="' . $label_class . '">(' . $in_time . ')</span>';
+
+	            $result['date_string'] = 'Активна ' . $st::ru_months_days($active_diff->days) . $in_time;
+
+	            if (count($passed_lessons) == $lessons_count) {
                     $result['is_passed']   = 1;
-                    $result['finished_at'] = end($passed_date);
-                    $finish_date           = date($d_format, $result['finished_at']);
-                    $finish_time           = date($t_format, $result['finished_at']);
-                    $finish_string         = $finish_date . ' в ' . $finish_time;
-                    $result['date_string'] .= " - " . $finish_string;
+                    $result['date_string'] = 'Пройдена за ' . $st::ru_months_days( $completed_diff->days) . $in_time;
                 } else {
                     $result['is_passed']    = 0;
                     $unchecked_array        = array_diff($all_lessons, $passed_lessons);
