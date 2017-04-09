@@ -29,6 +29,9 @@
 	        add_action( 'save_post', array( $this, 'on_save_post' ) );
             add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
             add_action('init', Array($this, 'rewrite_mode'));
+            
+            //emdded
+            add_action('embed_content', Array($this,'actionEmbedContent'));
         }
 
         /**
@@ -375,6 +378,27 @@
             }
 
             return $post_array;
+        }
+    
+        /**
+         * Display progress on the Link Embeded frame.
+         *
+         * @action: embed_content
+         * @file: /themes_compact/emded-content
+         */
+        function actionEmbedContent()
+        {
+            $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $url = str_replace('/emded', '', $actual_link);
+            $parsed = parse_url($url);
+            $host_from_url  = $parsed['host'];
+            $main_host = str_replace(array('http://', 'https://'), '', get_site_url());
+    
+            if($host_from_url == $main_host) {
+                $postID = url_to_postid( $url );
+                $percent = (new Statistic())->get_user_progress_by_post($postID, get_current_user_id());
+                view('single-progress', compact('percent'));
+            }
         }
     }
 
