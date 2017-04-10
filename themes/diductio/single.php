@@ -131,7 +131,6 @@
             $current_user_id = get_current_user_id();
             $current_user_progress = false;
             $posts_users = $st->get_users_by_post($post->ID);
-
             // Find total progress
             $total_progress = 0;
             $num_users = 0;
