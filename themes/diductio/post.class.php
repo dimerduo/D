@@ -29,6 +29,9 @@
 	        add_action( 'save_post', array( $this, 'on_save_post' ) );
             add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
             add_action('init', Array($this, 'rewrite_mode'));
+            
+            //emdded
+            add_action('embed_content', Array($this,'actionEmbedContent'));
         }
 
         /**
@@ -376,6 +379,64 @@
 
             return $post_array;
         }
+    
+        /**
+         * Display progress on the Link Embeded frame.
+         *
+         * @action: embed_content
+         * @file: /themes_compact/emded-content
+         */
+        function actionEmbedContent()
+        {
+            $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $url = str_replace('/emded', '', $actual_link);
+            $parsed = parse_url($url);
+            $host_from_url  = $parsed['host'];
+            $main_host = str_replace(array('http://', 'https://'), '', get_site_url());
+    
+            if($host_from_url == $main_host) {
+                $postID = url_to_postid( $url );
+                $percent = $this->get_general_progress($postID);
+                
+                if($percent) {
+                    view('single-progress', compact('percent'));
+                }
+            }
+        }
+    
+        /**
+         * Return general progress of the post or false.
+         *
+         * @param $post_id - ID of the post
+         * @return float|int - Progress percent
+         */
+        function get_general_progress($post_id)
+        {
+            $current_user_id = get_current_user_id();
+            $current_user_progress = false;
+            $posts_users = $GLOBALS['st']->get_users_by_post($post_id);
+    
+            // find total progress
+            $total_progress = 0;
+            $num_users = 0;
+            foreach ($posts_users as $user) {
+                if ( $current_user_id && isset( $user['user_id'] ) && $user['user_id'] === $current_user_id) {
+                    $current_user_progress = $user['progress'];
+                }
+                // if more than zero
+                if (isset($user['progress'])  && $user['progress'] > 0 ) {
+                    $total_progress += $user['progress'];
+                    ++$num_users;
+                }
+            }
+    
+            if ($total_progress > 0  && $num_users > 1) {
+                $total_progress = round($total_progress / $num_users, 2);
+            }
+            
+            return $total_progress;
+        }
+        
     }
 
 ?>
