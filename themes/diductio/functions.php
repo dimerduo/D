@@ -248,12 +248,7 @@
      */
     function twentyfifteen_scripts()
     {
-        // Add bootstrap
-        wp_enqueue_style('diductio-bootstrap-style',
-            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css");
-        wp_enqueue_style('diductio-bootstrap-theme',
-            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css");
-
+        Diductio::includeStyles();
         // Add custom fonts, used in the main stylesheet.
         wp_enqueue_style('twentyfifteen-fonts', twentyfifteen_fonts_url(), array(), null);
 
@@ -404,6 +399,8 @@
     //OOP start here
 
     //class autoloader function
+    
+    //Deprecated autoloading method
     spl_autoload_register(function ($class_name) {
         if ($class_name !== 'Diductio' && $class_name[0] == 'd') {
             $class_name = substr($class_name, 1);
@@ -431,7 +428,6 @@
     unset($stat_count);
     $diductio           = Diductio::gi();
     $diductio->settings = $settings;
-
     $dPost                    = new Post();
     $dUser                    = new User();
     $st                       = new Statistic;
@@ -447,6 +443,7 @@
             require_once($admin_file);
         }
     }
+    add_action('embed_head', array($diductio, 'includeStyles'));
     //OOP end here
     function sort_desc($a, $b)
     {

@@ -51,7 +51,15 @@ class Diductio
     {
         return $this->user;
     }
-
+    
+    public static function includeStyles()
+    {
+        // Add bootstrap
+        wp_enqueue_style('diductio-bootstrap-style',
+            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css");
+        wp_enqueue_style('diductio-bootstrap-theme',
+            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css");
+    }
     /**
      *  Return Post class object
      */
