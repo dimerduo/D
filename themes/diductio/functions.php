@@ -1366,26 +1366,27 @@
         }
 
         add_filter('the_content', 'remove_br_accordion');
-        add_action('wpfp_after_add', 'add_post_to_statistic', 10, 2);
+//        add_action('save_post', 'add_post_to_statistic', 10, 3);
 
         function add_post_to_statistic($post_id, $user_id = false)
         {
+            
 	        global $current_user, $wpdb;
-	        $user_id    = $user_id
-		        ? $user_id
-		        : $current_user->ID;
+	        $user_id    = $user_id  ? $user_id : $current_user->ID;
 	        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
             $wpdb->insert(
                 $table_name,
                 array(
                     'user_id'         => $user_id,
                     'post_id'         => $post_id,
+                    'update_at'         => "NOW()",
                     'lessons_count'   => 1,
                     'checked_lessons' => 0,
                 ),
                 array(
                     '%d',
                     '%d',
+                    '%s',
                     '%d',
                     '%s',
                 )

@@ -26,7 +26,7 @@
         public function addActions()
         {
             add_action('before_delete_post', Array($this, 'onPostDelete'));
-	        add_action( 'save_post', array( $this, 'on_save_post' ) );
+	        add_action( 'edit_post', array( $this, 'on_save_post' ) );
             add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
             add_action('init', Array($this, 'rewrite_mode'));
             
@@ -61,7 +61,6 @@
 	     */
 	    public function on_save_post( $post_id ) {
 		    global $wpdb;
-
 		    $user_id = (int) get_post_field( 'post_author', $post_id );
 
 		    $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
@@ -71,10 +70,8 @@
 		    $count      = (int) $wpdb->get_var( $sql );
 
 		    if ( $count === 0 ) {
-			    do_action( 'wpfp_after_add',
-				    $post_id,
-				    $user_id
-			    );
+                add_post_to_statistic($post_id, $user_id);
+//			    do_action( 'wpfp_after_add', $post_id, $user_id);
 		    }
 	    }
 
