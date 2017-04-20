@@ -71,7 +71,7 @@
 
 		    if ( $count === 0 ) {
                 add_post_to_statistic($post_id, $user_id);
-//			    do_action( 'wpfp_after_add', $post_id, $user_id);
+                $this->addToFavorite($post_id, $user_id);
 		    }
 	    }
 
@@ -432,6 +432,41 @@
             }
             
             return $total_progress;
+        }
+    
+        /**
+         * Add post ID to the favorites list
+         *
+         * @param int $post_id - post ID
+         * @param int $user_id - user ID
+         */
+        public function addToFavorite($post_id, $user_id = 0)
+        {
+            $user_id = $user_id ?: get_current_user_id();
+            
+            $posts[] = get_user_meta($user_id, 'wpfp_favorites', true);
+            if(!in_array($post_id, $posts)) {
+                $posts[] = $post_id;
+                update_user_meta($user_id, 'wpfp_favorites', $posts );
+            }
+        }
+    
+        /**
+         * Remove post_id from favorites user meta
+         *
+         * @param int $post_id - Post ID
+         * @param int $user_id - User ID
+         */
+        public function removeFromFavorite($post_id, $user_id = 0)
+        {
+            $user_id = $user_id ?: get_current_user_id();
+            $posts = get_user_meta($user_id, 'wpfp_favorites', true);
+            $search_key = array_search($post_id, $posts);
+            
+            if ($search_key) {
+                unset($posts[$search_key]);
+                update_user_meta($user_id, 'wpfp_favorites', $posts );
+            }
         }
         
     }
