@@ -6789,8 +6789,8 @@ a.lazy-load-youtube {
     color: black;
 }
 
-.user-info {
-    margin-left: 20px;
+.user-info .about {
+    line-height: 14px;
 }
 
 /* Стилизация страницы все пользователи end  */
@@ -6880,6 +6880,19 @@ a.lazy-load-youtube {
 
     .personal-area > div.avatar > .inline:first-child {
         /*margin-left: 20px;*/
+    }
+
+    .personal-area:not(.user-categories) {
+        text-align: center;
+    }
+
+    .personal-area .about {
+        margin-bottom: 16px;
+        margin-top: 10px;
+    }
+
+    .personal-area .user-categories {
+        text-align: initial;
     }
 
     .user-info {

@@ -614,6 +614,7 @@
                     $data->pecent       = $percent;
                     $data->custom_url   = '';
                     $data->progress_url = '/progress';
+                    $data->all_my_knowledges = count($this->get_knowledges($user_id));
                     if ($user_id != get_current_user_id()) {
                         $data->custom_url   = '/' . $author->user_nicename;
                         $data->progress_url = '/people/' . $author->user_nicename;

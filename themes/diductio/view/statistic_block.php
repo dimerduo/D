@@ -1,7 +1,12 @@
 <?php
-    global $st;
-    $user_id        = $data->user_id;
-    $user_statistic = $st->get_user_info($user_id);
+
+/**
+ * Вьюшка, которая отображает статистическую информацию в хедере (зеленые и синие нотисы)
+ */
+
+global $st;
+$user_id = $data->user_id;
+$user_statistic = $st->get_user_info($user_id);
 ?>
 <div id="statistic" class="hentry">
     <?php switch ($data->type):
@@ -174,24 +179,10 @@
             <div class="public_statistic row precent-row">
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="<?= $data->progress_url; ?>">
-                        <span
-                            class="label label-success <?php if ( is_page('activity') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
-                        <span class="label label-success"><?= $user_statistic['in_progress']; ?></span>
-                        <span class="label label-success"><?= $data->pecent; ?> %</span>
+                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription')): ?>label-soft<?php endif; ?>">Общее</span>
+                        <span class="label label-success"><?= $data->all_my_knowledges ?></span>
                     </a>
                 </div>
-	            <?php
-	            if ( $user_statistic['countdown_days'] > 0 ) {
-		            ?>
-		            <div class="stat-col">
-			            <span class="label label-success label-soft">Ещё</span>
-			            <span class="label label-success">
-				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
-			            </span>
-		            </div>
-		            <?php
-	            }
-	            ?>
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="/activity<?= $data->custom_url; ?>">
                         <span
