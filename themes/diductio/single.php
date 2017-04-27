@@ -187,13 +187,17 @@
 		        $diff_h_in_days = $diff->h > 0
 			        ? $diff->h / 24
 			        : 0;
-
-		        $estimated_progress = round(
-			        (
-				        ( $diff->days + $diff_h_in_days ) / $work_time
-			        ) * 100,
-			        2
-		        );
+                $estimated_progress = 0;
+                
+                if($work_time) {
+                    $estimated_progress = round(
+                        (
+                            ($diff->days + $diff_h_in_days) / $work_time
+                        ) * 100,
+                        2
+                    );
+                }
+                
 
 		        if ( $estimated_progress > 0
 		             && $current_user_progress < 100 // Hide estimated progress if user completed all tasks

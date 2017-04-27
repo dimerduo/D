@@ -265,68 +265,63 @@
 	     */
         public function get_passing_info_by_post($user_id, $post_id)
         {
-            global $wpdb;
-            global $st;
-
+            global $wpdb,$st;
+            
             $d_format = 'd.m.Y';
             $t_format = 'H:i';
-
-
-            $stat_table            = Diductio::gi()->settings['stat_table'];
-            $sql                   = "SELECT * FROM `{$stat_table}` WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
-            $row                   = $wpdb->get_row($sql, ARRAY_A);
-            $passed_lessons        = explode(',', $row['checked_lessons']);
-            $lessons_count         = $row['lessons_count'];
-            $all_lessons           = range(1, $row['lessons_count']);
+   
+            $stat_table = Diductio::gi()->settings['stat_table'];
+            $sql = "SELECT * FROM `{$stat_table}` WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
+            $row = $wpdb->get_row($sql, ARRAY_A);
+            $passed_lessons = explode(',', $row['checked_lessons']);
+            $lessons_count = $row['lessons_count'];
+            $all_lessons = range(1, $row['lessons_count']);
             $result['date_string'] = '';
-            if ($row['checked_at']) {
-                $passed_date          = explode(',', $row['checked_at']);
-                $result['started_at'] = array_shift($passed_date);
-
-	            $now = date_create();
-	            // Active for
-                $start = date_create();
-	            date_timestamp_set($start, $result['started_at'] );
-	            $active_diff = date_diff($now, $start);
-
-	            // Completed for
-	            $result['finished_at'] = end($passed_date);
-	            if ($result['finished_at']) {
-		            $end = date_create();
-		            date_timestamp_set($end, $result['finished_at'] );
-	            } else {
-		            // Fix: if $passed_date array is empty
-		            $end = date_create( $result['updated_at']);
-	            }
-	            $completed_diff = date_diff($start, $end);
-
-	            // Is in time
-	            $work_time = (int) get_post_meta( $post_id, 'work_time', true ); // days
-				$in_time = $work_time - $completed_diff->days;
-				$label_class = $in_time >= 0
-					? 'success'
-					: 'error';
-	            $in_time = '&nbsp;<span class="' . $label_class . '">(' . $in_time . ')</span>';
-
-	            $result['date_string'] = 'Активна ' . $st::ru_months_days($active_diff->days) . $in_time;
-
-	            if (count($passed_lessons) == $lessons_count) {
-                    $result['is_passed']   = 1;
-                    $result['date_string'] = 'Пройдена за ' . $st::ru_months_days( $completed_diff->days) . $in_time;
+            
+            if ($row['created_at']) {
+                $passed_date = explode(',', $row['checked_at']);;
+                $post_created = new DateTime($row['created_at']);
+                $now = new DateTime();
+                $difference = $now->diff($post_created);
+                // deadlines
+                $finish_in_days = (int)get_post_meta($post_id, 'work_time', true);
+                
+                $in_time = $finish_in_days - $difference->days;
+                $label_class = $in_time >= 0 ? 'success' : 'error';
+                $in_time = '&nbsp;<span class="' . $label_class . '">(' . $in_time . ')</span>';
+                $result['date_string'] = 'Активна ' . $st::ru_months_days($difference->days) . $in_time;
+        
+                // post is finished ?
+                if (count($passed_lessons) == $lessons_count) {
+                    $day_when_post_finished = end($passed_date);
+                    if ($day_when_post_finished) {
+                        $result['is_passed'] = 1;
+                        
+                        // count day when user finish
+                        $finishedObj = (new DateTime())->setTimestamp($day_when_post_finished);
+                        $finished_difference = $post_created->diff($finishedObj);
+                
+                        $in_time = $finish_in_days - $finished_difference->days;
+                        $in_time = '&nbsp;<span class="' . $label_class . '">(' . $in_time . ')</span>';
+                        
+                        $result['date_string'] = 'Пройдена за ' . $st::ru_months_days($finished_difference->days);
+                        $result['date_string'] .= $in_time;
+                    }
                 } else {
-                    $result['is_passed']    = 0;
-                    $unchecked_array        = array_diff($all_lessons, $passed_lessons);
+                    $result['is_passed'] = 0;
+                    
+                    $unchecked_array = array_diff($all_lessons, $passed_lessons);
                     $result['first_undone'] = array_shift($unchecked_array);
                     $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
                 }
             } else {
                 if ($row['checked_lessons'] == 0) {
-                    // Если пользователь просто добавил массив в избранное
+                    // если пользователь просто добавил массив в избранное
                     $result['first_undone'] = 1;
                     $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
                 }
             }
-
+    
             return $result;
         }
 
