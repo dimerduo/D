@@ -302,6 +302,7 @@
                         $finished_difference = $post_created->diff($finishedObj);
                 
                         $in_time = $finish_in_days - $finished_difference->days;
+                        $label_class = $in_time >= 0 ? 'success' : 'error';
                         $in_time = '&nbsp;<span class="' . $label_class . '">(' . $in_time . ')</span>';
                         
                         $result['date_string'] = 'Пройдена за ' . $st::ru_months_days($finished_difference->days);
