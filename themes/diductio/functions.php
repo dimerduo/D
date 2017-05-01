@@ -1528,6 +1528,7 @@
      */
     function view($name, $data)
     {
+        $name = str_replace('.', DIRECTORY_SEPARATOR, $name);
         extract($data);
         return require "view/{$name}.php";
     }

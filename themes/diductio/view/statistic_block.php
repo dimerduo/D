@@ -128,9 +128,7 @@ $user_statistic = $st->get_user_info($user_id);
             <div class="public_statistic row precent-row">
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people">
-                        <span
-                            class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Люди</span>
-                        <span class="label label-important"><?= $st->get_all_users(); ?></span>
+                        <span class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Все</span><span class="label label-important"><?=$st->get_all_users();?></span>
                     </a>
                 </div>
                 <div class="stat-col">
@@ -146,22 +144,6 @@ $user_statistic = $st->get_user_info($user_id);
                         <span class="label label-important"><?= $st->free_peoples_count; ?></span>
                     </a>
                 </div>
-                <div class="stat-col">
-                    <span class="label label-important-soft">Прогресс</span>
-                    <span class="label label-important"><?= $st->get_progress(); ?> %</span>
-                </div>
-	            <?php
-	            if ( $user_statistic['countdown_days'] > 0 ) {
-		            ?>
-		            <div class="stat-col">
-			            <span class="label label-success label-soft">Ещё</span>
-			            <span class="label label-success">
-				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
-			            </span>
-		            </div>
-		            <?php
-	            }
-	            ?>
                 <div class="stat-col">
                     <a href="<?= get_home_url(); ?>">
                         <span class="label label-success label-soft">Массивы</span>

@@ -9,6 +9,7 @@ get_header();
 global  $dPost, $st;
 
 $user_statistic = $st->get_user_info();
+$will_busy_days = $st::ru_months_days($user_statistic['countdown_days']);
 $author_info = wp_get_current_user();
 $user_id = $author_info->ID;
 
@@ -37,7 +38,7 @@ query_posts($qry);
     
     <main id="main" class="site-main" role="main">
         <header class="page-header" id="author-page">
-            <?php view('cabinet', compact('category_statistic', 'author_info', 'tag_statistic', 'user_id', 'dPost', 'favorite_post_ids')); ?>
+            <?php view('cabinet', compact('user_statistic','category_statistic', 'author_info', 'tag_statistic', 'user_id', 'dPost', 'favorite_post_ids','will_busy_days')); ?>
         <header>
     </main>
 </div>

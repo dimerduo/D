@@ -6533,6 +6533,11 @@ div.label {
     vertical-align: top;
 }
 
+h1.inline {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
 .hentry + .hentry, .page-header + .hentry, .page-header + .page-content {
     margin-top: 4.3333%;
 }
@@ -6613,10 +6618,6 @@ iframe {
 .all-users img {
   margin-top: 12px;
   margin-bottom: 12px;
-}
-
-.all-users .stat-col {
-    display: none;
 }
 
 /* Стилизация контентной зоны end */
@@ -6790,7 +6791,12 @@ a.lazy-load-youtube {
 }
 
 .user-info .about {
-    line-height: 14px;
+    line-height: 23px;
+}
+
+.personal-area-link {
+    text-decoration: none !important;
+    border: none !important;
 }
 
 /* Стилизация страницы все пользователи end  */
@@ -7005,6 +7011,10 @@ small.is_author {
 .tasks-counters {
 	font-size: 11px;
 	color: black;
+}
+
+.peoples-row {
+    margin-bottom: 25px;
 }
 
 .on-knowldedge {
