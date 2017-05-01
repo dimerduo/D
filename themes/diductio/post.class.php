@@ -26,7 +26,7 @@
         public function addActions()
         {
             add_action('before_delete_post', Array($this, 'onPostDelete'));
-	        add_action( 'edit_post', array( $this, 'on_save_post' ) );
+	        add_action( 'edit_post', array( $this, 'on_save_post' ), 10, 2 );
             add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
             add_action('init', Array($this, 'rewrite_mode'));
             
@@ -59,10 +59,9 @@
 	     *
 	     * @param int $post_id
 	     */
-	    public function on_save_post( $post_id ) {
+	    public function on_save_post( $post_id, $post ) {
 		    global $wpdb;
-		    $user_id = (int) get_post_field( 'post_author', $post_id );
-
+		    $user_id = $post->post_author;
 		    $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		    $sql        = "SELECT count(*)" .
 		                  "FROM `{$table_name}`" .
