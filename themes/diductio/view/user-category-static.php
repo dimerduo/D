@@ -9,7 +9,9 @@
         <div class="stat-col">
             <span class="label label-success label-soft">Активных</span>
             <span class="label label-success"><?=$user_statistic['in_progress'];?></span>
-            <span class="label label-danger"><?=$user_statistic['overdue_tasks'];?></span>
+            <?php if($user_statistic['overdue_tasks'] > 0): ?>
+                <span class="label label-danger"><?=$user_statistic['overdue_tasks'];?></span>
+            <?php endif; ?>
         </div>
     <?php foreach($category_statistic as $key => $stat):?>
         <div class="stat-col">
