@@ -98,16 +98,6 @@ $user_statistic = $st->get_user_info($user_id);
                 }
                 ?>
                 <div class="stat-col">
-                    <a href="/array-active">
-                        <span class="label label-success
-                        <?php if ( ! is_page('array-active')): ?>
-                        label-soft
-                        <?php endif; ?>
-                        ">Проходят</span>
-                        <span class="label label-success"><?= $st->active; ?></span>
-                    </a>
-                </div>
-                <div class="stat-col">
                     <a href="/source">
                         <span class="label label-success
                         <?php if ( ! is_page('source')): ?>
@@ -142,12 +132,6 @@ $user_statistic = $st->get_user_info($user_id);
                     <a href="<?php get_home_url(); ?>/people-free">
                         <span class="label label-important<?php if ( !is_page('people-free')): ?>-soft<?php endif; ?>">Свободны</span>
                         <span class="label label-important"><?= $st->free_peoples_count; ?></span>
-                    </a>
-                </div>
-                <div class="stat-col">
-                    <a href="<?= get_home_url(); ?>">
-                        <span class="label label-success label-soft">Массивы</span>
-                        <span class="label label-success"><?= $st->get_all_arrays(); ?></span>
                     </a>
                 </div>
             </div>
