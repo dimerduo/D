@@ -23,13 +23,16 @@ $user_info = $author_info = get_userdata($user_id);
 $favorite_post_ids = $st->get_knowledges($user_id);
 $post_per_page = wpfp_get_option("post_per_page");
 $page = intval(get_query_var('paged'));
-$qry = array(
-    'post__in' => $favorite_post_ids,
-    'posts_per_page' => $post_per_page,
-    'orderby' => 'post__in',
-    'paged' => $page,
-);
-query_posts($qry);
+
+if($favorite_post_ids) {
+    $qry = array(
+        'post__in' => $favorite_post_ids,
+        'posts_per_page' => $post_per_page,
+        'orderby' => 'post__in',
+        'paged' => $page,
+    );
+    query_posts($qry);
+}
 
 //Get categories information by user
 $category_statistic = $tag_statistic = array();
