@@ -258,4 +258,10 @@
 
             return $is_free;
         }
+        
+        public function  getBusyDays($user_id)
+        {
+            $user_id = $user_id ?: get_current_user_id();
+        }
+        
     }

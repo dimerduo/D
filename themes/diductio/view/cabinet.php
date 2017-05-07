@@ -9,7 +9,9 @@
         <div class="col-sm-12 col-md-2"><?= get_avatar($author_info->user_email, 96); ?></div>
         <div class="user-info col-sm-12 col-md-10">
             <h1 class="entry-title inline"><?= $author_info->data->display_name; ?></h1>
-            <?php if ($will_busy_days): ?><span class="inline">, занят еще <?= $will_busy_days; ?></span><?php endif; ?>
+            <?php if($will_busy_days): ?>
+                <?php if ($will_busy_days): ?><span class="inline">, занят еще <?= $will_busy_days; ?></span><?php endif; ?>
+            <?php endif; ?>
             <div class="about"><?= get_user_meta($author_info->ID, 'description')[0]; ?></div>
             <div class="user-categories">
                 <?php view('user-category-static',

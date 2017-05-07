@@ -506,24 +506,23 @@
 	        $now = date_create();
 	        $countdown_days = 0; // total countdown in days
 	        $overdue_tasks = 0;
+            
 	        foreach ( $in_progress_posts_created_at as $post_id => $created_at ) {
 		        $work_time = (int) get_post_meta( $post_id, 'work_time', true );
-
-		        // date_add() modifies $end object
 		        $end = date_create( $created_at );
 		        date_add( $end, date_interval_create_from_date_string( $work_time . ' days' ) );
 		        $countdown = date_diff( $end, $now );
-
-		        if ($countdown->days > $countdown_days) {
-		        	$countdown_days = $countdown->days;
-		        }
 		        if ($countdown->invert === 0) {
 		        	++$overdue_tasks;
-		        }
+		        } else {
+                    if ($countdown->days > $countdown_days) {
+                        $countdown_days = $countdown->days;
+                    }
+                }
 	        }
 	        $out['countdown_days'] = $countdown_days;
 	        $out['overdue_tasks'] = $overdue_tasks;
-
+            
             return $out;
         }
 
