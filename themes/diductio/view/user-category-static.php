@@ -19,12 +19,12 @@
             <span class="label label-success"><?=$stat;?></span>
         </div>
     <?php endforeach;?>
-    <?php foreach($tag_statistic as $key => $stat):?>
-        <div class="stat-col">
-            <span class="label label-success label-soft"><?=$key;?></span>
-            <span class="label label-success "><?=$stat;?></span>
-        </div>
-    <?php endforeach;?>
+<!--    --><?php //foreach($tag_statistic as $key => $stat):?>
+<!--        <div class="stat-col">-->
+<!--            <span class="label label-success label-soft">--><?//=$key;?><!--</span>-->
+<!--            <span class="label label-success ">--><?//=$stat;?><!--</span>-->
+<!--        </div>-->
+<!--    --><?php //endforeach;?>
     </div>
 <?php else:?>
     <?php
