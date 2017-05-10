@@ -61,13 +61,13 @@
 	     */
 	    public function on_save_post( $post_id, $post ) {
 		    global $wpdb;
+            
 		    $user_id = $post->post_author;
 		    $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
 		    $sql        = "SELECT count(*)" .
 		                  "FROM `{$table_name}`" .
 		                  "WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
 		    $count      = (int) $wpdb->get_var( $sql );
-
 		    if ( $count === 0 ) {
                 add_post_to_statistic($post_id, $user_id);
                 $this->addToFavorite($post_id, $user_id);
@@ -443,12 +443,15 @@
         /**
          * Add post ID to the favorites list
          *
-         * @param int $post_id - post ID
-         * @param int $user_id - user ID
+         * @param int $post_id - Post ID
+         * @param int $user_id - User ID
+         * @return bool        - False if method is used wrongly
          */
         public function addToFavorite($post_id, $user_id = 0)
         {
-            $user_id = $user_id ?: get_current_user_id();
+            if (!$user_id) {
+                return false;
+            }
             
             $posts[] = get_user_meta($user_id, 'wpfp_favorites', true);
             if(!in_array($post_id, $posts)) {

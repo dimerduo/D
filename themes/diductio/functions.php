@@ -1370,8 +1370,8 @@
 
         function add_post_to_statistic($post_id, $user_id = false)
         {
-            
 	        global $current_user, $wpdb;
+           
 	        $user_id    = $user_id  ? $user_id : $current_user->ID;
 	        $table_name = $wpdb->get_blog_prefix() . 'user_add_info';
             $wpdb->insert(

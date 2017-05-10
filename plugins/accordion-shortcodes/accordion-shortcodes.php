@@ -296,9 +296,9 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			if(in_array( $user_id, $accordion_part_users ) ) {
 				$accordion_class = (!$lazy_students->count) ? 'grey' : 'black' ;
 			} else {
-				if(!is_user_logged_in()) {
-					$accordion_class = ($accordion_part_users) ? 'green' : '';
-				} else {
+//				if(!is_user_logged_in()) {
+//					$accordion_class = ($accordion_part_users) ? 'green' : '';
+//				} else {
 					if($accordion_part_users && !$lazy_students->count) {
 						$accordion_class = 'grey';
 					} elseif ($accordion_part_users && $lazy_students->count) {
@@ -306,7 +306,7 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 					} else {
 						$accordion_class = '';
 					}
-				}
+//				}
 			}
 
 

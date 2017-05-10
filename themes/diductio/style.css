@@ -6797,6 +6797,10 @@ a.lazy-load-youtube {
 .personal-area-link {
     text-decoration: none !important;
     border: none !important;
+    font-size: 17px;
+}
+.person-desription {
+    font-size: 1.4rem;
 }
 
 /* Стилизация страницы все пользователи end  */
@@ -6896,6 +6900,7 @@ a.lazy-load-youtube {
         margin-bottom: 16px;
         margin-top: 10px;
     }
+
 
     .personal-area .user-categories {
         text-align: initial;
@@ -7045,6 +7050,7 @@ small.is_author {
     margin-left: 0px;
 }
 
+
 /* Стилизация Emded */
 .wp-embed-footer {
     display: none;
@@ -7067,3 +7073,15 @@ small.is_author {
 }
 /* Стилизация Emded end */
 
+.user-categories .label {
+    padding: .1em .3em .15em !important;
+    font-weight: 200;
+}
+
+.personal-area .image {
+    float: left;
+    margin: 0 1.6471em 1.6471em 0;
+}
+.all-users img {
+    width: 46px !important;
+}

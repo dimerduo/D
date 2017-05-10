@@ -5,9 +5,9 @@
  */
 ?>
 <div class="personal-area row">
-    <div class="avatar ">
-        <div class="col-sm-12 col-md-2"><?=get_avatar($author_info->user_email, 96); ?></div>
-        <div class="user-info col-sm-12 col-md-10">
+    <div class="avatar">
+        <div class="image"><?=get_avatar($author_info->user_email, 96); ?></div>
+        <div class="person-desription">
             <h1 class="entry-title inline">
                 <?php if($enable_link): ?>
                     <a class="personal-area-link"  href="<?= get_site_url(); ?>/people/<?= $author_info->user_nicename ?>">

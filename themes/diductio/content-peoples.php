@@ -11,7 +11,7 @@ global $user, $st, $dUser, $dPost;
 $Did_Categories = new Did_Categories();
 $user_id = $user->ID;
 $user_statistic = $st->get_user_info($user_id);
-$will_busy_days = $st::ru_months_days($user_statistic['countdown_days']);
+$will_busy_days = $user_statistic['countdown_days'] ? $st::ru_months_days($user_statistic['countdown_days']) : 0;
 $is_free = $dUser->is_free($user_id);
 
 $progress = $st->get_div_studying_progress($user_id);
@@ -28,18 +28,18 @@ $tasks_counters = array(
 ?>
 <div class="col-md-12 peoples-row">
     <?php view(
-            'people.single-row',
-            compact(
-                'user_statistic',
-                'category_statistic',
-                'author_info',
-                'tag_statistic',
-                'user_id',
-                'dPost',
-                'favorite_post_ids',
-                'will_busy_days',
-                'enable_link'
-            )
-        );
+        'people.single-row',
+        compact(
+            'user_statistic',
+            'category_statistic',
+            'author_info',
+            'tag_statistic',
+            'user_id',
+            'dPost',
+            'favorite_post_ids',
+            'will_busy_days',
+            'enable_link'
+        )
+    );
     ?>
 </div>
