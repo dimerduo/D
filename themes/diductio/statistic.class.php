@@ -630,6 +630,7 @@
          */
         public function get_more_statistic()
         {
+            
             $post_id      = $_POST['post_id'];
             $user_group   = $_POST['user_group'];
             $post_stat    = $this->get_course_info($post_id);

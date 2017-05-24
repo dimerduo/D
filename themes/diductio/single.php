@@ -11,7 +11,7 @@
     foreach ($wp_roles->roles as $rKey => $rvalue) {
         $roles[] = $rKey;
     }
-
+    
     $post_statistic = $st->get_course_info($post->ID);
     $active_users   = $post_statistic['active_users'];
     $done_users     = $post_statistic['done_users'];
@@ -29,7 +29,13 @@
         $done_args['include'] = $done_users;
         $done_users_array     = new WP_User_Query($done_args);
     }
-
+    
+    // suggest users
+    $suggestUser = new Did_SuggestUser();
+    if(is_user_logged_in()) {
+        $suggesting_users = $suggestUser->getSuggestingUsers(get_current_user_id(), $post->ID);
+    }
+    
     get_header(); ?>
 
 <div id="primary" class="content-area">
@@ -91,7 +97,7 @@
                 <span class="label label-success"><?= $post_statistic['les_count']; ?></span>
             </div>
         <?php endif; ?>
-
+        
         <?php
             //Получаем время урока из произвольного поля
             $work_time = (int)get_post_meta($post->ID, 'work_time', true);
@@ -126,6 +132,12 @@
             ?>
             <!-- (4) Вставка добавления избранного в начало записи end -->
         </div>
+        <?php
+            if (is_user_logged_in()) {
+                view('people.suggest-friend-modal', compact('suggesting_users'));
+            }
+        ?>
+        
         <div id="user-activity" class="row">
             <?php
             $current_user_id = get_current_user_id();
@@ -277,6 +289,7 @@
             <?php endif; ?>
 
         </div>
+        
     </div>
     <main id="main" class="site-main" role="main">
 
