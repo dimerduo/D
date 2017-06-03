@@ -26,7 +26,7 @@
         public function addActions()
         {
             add_action('before_delete_post', Array($this, 'onPostDelete'));
-	        add_action( 'edit_post', array( $this, 'on_save_post' ), 10, 2 );
+	        
             add_action('post_updated', Array($this, 'onPostUpdate'), 10, 3);
             add_action('init', Array($this, 'rewrite_mode'));
             
@@ -249,6 +249,14 @@
                 'top');
             add_rewrite_rule(
                 '^(activity)/([^/]*)/page/?([0-9]{1,})/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]', 'top'
+            );
+            add_rewrite_rule(
+                '^(avtor)/([^/]*)/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]',
+                'top');
+            add_rewrite_rule(
+                '^(avtor)/([^/]*)/page/?([0-9]{1,})/?$',
                 'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]', 'top'
             );
         }

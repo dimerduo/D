@@ -618,6 +618,10 @@
                         $data->custom_url   = '/' . $author->user_nicename;
                         $data->progress_url = '/people/' . $author->user_nicename;
                     }
+                    
+                    if ($author) {
+                        $data->to_all_authors_post = $author->user_nicename;
+                    }
                     $data->user_id = $user_id;
                     break;
             }

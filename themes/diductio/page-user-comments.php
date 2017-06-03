@@ -15,8 +15,8 @@
     $view_path = Diductio::gi()->settings['view_path'];
     $id        = $user_id ?: get_current_user_id();
     $page      = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    $per_page = 10;
-    $limit     = $per_page; /* Hardcode */
+    $per_page = 10; /* Hardcode */
+    $limit     = $per_page;
     $offset    = ($page * $limit) - $limit;
 
 

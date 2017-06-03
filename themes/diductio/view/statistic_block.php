@@ -150,6 +150,12 @@ $user_statistic = $st->get_user_info($user_id);
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
+                    <a href="/avtor/<?= $data->to_all_authors_post; ?>">
+                        <span
+                            class="label label-success <?php if ( ! is_page('activity')): ?>label-soft<?php endif; ?>">Автор</span>
+                    </a>
+                </div>
+                <div class="stat-col" style="margin-right: 11px;">
                     <a href="/activity<?= $data->custom_url; ?>">
                         <span
                             class="label label-success <?php if ( ! is_page('activity')): ?>label-soft<?php endif; ?>">Активность</span>

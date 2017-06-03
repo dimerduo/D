@@ -29,7 +29,8 @@ var suggestToUserClass = function () {
                 users: data
             },
             success: function (result) {
-                console.log('test')
+                $('#suggestUser').modal('toggle');
+                window.location.reload();
             },
             dataType: 'json'
         });
@@ -63,7 +64,7 @@ var suggestToUserClass = function () {
 
         // send ajax
         if(users) {
-            self.sendAjax(diductioObject.ajax_path, users);
+            var response = self.sendAjax(diductioObject.ajax_path, users);
         }
     };
 };
