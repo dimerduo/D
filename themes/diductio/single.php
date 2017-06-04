@@ -134,7 +134,7 @@
         </div>
         <?php
             if (is_user_logged_in()) {
-                view('people.suggest-friend-modal', compact('suggesting_users'));
+                view('people.suggest-friend-modal', compact('suggesting_users','st'));
             }
         ?>
         

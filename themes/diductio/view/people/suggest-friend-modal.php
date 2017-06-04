@@ -2,7 +2,7 @@
 <div class="stat-col">
     <div class="add-to-favor-wrapper">
                 <span class="wpfp-span">
-                    <a id="suggest-to-user" data-toggle="modal" data-target="#suggestUser">Добавить пользователя</a>
+                    <a id="suggest-to-user" data-toggle="modal" data-target="#suggestUser">Добавить людям</a>
                 </span>
     </div>
 </div>
@@ -13,18 +13,56 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Добавить пользователя</h4>
+                <h4 class="modal-title" id="myModalLabel">Добавить людям</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body all-users">
                 <div class="row">
-                    <?php foreach ($suggesting_users as $user): ?>
-                        <div class="col-md-3">
-                            <label for="user-<?=$user->ID;?>">
-                                <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
-                                <?=$user->display_name;?>
-                            </label>
-                        </div>
-                    <?php endforeach; ?>
+                    <?php if($suggesting_users): ?>
+                        <?php foreach ($suggesting_users as $user):
+                            $Did_Categories = new Did_Categories();
+        
+                            $user_id = $user->ID;
+        
+                            $author_info = get_userdata($user_id);
+                            $user_statistic = $st->get_user_info($user_id);
+                            $category_statistic = $Did_Categories
+                                ->fetchCategoriesByUser($user_id)
+                                ->orderBy('value', 'desc')
+                                ->max();
+        
+                            $tag_statistic = $Did_Categories
+                                ->fetchTagsByUser($user_id)
+                                ->orderBy('value', 'desc')
+                                ->max();
+        
+        
+                            ?>
+                            <div class="col-md-12">
+                                <label style="display: block;" for="user-<?=$user->ID;?>">
+                                    <div id="user-selecting" class="col-md-1">
+                                        <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
+                                    </div>
+                                    <?php view(
+                                        'people.single-row',
+                                        compact(
+                                            'user_statistic',
+                                            'category_statistic',
+                                            'author_info',
+                                            'tag_statistic',
+                                            'user_id',
+                                            'dPost',
+                                            'favorite_post_ids',
+                                            'will_busy_days',
+                                            'enable_link'
+                                        )
+                                    );
+                                    ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="modalMessage">Нет взаимных подписок</div>
+                    <?php endif;?>
                 </div>
             </div>
             <div class="modal-footer">

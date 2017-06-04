@@ -101,6 +101,11 @@ class Did_SuggestUser
         }
         
         foreach ($all_users as $key => $user) {
+            if (!$this->isSubsribedToMe($user)) {
+                unset($all_users[$key]);
+                continue;
+            }
+            
             $is_selected = false;
             if(in_array($user->ID, $already_subscribed)) {
                 $is_selected = true;
@@ -110,6 +115,18 @@ class Did_SuggestUser
         }
         
         return (array)$all_users;
+    }
+    
+    public function isSubsribedToMe($user)
+    {
+        $me  = get_current_user_id();
+        $subscribers = get_user_meta($user->ID, 'subscribe_to')[0];
+        
+        if ($subscribers && is_array($subscribers)) {
+            return in_array($me, $subscribers);
+        }
+        
+        return false;
     }
     
     public function getUsersByPost($post_id)

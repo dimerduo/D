@@ -7089,3 +7089,19 @@ small.is_author {
 .modal {
     top: 20px !important;
 }
+
+#user-selecting {
+    height: 86px;
+    text-align: center;
+    padding-top: 20px;
+}
+#suggest-to-user:hover {
+    cursor: pointer;
+}
+.modalMessage {
+    padding-left: 15px;
+}
+
+#suggestUser .personal-area.row {
+    margin-left: 0 !important;
+}
