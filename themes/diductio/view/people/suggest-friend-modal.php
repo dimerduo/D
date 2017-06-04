@@ -40,7 +40,7 @@
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">
                                     <div id="user-selecting" class="col-md-1">
-                                        <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
+                                        <input <?php if($user->is_selected): ?> checked="checked" disabled="disabled" <?php endif;?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
                                     </div>
                                     <?php view(
                                         'people.single-row',
