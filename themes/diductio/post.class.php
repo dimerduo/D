@@ -322,7 +322,7 @@
                             $result['date_string'] .= $in_time;
                         }
                     } else {
-                        $result['date_string'] = 'Пройдена ';
+                        $result['date_string'] = '';
                     }
                     
                 } else {
