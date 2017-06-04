@@ -73,12 +73,8 @@ $user_statistic = $st->get_user_info($user_id);
                 <?php if ($st->getPostsCountByFormat('post-format-gallery', 'post_format')): ?>
                     <div class="stat-col">
                         <a href="/type/task">
-                            <span class="label label-success
-                            <?php if ($term->slug != "post-format-gallery"): ?>
-                            label-soft
-                            <?php endif; ?>">Задачи</span>
-                            <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-gallery',
-                                    'post_format'); ?></span>
+                            <span class="label label-success <?php if ($term->slug != "post-format-gallery"): ?>label-soft<?php endif; ?>">Задачи</span>
+                            <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-gallery', 'post_format'); ?></span>
                         </a>
                     </div>
                 <?php endif; ?>
@@ -100,9 +96,7 @@ $user_statistic = $st->get_user_info($user_id);
                 <div class="stat-col">
                     <a href="/source">
                         <span class="label label-success
-                        <?php if ( ! is_page('source')): ?>
-                        label-soft
-                        <?php endif; ?>">Источники</span>
+                        <?php if ( ! is_page('source')): ?>label-soft<?php endif; ?>">Источники</span>
                         <span class="label label-success"><?= $st->get_istochiki_count(); ?></span>
                     </a>
                 </div>
