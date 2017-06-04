@@ -151,8 +151,8 @@ $user_statistic = $st->get_user_info($user_id);
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="/avtor/<?= $data->to_all_authors_post; ?>">
-                        <span
-                            class="label label-success <?php if ( $GLOBALS['page_template'] !== 'my_posts'): ?>label-soft<?php endif; ?>">Автор</span>
+                        <span class="label label-success <?php if ( $GLOBALS['page_template'] !== 'my_posts'): ?>label-soft<?php endif; ?>">Автор</span>
+                        <span class="label label-success"><?= $data->allMyPosts; ?></span>
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">

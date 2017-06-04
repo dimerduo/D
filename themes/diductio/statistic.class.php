@@ -622,7 +622,13 @@
                     if ($author) {
                         $data->to_all_authors_post = $author->user_nicename;
                     }
+                    
+                    if ($GLOBALS['page_template'] == 'my_posts' && strpos(wp_get_referer(), '/people/') !== false) {
+                        $data->progress_url = '/people/' . $author->user_nicename;
+                    }
+                    
                     $data->user_id = $user_id;
+                    $data->allMyPosts = Did_User::getAllMyPosts($user_id);
                     break;
             }
             Diductio::gi()->loadView('statistic_block', $data);

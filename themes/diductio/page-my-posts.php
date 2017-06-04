@@ -5,7 +5,7 @@
 */
 $page_template = 'my_posts';
 $current_page = get_query_var('paged');
-$user_info = get_query_var('username') ? get_user_by('slug', get_query_var('username')) : wp_get_current_user();
+$author = $user_info = get_query_var('username') ? get_user_by('slug', get_query_var('username')) : wp_get_current_user();
 
 if($user_info->ID) {
     query_posts("author={$user_info->ID}&paged={$current_page}");
