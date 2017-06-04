@@ -145,14 +145,14 @@ $user_statistic = $st->get_user_info($user_id);
             <div class="public_statistic row precent-row">
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="<?= $data->progress_url; ?>">
-                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription')): ?>label-soft<?php endif; ?>">Общее</span>
+                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription') || $GLOBALS['page_template'] == 'my_posts' ): ?>label-soft<?php endif; ?>">Общее</span>
                         <span class="label label-success"><?= $data->all_my_knowledges ?></span>
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="/avtor/<?= $data->to_all_authors_post; ?>">
                         <span
-                            class="label label-success <?php if ( ! is_page('activity')): ?>label-soft<?php endif; ?>">Автор</span>
+                            class="label label-success <?php if ( $GLOBALS['page_template'] !== 'my_posts'): ?>label-soft<?php endif; ?>">Автор</span>
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">

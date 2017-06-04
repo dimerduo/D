@@ -3,6 +3,7 @@
  * Template Name: Мои посты (публикации автора)
  * Данный шаблон выводит все авторские посты пользователя
 */
+$page_template = 'my_posts';
 $current_page = get_query_var('paged');
 $user_info = get_query_var('username') ? get_user_by('slug', get_query_var('username')) : wp_get_current_user();
 
@@ -13,7 +14,7 @@ if($user_info->ID) {
 
 get_header(); ?>
     <div id="primary" class="content-area">
-        <?php do_action('index-head'); ?>
+        <?php do_action('author-page-header'); ?>
         <main id="main" class="site-main homepage-main" role="main">
             <?php if ( have_posts() && $user_info->ID ) : ?>
         
