@@ -1,7 +1,12 @@
 <?php
-    global $st;
-    $user_id        = $data->user_id;
-    $user_statistic = $st->get_user_info($user_id);
+
+/**
+ * Вьюшка, которая отображает статистическую информацию в хедере (зеленые и синие нотисы)
+ */
+
+global $st;
+$user_id = $data->user_id;
+$user_statistic = $st->get_user_info($user_id);
 ?>
 <div id="statistic" class="hentry">
     <?php switch ($data->type):
@@ -68,12 +73,8 @@
                 <?php if ($st->getPostsCountByFormat('post-format-gallery', 'post_format')): ?>
                     <div class="stat-col">
                         <a href="/type/task">
-                            <span class="label label-success
-                            <?php if ($term->slug != "post-format-gallery"): ?>
-                            label-soft
-                            <?php endif; ?>">Задачи</span>
-                            <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-gallery',
-                                    'post_format'); ?></span>
+                            <span class="label label-success <?php if ($term->slug != "post-format-gallery"): ?>label-soft<?php endif; ?>">Задачи</span>
+                            <span class="label label-success"><?= $st->getPostsCountByFormat('post-format-gallery', 'post_format'); ?></span>
                         </a>
                     </div>
                 <?php endif; ?>
@@ -93,21 +94,9 @@
                 }
                 ?>
                 <div class="stat-col">
-                    <a href="/array-active">
-                        <span class="label label-success
-                        <?php if ( ! is_page('array-active')): ?>
-                        label-soft
-                        <?php endif; ?>
-                        ">Проходят</span>
-                        <span class="label label-success"><?= $st->active; ?></span>
-                    </a>
-                </div>
-                <div class="stat-col">
                     <a href="/source">
                         <span class="label label-success
-                        <?php if ( ! is_page('source')): ?>
-                        label-soft
-                        <?php endif; ?>">Источники</span>
+                        <?php if ( ! is_page('source')): ?>label-soft<?php endif; ?>">Источники</span>
                         <span class="label label-success"><?= $st->get_istochiki_count(); ?></span>
                     </a>
                 </div>
@@ -123,9 +112,7 @@
             <div class="public_statistic row precent-row">
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people">
-                        <span
-                            class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Люди</span>
-                        <span class="label label-important"><?= $st->get_all_users(); ?></span>
+                        <span class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Все</span><span class="label label-important"><?=$st->get_all_users();?></span>
                     </a>
                 </div>
                 <div class="stat-col">
@@ -141,28 +128,6 @@
                         <span class="label label-important"><?= $st->free_peoples_count; ?></span>
                     </a>
                 </div>
-                <div class="stat-col">
-                    <span class="label label-important-soft">Прогресс</span>
-                    <span class="label label-important"><?= $st->get_progress(); ?> %</span>
-                </div>
-	            <?php
-	            if ( $user_statistic['countdown_days'] > 0 ) {
-		            ?>
-		            <div class="stat-col">
-			            <span class="label label-success label-soft">Ещё</span>
-			            <span class="label label-success">
-				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
-			            </span>
-		            </div>
-		            <?php
-	            }
-	            ?>
-                <div class="stat-col">
-                    <a href="<?= get_home_url(); ?>">
-                        <span class="label label-success label-soft">Массивы</span>
-                        <span class="label label-success"><?= $st->get_all_arrays(); ?></span>
-                    </a>
-                </div>
             </div>
             <?php break; ?>
         <?php case('personal-area'):
@@ -174,24 +139,16 @@
             <div class="public_statistic row precent-row">
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="<?= $data->progress_url; ?>">
-                        <span
-                            class="label label-success <?php if ( is_page('activity') || is_page('subscription')): ?>label-soft<?php endif; ?>">Прогресс</span>
-                        <span class="label label-success"><?= $user_statistic['in_progress']; ?></span>
-                        <span class="label label-success"><?= $data->pecent; ?> %</span>
+                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription') || $GLOBALS['page_template'] == 'my_posts' ): ?>label-soft<?php endif; ?>">Общее</span>
+                        <span class="label label-success"><?= $data->all_my_knowledges ?></span>
                     </a>
                 </div>
-	            <?php
-	            if ( $user_statistic['countdown_days'] > 0 ) {
-		            ?>
-		            <div class="stat-col">
-			            <span class="label label-success label-soft">Ещё</span>
-			            <span class="label label-success">
-				            <?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
-			            </span>
-		            </div>
-		            <?php
-	            }
-	            ?>
+                <div class="stat-col" style="margin-right: 11px;">
+                    <a href="/avtor/<?= $data->to_all_authors_post; ?>">
+                        <span class="label label-success <?php if ( $GLOBALS['page_template'] !== 'my_posts'): ?>label-soft<?php endif; ?>">Автор</span>
+                        <span class="label label-success"><?= $data->allMyPosts; ?></span>
+                    </a>
+                </div>
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="/activity<?= $data->custom_url; ?>">
                         <span

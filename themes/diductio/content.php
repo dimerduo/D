@@ -67,7 +67,7 @@
 			 </div>
 			 <div class="col-md-3 col-xs-5 checkbox-label">
 			 		<label for="checkbox-<?=$post->ID;?>">Готово!</label>
-			 </div>	
+			 </div>
 		<?php endif;?>
 		<?php endif;?>
 	<?php endif;?>
@@ -76,7 +76,7 @@
 
 	<?php
 		// Author bio.
-		if ( is_single() && get_the_author_meta( 'description' ) ) :
+		if ( get_the_author_meta( 'description' ) ) :
 			get_template_part( 'author-bio' );
 		endif;
 	?>
@@ -104,7 +104,7 @@
 					</div>
 				<?php endif; ?>
 
-				<?php 
+				<?php
 					//Получаем время урока из произвольного поля
 					$work_time = (int)get_post_meta($post->ID, 'work_time', true);
 					if( $work_time!=0 ): ?>

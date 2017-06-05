@@ -12,7 +12,6 @@
             Мой прогресс
             <div style='float: right; margin-right: 0;' class='stat-col'>
                 <span class='label label-success label-soft'><?=$user_statistic['in_progress'];?></span>
-                <span style='margin-left: 5px;' class='label label-success label-soft'><?=$percent;?> %</span>
             </div>
         </a>
     </li>
