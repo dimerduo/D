@@ -68,7 +68,7 @@ class Did_SuggestUser
         $exclude_ids = implode(array_map(function($item){
             return $item['id'];
         }, $exclude), ',');
-        $sql = "DELETE FROM `wp_user_add_info` WHERE `user_id` IN ({$exclude_ids}) ";
+        $sql = "DELETE FROM `wp_user_add_info` WHERE `user_id` IN ({$exclude_ids}) AND `post_id` = {$post_id}  ";
         $wpdb->query($sql);
         
         // include
