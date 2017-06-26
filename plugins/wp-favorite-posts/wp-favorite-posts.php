@@ -53,8 +53,11 @@ function wp_favorite_posts() {
         global $ajax_mode;
         $ajax_mode = isset($_REQUEST['ajax']) ? $_REQUEST['ajax'] : false;
         if ($_REQUEST['wpfpaction'] == 'add') {
+            Did_Statistic::addPostToStatistic('test');
+            add_post_to_statistic($_GET['postid'], get_current_user_id());
             wpfp_add_favorite();
         } else if ($_REQUEST['wpfpaction'] == 'remove') {
+            Did_Statistic::removePostFromStatic($_GET['postid'], get_current_user_id());
             wpfp_remove_favorite();
         } else if ($_REQUEST['wpfpaction'] == 'clear') {
             if (wpfp_clear_favorites()) wpfp_die_or_go(wpfp_get_option('cleared'));

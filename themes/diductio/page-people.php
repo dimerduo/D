@@ -4,6 +4,7 @@
  * Данный шаблон страницы выводит всех пользователей на сайте
 */
 global $wp_roles;
+
 $roles = array();
 foreach ($wp_roles->roles as $rKey => $rvalue) {
 	$roles[] = $rKey;

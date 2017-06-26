@@ -506,24 +506,23 @@
 	        $now = date_create();
 	        $countdown_days = 0; // total countdown in days
 	        $overdue_tasks = 0;
+            
 	        foreach ( $in_progress_posts_created_at as $post_id => $created_at ) {
 		        $work_time = (int) get_post_meta( $post_id, 'work_time', true );
-
-		        // date_add() modifies $end object
 		        $end = date_create( $created_at );
 		        date_add( $end, date_interval_create_from_date_string( $work_time . ' days' ) );
 		        $countdown = date_diff( $end, $now );
-
-		        if ($countdown->days > $countdown_days) {
-		        	$countdown_days = $countdown->days;
-		        }
 		        if ($countdown->invert === 0) {
 		        	++$overdue_tasks;
-		        }
+		        } else {
+                    if ($countdown->days > $countdown_days) {
+                        $countdown_days = $countdown->days;
+                    }
+                }
 	        }
 	        $out['countdown_days'] = $countdown_days;
 	        $out['overdue_tasks'] = $overdue_tasks;
-
+            
             return $out;
         }
 
@@ -614,11 +613,22 @@
                     $data->pecent       = $percent;
                     $data->custom_url   = '';
                     $data->progress_url = '/progress';
+                    $data->all_my_knowledges = count($this->get_knowledges($user_id));
                     if ($user_id != get_current_user_id()) {
                         $data->custom_url   = '/' . $author->user_nicename;
                         $data->progress_url = '/people/' . $author->user_nicename;
                     }
+                    
+                    if ($author) {
+                        $data->to_all_authors_post = $author->user_nicename;
+                    }
+                    
+                    if ($GLOBALS['page_template'] == 'my_posts' && strpos(wp_get_referer(), '/people/') !== false) {
+                        $data->progress_url = '/people/' . $author->user_nicename;
+                    }
+                    
                     $data->user_id = $user_id;
+                    $data->allMyPosts = Did_User::getAllMyPosts($user_id);
                     break;
             }
             Diductio::gi()->loadView('statistic_block', $data);
@@ -630,6 +640,7 @@
          */
         public function get_more_statistic()
         {
+            
             $post_id      = $_POST['post_id'];
             $user_group   = $_POST['user_group'];
             $post_stat    = $this->get_course_info($post_id);

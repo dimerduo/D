@@ -7,66 +7,39 @@
  * @since Twenty Fifteen 1.0
  */
 
-global $user, $st, $dUser;
-$user_statistic = $st->get_user_info( $user->ID );
-$is_free        = $dUser->is_free( $user->ID );
-//$level = $st->get_rating('local', $user->ID);
-$progress = $st->get_div_studying_progress( $user->ID );
+global $user, $st, $dUser, $dPost;
+$Did_Categories = new Did_Categories();
+$user_id = $user->ID;
+$user_statistic = $st->get_user_info($user_id);
+$will_busy_days = $user_statistic['countdown_days'] ? $st::ru_months_days($user_statistic['countdown_days']) : 0;
+$is_free = $dUser->is_free($user_id);
 
+$progress = $st->get_div_studying_progress($user_id);
+$category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value', 'desc')->max();
+$tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value', 'desc')->max();
+$author_info = get_userdata($user_id);
+$favorite_post_ids = $st->get_knowledges($user_id);
+$enable_link = true;
 
 $tasks_counters = array(
-	'in_progress' => $user_statistic['in_progress'],
-	'overdue' => $user_statistic['overdue_tasks']
+    'in_progress' => $user_statistic['in_progress'],
+    'overdue' => $user_statistic['overdue_tasks'],
 );
-
 ?>
-
-<div class="col-md-6">
-	<div class="inline"><?=get_avatar( $user->user_email, 32 );?></div>
-	<div class="inline">
-		<a class="link-style-1" href="<?= get_site_url(); ?>/people/<?= $user->user_nicename ?>"><?= $user->display_name ?></a><?php
-		if ( ! $is_free ) {
-			?><span class="busy-people">, занят еще
-			<?= $st::ru_months_days( $user_statistic['countdown_days'] ); ?>
-			</span>
-		<?php } ?>
-		<div class="tasks-counters">
-			<?php if ( $tasks_counters['in_progress'] > 0 ) {
-				?>активных <?= $tasks_counters['in_progress']; ?><?php
-			}
-			if ( $tasks_counters['in_progress'] > 0
-			     && $tasks_counters['overdue'] > 0
-			) {
-				echo ", ";
-			}
-			if ( $tasks_counters['overdue'] > 0 ) {
-				?><span class="error">просроченных <?= $tasks_counters['overdue']; ?></span><?php
-			}
-			?>
-		</div>
-	</div>
-	<?php
-	// Warning this output was hidden, see: themes/diductio/style.css:6568
-	// .all-users .stat-col { display: none; }
-	// Now disabled with PHP comment
-	/*
-	if( $user_statistic['in_progress'] || $user_statistic['done'] || $level || $progress) {?>
-	<div class="inline">
-		<div class="stat-col">
-			<span class="label label-success label-soft" data-toggle="tooltip" data-placement="top" title="Активных"><?=$user_statistic['in_progress'];?></span>
-		</div>
-		<div class="stat-col">
-			<span class="label label-success label-soft" data-toggle="tooltip" data-placement="top" title="Пройденных"><?=$user_statistic['done'];?></span>
-			</div>
-		<!-- Level is disabled
-		<div class="stat-col">
-			<span class="label label-important-soft" data-toggle="tooltip" data-placement="top" title="Уровень"><?=$level;?> %</span>
-		</div>
-		-->
-		<div class="stat-col">
-			<span class="label label-important-soft" data-toggle="tooltip" data-placement="top" title="Прогресс"><?=$progress;?> %</span>
-		</div>
-	</div>
-	<?php }
-	*/ ?>
+<div class="col-md-12 peoples-row">
+    <?php view(
+        'people.single-row',
+        compact(
+            'user_statistic',
+            'category_statistic',
+            'author_info',
+            'tag_statistic',
+            'user_id',
+            'dPost',
+            'favorite_post_ids',
+            'will_busy_days',
+            'enable_link'
+        )
+    );
+    ?>
 </div>

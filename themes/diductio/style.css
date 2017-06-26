@@ -6533,6 +6533,11 @@ div.label {
     vertical-align: top;
 }
 
+h1.inline {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
 .hentry + .hentry, .page-header + .hentry, .page-header + .page-content {
     margin-top: 4.3333%;
 }
@@ -6613,10 +6618,6 @@ iframe {
 .all-users img {
   margin-top: 12px;
   margin-bottom: 12px;
-}
-
-.all-users .stat-col {
-    display: none;
 }
 
 /* Стилизация контентной зоны end */
@@ -6789,8 +6790,17 @@ a.lazy-load-youtube {
     color: black;
 }
 
-.user-info {
-    margin-left: 20px;
+.user-info .about {
+    line-height: 23px;
+}
+
+.personal-area-link {
+    text-decoration: none !important;
+    border: none !important;
+    font-size: 17px;
+}
+.person-desription {
+    font-size: 1.4rem;
 }
 
 /* Стилизация страницы все пользователи end  */
@@ -6880,6 +6890,20 @@ a.lazy-load-youtube {
 
     .personal-area > div.avatar > .inline:first-child {
         /*margin-left: 20px;*/
+    }
+
+    .personal-area:not(.user-categories) {
+        text-align: center;
+    }
+
+    .personal-area .about {
+        margin-bottom: 16px;
+        margin-top: 10px;
+    }
+
+
+    .personal-area .user-categories {
+        text-align: initial;
     }
 
     .user-info {
@@ -6994,6 +7018,10 @@ small.is_author {
 	color: black;
 }
 
+.peoples-row {
+    margin-bottom: 25px;
+}
+
 .on-knowldedge {
     display: block;
     margin-bottom: 10px;
@@ -7022,6 +7050,7 @@ small.is_author {
     margin-left: 0px;
 }
 
+
 /* Стилизация Emded */
 .wp-embed-footer {
     display: none;
@@ -7044,3 +7073,35 @@ small.is_author {
 }
 /* Стилизация Emded end */
 
+.user-categories .label {
+    padding: .1em .3em .15em !important;
+    font-weight: 200;
+}
+
+.personal-area .image {
+    float: left;
+    margin: 0 1.6471em 1.6471em 0;
+}
+.all-users img {
+    width: 46px !important;
+}
+
+.modal {
+    top: 20px !important;
+}
+
+#user-selecting {
+    height: 86px;
+    text-align: center;
+    padding-top: 20px;
+}
+#suggest-to-user:hover {
+    cursor: pointer;
+}
+.modalMessage {
+    padding-left: 15px;
+}
+
+#suggestUser .personal-area.row {
+    margin-left: 0 !important;
+}

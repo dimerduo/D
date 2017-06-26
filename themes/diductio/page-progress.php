@@ -9,6 +9,7 @@ get_header();
 global  $dPost, $st;
 
 $user_statistic = $st->get_user_info();
+$will_busy_days = $user_statistic['countdown_days'] ? $st::ru_months_days($user_statistic['countdown_days']) : 0;
 $author_info = wp_get_current_user();
 $user_id = $author_info->ID;
 
@@ -22,13 +23,15 @@ $tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value','de
 $favorite_post_ids = $st->get_knowledges($user_id);
 $post_per_page     = wpfp_get_option("post_per_page");
 $page              = intval(get_query_var('paged'));
-$qry               = array(
-    'post__in'       => $favorite_post_ids,
-    'posts_per_page' => $post_per_page,
-    'orderby'        => 'post__in',
-    'paged'          => $page,
-);
-query_posts($qry);
+if($favorite_post_ids) {
+    $qry = array(
+        'post__in' => $favorite_post_ids,
+        'posts_per_page' => $post_per_page,
+        'orderby' => 'post__in',
+        'paged' => $page,
+    );
+    query_posts($qry);
+}
 ?>
 
 <!-- Page progress -->
@@ -37,7 +40,7 @@ query_posts($qry);
     
     <main id="main" class="site-main" role="main">
         <header class="page-header" id="author-page">
-            <?php view('cabinet', compact('category_statistic', 'author_info', 'tag_statistic', 'user_id', 'dPost', 'favorite_post_ids')); ?>
+            <?php view('cabinet', compact('user_statistic','category_statistic', 'author_info', 'tag_statistic', 'user_id', 'dPost', 'favorite_post_ids','will_busy_days')); ?>
         <header>
     </main>
 </div>
