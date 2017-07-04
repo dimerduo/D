@@ -115,29 +115,7 @@
                     <span class="label label-important"> <?= $approved; ?> </span>
                 </div>
             <?php endif; ?>
-        <div class="stat-col">
-            <!-- (4) Вставка добавления избранного в начало записи -->
-            <?php
-                if (is_user_logged_in() && is_single()) {
-                    echo '<div class="add-to-favor-wrapper">';
-                    if (array_complite($post->ID)) {
-                        echo "<span class='label label-success'>Массив успешно пройден</span>";
-                    } else {
-                        if (function_exists('wpfp_link')) {
-                            wpfp_link();
-                        }
-                    }
-                    echo "</div>";
-                }
-            ?>
-            <!-- (4) Вставка добавления избранного в начало записи end -->
-        </div>
-        <?php
-            if (is_user_logged_in()) {
-                view('people.suggest-friend-modal', compact('suggesting_users','st'));
-            }
-        ?>
-        
+        <?php do_action('single-after-stat-row') ?>
         <div id="user-activity" class="row">
             <?php
             $current_user_id = get_current_user_id();
