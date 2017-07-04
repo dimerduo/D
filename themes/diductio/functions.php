@@ -1139,8 +1139,6 @@ function init_function()
     }
     add_post_type_support('post', 'custom-fields');
     
-    // add suggest user support
-    $suggestUser = new Did_SuggestUser();
 }
 
 add_action('init', 'init_function');
