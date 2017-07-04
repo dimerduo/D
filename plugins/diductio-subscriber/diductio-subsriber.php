@@ -2,28 +2,28 @@
 /*
 Plugin Name: Diductio Subscriber
 Description: This is description of this awesome plugin
-Version: 1.0
+Version: 2.0
 Author: Aleksey Novikov
 */
 register_activation_hook( __FILE__ , 'sbscr_install' );
 add_action('wp_ajax_subscribe', 'subscribe');
 add_action('wp_ajax_tag_subscribe', 'tag_subscribe');
 add_action('wp_ajax_сategory_subscribe', 'category_subscribe');
-add_action( 'wp_enqueue_scripts', 'load_scripts', 99 );
-add_filter( 'template_include', 'portfolio_page_template', 99 );
-add_action( 'widgets_init', 'WidgetInit' );
+add_action('wp_enqueue_scripts', 'load_scripts', 99);
+add_filter('template_include', 'portfolio_page_template', 99);
+add_action('widgets_init', 'WidgetInit');
+add_action('single-after-stat-row', 'suggestUsers');
+add_action('init', 'subscriber_init');
 
 
 
 function load_scripts(){
-	//style.c
-	wp_enqueue_style( 'diductio_subscriber_style', plugin_dir_url( __FILE__) . 'css/style.css' );
-	wp_enqueue_script( 'diductio_script', plugin_dir_url( __FILE__) . '/js/subscriber-script.js', array ( 'jquery' ), 1.1, true);
-	wp_localize_script('twentyfifteen-script', 'didAjax', 
-		array(
-			'url' =>admin_url('admin-ajax.php')
-		)
-	);  
+    wp_enqueue_style('diductio_subscriber_style', plugin_dir_url(__FILE__) . 'css/style.css');
+    wp_enqueue_script('diductio_script', plugin_dir_url(__FILE__) . '/js/subscriber-script.js', array('jquery'), 1.1, true);
+    wp_localize_script('twentyfifteen-script', 'didAjax', array('url' => admin_url('admin-ajax.php')));
+    wp_register_script('suggest-user', plugin_dir_url(__FILE__) . "js/suggest_user.js");
+    wp_enqueue_script('suggest-user');
+    wp_enqueue_style('suggest-user-css', plugin_dir_url(__FILE__) . 'css/suggest_user.css');
 }
 
 function WidgetInit()
@@ -96,6 +96,13 @@ function loadView($view_name, $data) {
 	if(file_exists($view_path)) {
 		include_once($view_path);
 	}	 
+}
+
+function pluginView($name, $data)
+{
+    $name = str_replace('.', DIRECTORY_SEPARATOR, $name);
+    extract($data);
+    return require plugin_dir_path( __FILE__)."view/{$name}.php";
 }
 
 function subscribe($user_id)
@@ -583,4 +590,108 @@ function getMyPostCount()
 	}
 }
 
+function suggestUsers()
+{
+	global $st, $post;
+	if (is_user_logged_in()) {
+		$suggesting_users = getSuggestingUsers(get_current_user_id(), $post->ID);
+        pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st'));
+	}
+}
+
+function suggest_me_user()
+{
+    global $dPost, $wpdb;
+    
+    $url     = wp_get_referer();
+	$post_id = url_to_postid( $url );
+	
+	$users = $_POST['users'];
+	$include = $exclude = [];
+	
+	foreach ($users as $user) {
+		if($user['alreadyHas'] == 'true') {
+			$include[] = $user;
+			continue;
+		}
+		
+		$exclude[] = $user;
+	}
+	
+	// include
+	$already_subscribed = getUsersByPost($post_id);
+	foreach ($include as $user) {
+		if (!in_array($user['id'], $already_subscribed)) {
+			add_post_to_statistic($post_id, $user['id']);
+			$dPost->addToFavorite($post_id, $user['id']);
+		}
+	}
+	
+	wp_die();
+}
+
+function getSuggestingUsers($user_id, $post_id)
+{
+	$all_users = [];
+	$subscribed_to = get_user_meta($user_id, 'subscribe_to')[0];
+	// add myself
+	$subscribed_to[$user_id] = $user_id;
+	
+	$already_subscribed = getUsersByPost($post_id);
+	
+	if ($subscribed_to) {
+		$args = [
+			'fields' => array('ID', 'display_name'),
+			'include' => $subscribed_to,
+		];
+		$all_users = get_users($args);
+	}
+	foreach ($all_users as $key => $user) {
+		if (!isSubsribedToMe($user)) {
+			unset($all_users[$key]);
+			continue;
+		}
+		
+		$is_selected = false;
+		if (in_array($user->ID, $already_subscribed)) {
+			$is_selected = true;
+		}
+		
+		$all_users[$key]->is_selected = $is_selected;
+	}
+	
+	return (array)$all_users;
+}
+
+function isSubsribedToMe($user)
+{
+	$me  = get_current_user_id();
+	$subscribers = get_user_meta($user->ID, 'subscribe_to')[0];
+	$subscribers[$user->ID] = $user->ID;
+	
+	if ($subscribers && is_array($subscribers)) {
+		return in_array($me, $subscribers);
+	}
+	
+	return false;
+}
+
+function getUsersByPost($post_id)
+{
+	global $wpdb;
+	
+	$sql = "SELECT `user_id` FROM `wp_user_add_info` WHERE `post_id` = {$post_id}";
+	$result = $wpdb->get_results($sql, 'ARRAY_A');
+	
+	$users = array_map(function ($item) {
+		return $item['user_id'];
+	}, $result);
+	
+	return $users;
+}
+function subscriber_init()
+{
+	add_action('wp_ajax_nopriv_suggestUsers', 'suggest_me_user');
+	add_action('wp_ajax_suggestUsers', 'suggest_me_user');
+}
 ?>
