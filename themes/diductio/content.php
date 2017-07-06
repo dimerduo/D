@@ -82,6 +82,7 @@
 	?>
 	
 	<footer class="entry-footer">
+        
 		<?php if(!is_single()): ?>
 		<div class="footer-statistic">
 				<?php $post_statistic = $st->get_course_info($post->ID); ?>
@@ -125,6 +126,11 @@
 		<?php endif; ?>
 		<?php twentyfifteen_entry_meta(); ?>
 		<?php edit_post_link( __( 'Edit', 'diductio' ), '<span class="edit-link">', '</span>' ); ?>
+		<?php if(is_single()): ?>
+	        <div class="post-rating">
+	            <?php if(function_exists('the_ratings')) { the_ratings(); } ?>
+	        </div>
+		<?php endif; ?>
 	</footer><!-- .entry-footer -->
 
 </article><!-- #post-## -->

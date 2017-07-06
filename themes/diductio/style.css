@@ -6494,7 +6494,7 @@ div.label {
 
 .label-important {
     background-color: #337ab7;
-    margin-right: 6px;
+    /*margin-right: 6px;*/
 }
 
 .label-grey {
@@ -6760,6 +6760,7 @@ div.precent-row {
     font-size: 15px !important;
     color: #36f;
     text-decoration: none;
+    font-weight: 300;
 }
 
 .accordion-title:hover {
@@ -7104,4 +7105,8 @@ small.is_author {
 
 #suggestUser .personal-area.row {
     margin-left: 0 !important;
+}
+
+.post-rating {
+    margin-top: 10px;
 }
