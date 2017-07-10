@@ -7108,5 +7108,6 @@ small.is_author {
 }
 
 .post-rating {
-    margin-top: 10px;
+    display: inline-block;
+    margin-right: 10px;
 }
