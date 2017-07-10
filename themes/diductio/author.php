@@ -32,7 +32,7 @@ if($favorite_post_ids) {
 //Get categories information by user
 $category_statistic = $tag_statistic = array();
 $Did_Categories = new Did_Categories();
-$category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value', 'desc')->max();
+$category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value', 'desc')->get(3);
 $tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value', 'desc')->max();
 ?>
 

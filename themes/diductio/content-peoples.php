@@ -15,7 +15,7 @@ $will_busy_days = $user_statistic['countdown_days'] ? $st::ru_months_days($user_
 $is_free = $dUser->is_free($user_id);
 
 $progress = $st->get_div_studying_progress($user_id);
-$category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value', 'desc')->max();
+$category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value', 'desc')->get(3);
 $tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value', 'desc')->max();
 $author_info = get_userdata($user_id);
 $favorite_post_ids = $st->get_knowledges($user_id);

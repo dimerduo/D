@@ -94,13 +94,6 @@ $user_statistic = $st->get_user_info($user_id);
                 }
                 ?>
                 <div class="stat-col">
-                    <a href="/source">
-                        <span class="label label-success
-                        <?php if ( ! is_page('source')): ?>label-soft<?php endif; ?>">Источники</span>
-                        <span class="label label-success"><?= $st->get_istochiki_count(); ?></span>
-                    </a>
-                </div>
-                <div class="stat-col">
                     <a href="/people">
                         <span class="label label-important-soft">Люди</span>
                         <span class="label label-important"><?= $st->get_all_users(); ?></span>
@@ -112,13 +105,13 @@ $user_statistic = $st->get_user_info($user_id);
             <div class="public_statistic row precent-row">
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people">
-                        <span class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Все</span><span class="label label-important"><?=$st->get_all_users();?></span>
+                        <span class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Все</span>
+                        <span class="label label-important"><?=$st->get_all_users();?></span>
                     </a>
                 </div>
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people-active">
-                        <span
-                            class="label label-important<?php if ( ! is_page('people-active')): ?>-soft<?php endif; ?>">Заняты</span>
+                        <span class="label label-important<?php if ( ! is_page('people-active')): ?>-soft<?php endif; ?>">Заняты</span>
                         <span class="label label-important"><?= $st->active_studies_users; ?></span>
                     </a>
                 </div>

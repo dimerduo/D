@@ -7,7 +7,7 @@ class Did_SuggestUser
      */
     public function __construct()
     {
-        $this->doActions();
+//        $this->doActions();
     }
     
     /**

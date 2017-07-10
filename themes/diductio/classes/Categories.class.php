@@ -128,9 +128,19 @@ class Did_Categories
         
     }
     
-    function get()
+    /**
+     * Fetching data
+     *
+     * @param  int   $number - Limit category number
+     * @return array         - Found category
+     */
+    function get($number = 0)
     {
-       return $this->categoies;
+        if ($number && count($this->categoies) > $number) {
+            return array_slice($this->categoies, 0, $number, true);
+        }
+        
+        return $this->categoies;
     }
 }
 ?>

@@ -3,6 +3,8 @@
  * Template Name: Мои посты (публикации автора)
  * Данный шаблон выводит все авторские посты пользователя
 */
+global $wp_query;
+
 $page_template = 'my_posts';
 $current_page = get_query_var('paged');
 $author = $user_info = get_query_var('username') ? get_user_by('slug', get_query_var('username')) : wp_get_current_user();
