@@ -22,6 +22,12 @@ plugins/onlyregistered
 plugins/rewrite-rules-inspector
 plugins/monkeyman-rewrite-analyzer
 plugins/debug-bar
+plugins/avatar-manager/
+plugins/mathjax-latex/
+plugins/qsm-certificate-1.0.0/
+plugins/tinymce-advanced/
+plugins/ulogin/
+plugins/wp-postratings/
 
 
 

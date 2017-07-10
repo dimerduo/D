@@ -33,7 +33,7 @@
                     : '';
                 ?>
                 <li>
-                    <a href="<?= get_permalink() . get_first_unchecked_lesson(get_the_ID()) ?>"
+                    <a href="<?= get_permalink(); ?>"
                        title="<?= get_the_title(); ?>">
                         <?= get_the_title(); ?>
                         <?php if ($author_id === $user_id): ?>

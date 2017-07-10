@@ -17,7 +17,7 @@
     </li>
     <?php foreach ($knowledges as $knowledge):
         $pass_info = $GLOBALS['dPost']->get_passing_info_by_post($user_ID, $knowledge->ID);
-        $link = get_permalink($knowledge->ID) . get_first_unchecked_lesson($knowledge->ID);
+        $link = get_permalink($knowledge->ID);
         ?>
     <li class="widget-my-project-list">
         <div>

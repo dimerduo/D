@@ -21,7 +21,7 @@
 			if ( is_single() ) :
 				the_title( '<h1 class="entry-title">', '</h1>' );
 			else :
-				the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) . get_first_unchecked_lesson($post->ID) ), '</a></h2>' );
+				the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' );
 			endif;
 		?>
 	</header><!-- .entry-header -->
@@ -82,6 +82,11 @@
 	?>
 	
 	<footer class="entry-footer">
+		<?php if(is_single()): ?>
+			<div class="post-rating">
+				<?php if(function_exists('the_ratings')) { the_ratings(); } ?>
+			</div>
+		<?php endif; ?>
 		<?php if(!is_single()): ?>
 		<div class="footer-statistic">
 				<?php $post_statistic = $st->get_course_info($post->ID); ?>
@@ -125,6 +130,7 @@
 		<?php endif; ?>
 		<?php twentyfifteen_entry_meta(); ?>
 		<?php edit_post_link( __( 'Edit', 'diductio' ), '<span class="edit-link">', '</span>' ); ?>
+		
 	</footer><!-- .entry-footer -->
 
 </article><!-- #post-## -->
