@@ -7111,3 +7111,9 @@ small.is_author {
     display: inline-block;
     margin-right: 10px;
 }
+
+.logout a {
+    color: #c30;
+    font-size: 13px;
+    border-bottom: 1px dotted #c30 !important;
+}

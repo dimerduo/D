@@ -32,12 +32,12 @@
     <?php endforeach; ?>
     <!-- Navigation  -->
     <li class='row'>
-        <div class='col-xs-6 col-md-6 col-sm-6'><a href='/wp-admin/profile.php'>Мой профиль</a></div>
-        <div style='text-align: right;' class='col-xs-6 col-md-6 col-sm-6'><?=wp_loginout(false, 0);?></div>
+        <div class='col-xs-6 col-md-6 col-sm-6'><a class="link-style-1" href='/wp-admin/profile.php'>Настройки</a></div>
+        <div style='text-align: right;' class='col-xs-6 col-md-6 col-sm-6 logout'><?=wp_loginout(false, 0);?></div>
     </li>
     <!-- Navigation end -->
     <?php else: ?>
-        <li><a href="<?=wp_registration_url();?>">Регистрация</a></li>
-        <li><?=wp_loginout(false, 0);?></li>
+        <li><a class="link-style-3" href="<?=wp_registration_url();?>">Регистрация</a></li>
+        <li class="logout"><?=wp_loginout(false, 0);?></li>
     <?php endif; ?>
 </ul>

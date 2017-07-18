@@ -5,7 +5,6 @@
  * Важная информация!!! Шаблон работает как и раньше с плагином wpf-favorite posts.
 */
 get_header();
-
 global  $dPost, $st;
 
 $user_statistic = $st->get_user_info();
