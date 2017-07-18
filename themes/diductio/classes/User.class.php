@@ -2,6 +2,13 @@
 
 class Did_User
 {
+    /**
+     * Получить все посты пользователя
+     * Get all posts by user
+     *
+     * @param string $user_id - ID пользователя | ID of the user
+     * @return int $current_user_posts - Количество постов | Total posts count
+     */
     public static function getAllMyPosts($user_id)
     {
         $args = array(

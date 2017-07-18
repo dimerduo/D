@@ -29,6 +29,7 @@
                                 ->fetchCategoriesByUser($user_id)
                                 ->orderBy('value', 'desc')
                                 ->max();
+                            $user_statistic['author'] = Did_User::getAllMyPosts($user_id);
         
                             $tag_statistic = $Did_Categories
                                 ->fetchTagsByUser($user_id)

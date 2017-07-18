@@ -15,6 +15,12 @@
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        <?php if($user_statistic['author']): ?>
+            <div class="stat-col">
+                <span class="label label-grey-soft">Автор</span>
+                <span class="label label-grey"><?=$user_statistic['author']?></span>
+            </div>
+        <?php endif; ?>
     <?php foreach($category_statistic as $key => $stat):?>
         <div class="stat-col">
             <span class="label label-grey-soft"><?=$key;?></span>

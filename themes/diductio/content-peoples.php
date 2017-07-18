@@ -12,6 +12,7 @@ $Did_Categories = new Did_Categories();
 $user_id = $user->ID;
 $user_statistic = $st->get_user_info($user_id);
 $will_busy_days = $user_statistic['countdown_days'] ? $st::ru_months_days($user_statistic['countdown_days']) : 0;
+$user_statistic['author'] = Did_User::getAllMyPosts($user_id);
 $is_free = $dUser->is_free($user_id);
 
 $progress = $st->get_div_studying_progress($user_id);
