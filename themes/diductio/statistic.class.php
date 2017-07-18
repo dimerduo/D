@@ -730,9 +730,13 @@
                 $results[$key]['progress'] = $this->count_progress($result['lessons_count'],
                     $result['checked_lessons']);
             }
-            usort($results, function ($a, $b) {
-                return $a['progress'] - $b['progress'];
-            });
+            
+            foreach ($results as $key => $result) {
+                $progress[$key]  = $result['progress'];
+                $created_at[$key] = $result['created_at'];
+            }
+            
+            array_multisort($progress, SORT_ASC, $created_at, SORT_DESC, $results);
 
             if ($user_id && $type != 'all') {
                 $done   = array();
