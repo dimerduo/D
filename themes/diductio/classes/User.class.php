@@ -22,5 +22,4 @@ class Did_User
         
         return count($current_user_posts);
     }
-    
 }

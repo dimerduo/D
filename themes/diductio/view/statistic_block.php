@@ -104,6 +104,12 @@ $user_statistic = $st->get_user_info($user_id);
         <?php case 'peoples': ?>
             <div class="public_statistic row precent-row">
                 <div class="stat-col">
+                    <a href="<?php get_home_url(); ?>/authors">
+                        <span class="label label-important<?php if ( ! is_page('authors')): ?>-soft<?php endif; ?>">Авторы</span>
+                        <span class="label label-important"><?=$data->all_authors;?></span>
+                    </a>
+                </div>
+                <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people">
                         <span class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Все</span>
                         <span class="label label-important"><?=$st->get_all_users();?></span>

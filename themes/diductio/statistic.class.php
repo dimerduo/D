@@ -630,6 +630,9 @@
                     $data->user_id = $user_id;
                     $data->allMyPosts = Did_User::getAllMyPosts($user_id);
                     break;
+                case 'peoples':
+                    $data->all_authors = count(Did_Posts::getAllAuthors());
+                    break;
             }
             Diductio::gi()->loadView('statistic_block', $data);
         }

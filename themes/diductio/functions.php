@@ -1549,6 +1549,7 @@ $GLOBALS['comment'] = $comment; ?>
                 return;
             }
             
+            
             $path = __DIR__ . '/' . 'classes' . '/' . str_replace('Did_', '', $class) . '.class' . '.php';
             if (!file_exists($path)) {
                 return;
