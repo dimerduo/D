@@ -94,7 +94,7 @@ $user_statistic = $st->get_user_info($user_id);
                 }
                 ?>
                 <div class="stat-col">
-                    <a href="/people">
+                    <a href="/authors">
                         <span class="label label-important-soft">Люди</span>
                         <span class="label label-important"><?= $st->get_all_users(); ?></span>
                     </a>
