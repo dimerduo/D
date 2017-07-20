@@ -80,7 +80,6 @@ get_header(); ?>
         $page_args =  array(
             'base' => str_replace( $big = 999999999, '%#%', $paginate_url.$big ), // the base URL, including query arg
             'format' => '&p=%#%', // this defines the query parameter that will be used, in this case "p"
-            
             'prev_text' => __('&laquo; Previous'), // text for previous page
             'next_text' => __('Next &raquo;'), // text for next page
             'total' => $total_pages, // the total number of pages we have

@@ -6659,8 +6659,7 @@ div.footer-menu > div.fMenu-item {
 
 div.stat-col {
     display: inline-block;
-    /*margin-right: 25px;*/
-    margin-right: 17px;
+    margin-right: 11px;
 }
 
 div.stat-col > a:hover {
@@ -6741,7 +6740,8 @@ div.precent-row {
 
 /* Стилизация страницы все пользователи */
 #users-page div.stat-col {
-    margin-right: 0;
+    margin-right: 11px;
+    margin-bottom: 10px;
 }
 
 #users-page .label-important {

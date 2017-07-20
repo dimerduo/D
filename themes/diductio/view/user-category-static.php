@@ -4,7 +4,6 @@
  */
 ?>
 <!-- User Category Static  -->
-<?php if($category_statistic): ?>
     <div class="public_statistic row precent-row">
         <?php if(!empty($user_statistic['in_progress']) || !empty($user_statistic['overdue_tasks'])): ?>
             <div class="stat-col">
@@ -34,9 +33,4 @@
 <!--        </div>-->
 <!--    --><?php //endforeach;?>
     </div>
-<?php else:?>
-    <?php
-        //TODO: Display error/notice if category statistic does not exist.
-    ?>
-<?php endif; ?>
 <!-- User Category Static end -->
