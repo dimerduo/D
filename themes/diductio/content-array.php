@@ -43,11 +43,15 @@
 			<?php
 			$post_statistic = $st->get_course_info($post->ID);
 			$post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
+			$post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
 			?>
 			<?php if($post_statistic['in_progress'] > 0 ): ?>
 				<div class="stat-col">
 					<span class="label label-success label-soft">Проходят</span>
 					<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
+					<?php if($post_statistic['overdue_users']): ?>
+						<span class="label label-danger"><?=$post_statistic['overdue_users'];?></span>
+					<?php endif; ?>
 					<?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] != 100): ?>
 						<span class="label label-success"><?=$post_statistic['total_progress'];?> %</span>
 					<?php endif; ?>
