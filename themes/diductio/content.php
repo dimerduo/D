@@ -89,17 +89,26 @@
 		<?php endif; ?>
 		<?php if(!is_single()): ?>
 		<div class="footer-statistic">
-				<?php $post_statistic = $st->get_course_info($post->ID); ?>
+				<?php
+					$post_statistic = $st->get_course_info($post->ID);
+					$post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
+				?>
 				<?php if($post_statistic['in_progress'] > 0 ): ?>
 					<div class="stat-col">
 						<span class="label label-success label-soft">Проходят</span>
 						<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
+						<?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] != 100): ?>
+							<span class="label label-success"><?=$post_statistic['total_progress'];?> %</span>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 				<?php if($post_statistic['done'] > 0 ): ?>
 					<div class="stat-col">
 						<span class="label label-success label-soft">Прошли</span>
 						<span class="label label-success"><?=$post_statistic['done'];?></span>
+						<?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] == 100): ?>
+							<span class="label label-success"><?=$post_statistic['total_progress'];?> %</span>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 				<?php if($post_statistic['les_count']): ?>

@@ -5,12 +5,18 @@ class Did_Statistic
     public $stat_table;
     
     /**
+     * @var Statistic
+     */
+    public $oldStatisticClass;
+    
+    /**
      * Did_Statistic constructor.
      */
     public function __construct()
     {
         $diductio = Diductio::gi();
         $this->stat_table = $diductio->settings['stat_table'];
+        $this->oldStatisticClass = $GLOBALS['st'];
     }
     
     /**

@@ -22,4 +22,28 @@ class Did_User
         
         return count($current_user_posts);
     }
+    
+    public static function getAllMySubscribers($user_id)
+    {
+        $args = [
+            'fields' => ['user_login', 'ID'],
+            'meta_query' => [
+                'relation' => 'OR',
+                [
+                    'key' => 'subscribe_to',
+                    'value' => $user_id,
+                    'compare' => 'LIKE',
+                ],
+            ],
+        ];
+        $users = new WP_User_Query($args);
+        $result = array();
+        
+        foreach ($users->get_results() as $key => $user) {
+            $result[$key]['ID'] = $user->ID;
+            $result[$key]['user_login'] = $user->user_login;
+        }
+        
+        return $result;
+    }
 }

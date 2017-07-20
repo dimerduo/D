@@ -762,8 +762,8 @@
 
             return $$type;
         }
-
-
+    
+        
         function get_users_by_post($post_id)
         {
             global $dUser;
