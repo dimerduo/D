@@ -726,20 +726,10 @@
 
             $sql = "SELECT {$select} FROM `{$table_name}` ";
             $sql .= $user_id ? "WHERE `user_id` = {$user_id} " : '';
+            $sql .= 'ORDER BY `created_at` DESC ';
             $results = $wpdb->get_results($sql, ARRAY_A);
 
-            //sorting
-            foreach ($results as $key => $result) {
-                $results[$key]['progress'] = $this->count_progress($result['lessons_count'],
-                    $result['checked_lessons']);
-            }
-            if($results) {
-                foreach ($results as $key => $result) {
-                    $progress[$key]  = $result['progress'];
-                    $created_at[$key] = $result['created_at'];
-                }
-                array_multisort($progress, SORT_ASC, $created_at, SORT_DESC, $results);
-            }
+            
 
             if ($user_id && $type != 'all') {
                 $done   = array();

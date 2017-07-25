@@ -21,8 +21,8 @@ class Did_Posts
     public static function getAllAuthors()
     {
         global $wpdb;
-        
-        $sql = "SELECT `ID`, `post_author` FROM `wp_posts` GROUP BY `post_author`";
+    
+        $sql = "SELECT `ID`, `post_author` FROM `wp_posts` WHERE `post_type` = 'post' GROUP BY `post_author`";
         $result = $wpdb->get_results($sql, ARRAY_A);
         if ($result) {
             return $result;

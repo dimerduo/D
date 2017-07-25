@@ -46,4 +46,9 @@ class Did_User
         
         return $result;
     }
+    
+    public function getFinishedPosts($user_id)
+    {
+        
+    }
 }
