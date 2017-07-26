@@ -72,4 +72,23 @@ class Did_Statistic
         
     }
     
+    /**
+     * Возвращает суммированный рейтинг прогресса пользователя
+     * Return sum of the inner progress rating of the user
+     *
+     * @param $user_id
+     * @return int
+     */
+    public static function getSummOfTheInnerRatingByUser($user_id)
+    {
+        $passedPosts = Did_User::getPassedPosts($user_id);
+        $summ = 0;
+        foreach ($passedPosts as $post) {
+            $passedData = Did_Posts::getPassedPostRating($post['post_id'], $user_id);
+            $summ+=$passedData['value'];
+        }
+        
+        return $summ;
+    }
+    
 }

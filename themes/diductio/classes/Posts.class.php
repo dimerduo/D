@@ -16,7 +16,10 @@ class Did_Posts
     }
     
     /**
-     * Get all authors
+     * Getting all authors
+     * Получить всех авторов
+     *
+     * @return array|bool - Authors list or 'false' if there are not any authors
      */
     public static function getAllAuthors()
     {
@@ -31,6 +34,13 @@ class Did_Posts
         return false;
     }
     
+    /**
+     * Get Post progress of all users by the Post
+     * Получить прогресс всех пользователей по посту
+     *
+     * @param  int   $post_id - ID of the Post
+     * @return float          - List of all users with their progress
+     */
     public static function getAllUsersProgress($post_id)
     {
         $self = new self();
@@ -49,7 +59,11 @@ class Did_Posts
     }
     
     /**
-     * @param $post_id
+     * Ger list of the users, who overdue their posts
+     * Получить список пользователей, которые просрочили выполнение задачи по срокам
+     *
+     * @param  int   $post_id - ID of the Post
+     * @return array          - Users list
      */
     public static function getOverDueUsers($post_id)
     {
@@ -70,6 +84,14 @@ class Did_Posts
         return $overdue_users;
     }
     
+    /**
+     * When user has been started to learn the post
+     * Когда пользователь начал проходит пост
+     *
+     * @param  int $user_id - ID of the Post
+     * @param  int $post_id - ID of the User
+     * @return bool         - Created at data or false if user did not started to learn it
+     */
     public function userStartedAt($user_id, $post_id)
     {
         global $wpdb;
@@ -82,6 +104,44 @@ class Did_Posts
         }
     
         return false;
+    }
+    
+    /**
+     * Получить рейтинг пройденного поста (внутренний рейтинг)
+     * Get rating of the passed post (inner rating)
+     *
+     * @param  int   $post_id - ID of the Post
+     * @param  int   $user_id - ID of the User
+     * @return array          - Rating data, including css class
+     */
+    public static function getPassedPostRating($post_id, $user_id)
+    {
+        global $wpdb;
+        $self = new self();
+        $table = $self->staticClass->stat_table;
+        $sql = "SELECT * FROM `{$table}` WHERE `post_id` = {$post_id} AND `user_id` = {$user_id}";
+        $stat_info = $wpdb->get_row($sql, ARRAY_A);
+        $work_time = get_post_meta($post_id, 'work_time')[0];
+        $time_stamp = end(explode(',', $stat_info['checked_at']));
+        
+        $last_checked = new DateTime();
+        $last_checked->setTimestamp($time_stamp);
+        
+        $created_at = new DateTime($stat_info['created_at']);
+        
+        $fact = $created_at->diff($last_checked)->format("%a");
+        $data['class'] = 'label-danger';
+        $data['value'] = round($fact / $work_time, 1) * (-1);
+        
+        if ($work_time > $fact) {
+            $data['class'] = 'label-success';
+            $data['value'] = 0;
+            if ($fact) {
+                $data['value'] = round($work_time / $fact, 1);
+            }
+        }
+        
+        return $data;
     }
     
 }

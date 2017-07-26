@@ -986,7 +986,7 @@ function my_scripts_method()
 }
 
 // (15) Вывод прогресса в "Мои курсы"
-function diductio_add_progress($post_id, $uid = false, $render = true)
+function    diductio_add_progress($post_id, $uid = false, $render = true)
 {
     global $wpdb;
     

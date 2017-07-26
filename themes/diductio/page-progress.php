@@ -9,11 +9,11 @@ global  $dPost, $st;
 
 $user_statistic = $st->get_user_info();
 $will_busy_days = $user_statistic['countdown_days'] ? $st::ru_months_days($user_statistic['countdown_days']) : 0;
-
 $author_info = wp_get_current_user();
 $user_id = $author_info->ID;
-$user_statistic['author'] = Did_User::getAllMyPosts($user_id);
+$author_info->inner_passing_rating = Did_Statistic::getSummOfTheInnerRatingByUser($user_id);
 
+$user_statistic['author'] = Did_User::getAllMyPosts($user_id);
 
 
 // get categories information by user

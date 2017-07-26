@@ -3,6 +3,19 @@
 class Did_User
 {
     /**
+     * @var Did_Statistic
+     */
+    public $statistic;
+    
+    /**
+     * Did_User constructor.
+     */
+    public function __construct()
+    {
+        $this->statistic = new Did_Statistic();
+    }
+    
+    /**
      * Получить все посты пользователя
      * Get all posts by user
      *
@@ -47,8 +60,17 @@ class Did_User
         return $result;
     }
     
-    public function getFinishedPosts($user_id)
+    public static function getPassedPosts($user_id)
     {
+        global $wpdb;
         
+        $self = new self();
+        $table = Diductio::gi()->settings['stat_table'];
+        $sql = "SELECT * FROM `{$table}` WHERE `user_id` = {$user_id} ";
+        $sql .="AND ((LENGTH(`checked_lessons`) - LENGTH(REPLACE(`checked_lessons`, ',', ''))+1) = `lessons_count`) ";
+        $result = $wpdb->get_results($sql, ARRAY_A);
+        
+        return $result;
     }
+    
 }

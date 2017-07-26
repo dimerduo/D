@@ -1,4 +1,4 @@
-/*   
+/*
 Theme Name: Diductio
 Theme URI: http://diductio.ru/about
 Description: diductio theme
@@ -6881,6 +6881,8 @@ a.lazy-load-youtube {
         margin-left: 0;
     }
 
+
+
     .comments-area {
         margin-left: 0 !important;
     }
@@ -7116,4 +7118,10 @@ small.is_author {
     color: #c30;
     font-size: 13px;
     border-bottom: 1px dotted #c30 !important;
+}
+
+.single {
+    margin-bottom: 10px !important;
+    display: inline-block !important;
+    margin-right: 5px;
 }
