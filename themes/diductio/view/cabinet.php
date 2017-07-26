@@ -31,9 +31,7 @@
                 $percent = $GLOBALS['st']->get_user_progress_by_post(get_the_ID(), $user_id);
                 
                 if ($percent == 100) {
-                    
                     $passed_rating = Did_Posts::getPassedPostRating(get_the_ID(), $user_id);
-                    
                 }
                 $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
                 $on_knowledge = $passing_date['undone_title']
@@ -41,7 +39,9 @@
                     : '';
                 ?>
                 <li>
-                    <span data-toggle="tooltip" data-placement="top" title="Oценка системы" class="label <?=$passed_rating['class'];?> single"><?=$passed_rating['value'];?></span>
+                    <?php if($passed_rating): ?>
+                        <span data-toggle="tooltip" data-placement="top" title="Oценка системы" class="label <?=$passed_rating['class'];?> single"><?=$passed_rating['value'];?></span>
+                    <?php endif; ?>
                     <a href="<?= get_permalink(); ?>"
                        title="<?= get_the_title(); ?>">
                         <?= get_the_title(); ?>
@@ -53,6 +53,7 @@
                     <?= diductio_add_progress(get_the_ID(), $user_id, false); ?>
                     <?= $on_knowledge; ?>
                 </li>
+                <?php unset($passed_rating); ?>
             <?php endwhile; ?>
         </ul>
     </div>
