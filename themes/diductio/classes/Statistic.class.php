@@ -92,9 +92,12 @@ class Did_Statistic
             $last_checked->setTimestamp($time_stamp);
             $created_at = new DateTime($post['created_at']);
             $tmpFact = $created_at->diff($last_checked)->format("%a");
+            if (!$tmpFact) {
+                $tmpFact = 1;
+            }
+            
             $fact += $tmpFact;
         }
-    
         $totalRating = 0;
         
         if ($fact) {

@@ -134,10 +134,10 @@ class Did_Posts
         if ($fact) {
             $data['value'] = round($work_time / $fact, 1) * 100;
         } else {
-            $data['value'] = 0;
+            $data['value'] = round($work_time / 1, 1) * 100;
         }
         
-        if ($data['value'] > 100) {
+        if ($data['value'] > 99) {
             $data['class'] = 'label-success';
         }
         
