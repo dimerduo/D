@@ -131,14 +131,14 @@ class Did_Posts
         
         $fact = $created_at->diff($last_checked)->format("%a");
         $data['class'] = 'label-danger';
-        $data['value'] = round($fact / $work_time, 1) * (-1);
-        
-        if ($work_time > $fact) {
-            $data['class'] = 'label-success';
+        if ($fact) {
+            $data['value'] = round($work_time / $fact, 1) * 100;
+        } else {
             $data['value'] = 0;
-            if ($fact) {
-                $data['value'] = round($work_time / $fact, 1);
-            }
+        }
+        
+        if ($data['value'] > 100) {
+            $data['class'] = 'label-success';
         }
         
         return $data;

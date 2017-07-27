@@ -19,6 +19,7 @@ $progress = $st->get_div_studying_progress($user_id);
 $category_statistic = $Did_Categories->fetchCategoriesByUser($user_id)->orderBy('value', 'desc')->get(3);
 $tag_statistic = $Did_Categories->fetchTagsByUser($user_id)->orderBy('value', 'desc')->max();
 $author_info = get_userdata($user_id);
+$author_info->inner_passing_rating = Did_Statistic::getSummOfTheInnerRatingByUser($user_id);
 $favorite_post_ids = $st->get_knowledges($user_id);
 $enable_link = true;
 

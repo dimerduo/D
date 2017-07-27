@@ -82,13 +82,26 @@ class Did_Statistic
     public static function getSummOfTheInnerRatingByUser($user_id)
     {
         $passedPosts = Did_User::getPassedPosts($user_id);
-        $summ = 0;
+        $totalWorkTime = 0;
+        $fact = 0;
         foreach ($passedPosts as $post) {
-            $passedData = Did_Posts::getPassedPostRating($post['post_id'], $user_id);
-            $summ+=$passedData['value'];
+            $post_work_time = get_post_meta($post['post_id'], 'work_time')[0];
+            $totalWorkTime += $post_work_time;
+            $time_stamp = end(explode(',', $post['checked_at']));
+            $last_checked = new DateTime();
+            $last_checked->setTimestamp($time_stamp);
+            $created_at = new DateTime($post['created_at']);
+            $tmpFact = $created_at->diff($last_checked)->format("%a");
+            $fact += $tmpFact;
+        }
+    
+        $totalRating = 0;
+        
+        if ($fact) {
+            $totalRating = ($totalWorkTime / $fact) * 100;
         }
         
-        return $summ;
+        return round($totalRating, 1);
     }
     
 }

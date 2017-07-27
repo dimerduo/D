@@ -6799,6 +6799,10 @@ a.lazy-load-youtube {
     text-decoration: none !important;
     border: none !important;
     font-size: 17px;
+    line-height: 23px;
+}
+.personal-area .user-info > .inline {
+    line-height: 31px;
 }
 .person-desription {
     font-size: 1.4rem;
