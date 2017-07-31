@@ -132,7 +132,7 @@ $user_statistic['subscribers'] = count(Did_User::getAllMySubscribers($user_id));
             <?php break; ?>
         <?php case('personal-area'):
             global $dUser;
-            $subscription_count = $dUser->getSubscriptionsCount($user_id);
+            $subscription_count = count(Did_User::getUserSubscription($user_id));
             $comment_count      = $dUser->get_comments_count($user_id);
             ?>
 

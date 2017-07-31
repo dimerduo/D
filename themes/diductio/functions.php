@@ -599,7 +599,7 @@ class WP_Widget_Meta_Mod extends
             $user_ID = get_current_user_id();
             $user_statistic = $st->get_user_info($user_ID);
             $comments_count = $dUser->get_comments_count($user_ID);
-            $subscription_count = $dUser->getSubscriptionsCount($user_ID);
+            $subscription_count = count(Did_User::getUserSubscription($user_id));
             $progress_percent = $st->get_knowledges($user_ID, 'active');
             $percent = 0;
             if ($progress_percent) {

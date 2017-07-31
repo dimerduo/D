@@ -73,4 +73,16 @@ class Did_User
         return $result;
     }
     
+    public static function getUserSubscription($user_id)
+    {
+        $subscriber_list = get_user_meta($user_id, 'subscribe_to')[0];
+        foreach ($subscriber_list as $key => $user) {
+            $user_exist = get_userdata($user);
+            if(!$user_exist) {
+                unset($subscriber_list[$key]);
+            }
+        }
+        
+        return $subscriber_list;
+    }
 }
