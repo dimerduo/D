@@ -24,11 +24,13 @@
                             $user_id = $user->ID;
         
                             $author_info = get_userdata($user_id);
+                            $author_info->inner_passing_rating = Did_Statistic::getSummOfTheInnerRatingByUser($user_id);
                             $user_statistic = $st->get_user_info($user_id);
                             $category_statistic = $Did_Categories
                                 ->fetchCategoriesByUser($user_id)
                                 ->orderBy('value', 'desc')
                                 ->max();
+                            $user_statistic['author'] = Did_User::getAllMyPosts($user_id);
         
                             $tag_statistic = $Did_Categories
                                 ->fetchTagsByUser($user_id)

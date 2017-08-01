@@ -1,4 +1,4 @@
-/*   
+/*
 Theme Name: Diductio
 Theme URI: http://diductio.ru/about
 Description: diductio theme
@@ -6659,8 +6659,7 @@ div.footer-menu > div.fMenu-item {
 
 div.stat-col {
     display: inline-block;
-    /*margin-right: 25px;*/
-    margin-right: 17px;
+    margin-right: 11px;
 }
 
 div.stat-col > a:hover {
@@ -6741,7 +6740,8 @@ div.precent-row {
 
 /* Стилизация страницы все пользователи */
 #users-page div.stat-col {
-    margin-right: 0;
+    margin-right: 11px;
+    margin-bottom: 10px;
 }
 
 #users-page .label-important {
@@ -6799,6 +6799,10 @@ a.lazy-load-youtube {
     text-decoration: none !important;
     border: none !important;
     font-size: 17px;
+    line-height: 23px;
+}
+.personal-area .user-info > .inline {
+    line-height: 31px;
 }
 .person-desription {
     font-size: 1.4rem;
@@ -6880,6 +6884,8 @@ a.lazy-load-youtube {
     #author-page div.wpfp-span > ul {
         margin-left: 0;
     }
+
+
 
     .comments-area {
         margin-left: 0 !important;
@@ -7110,4 +7116,17 @@ small.is_author {
 .post-rating {
     display: inline-block;
     margin-right: 10px;
+}
+
+.logout a {
+    color: #c30;
+    font-size: 13px;
+    border-bottom: 1px dotted #c30 !important;
+}
+
+.single_stat {
+    margin-bottom: 10px !important;
+    display: inline-block !important;
+    margin-right: 5px;
+    font-weight: 200;
 }

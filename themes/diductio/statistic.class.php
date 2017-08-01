@@ -630,6 +630,9 @@
                     $data->user_id = $user_id;
                     $data->allMyPosts = Did_User::getAllMyPosts($user_id);
                     break;
+                case 'peoples':
+                    $data->all_authors = count(Did_Posts::getAllAuthors());
+                    break;
             }
             Diductio::gi()->loadView('statistic_block', $data);
         }
@@ -723,16 +726,10 @@
 
             $sql = "SELECT {$select} FROM `{$table_name}` ";
             $sql .= $user_id ? "WHERE `user_id` = {$user_id} " : '';
+            $sql .= 'ORDER BY `created_at` DESC ';
             $results = $wpdb->get_results($sql, ARRAY_A);
 
-            //sorting
-            foreach ($results as $key => $result) {
-                $results[$key]['progress'] = $this->count_progress($result['lessons_count'],
-                    $result['checked_lessons']);
-            }
-            usort($results, function ($a, $b) {
-                return $a['progress'] - $b['progress'];
-            });
+            
 
             if ($user_id && $type != 'all') {
                 $done   = array();
@@ -755,8 +752,8 @@
 
             return $$type;
         }
-
-
+    
+        
         function get_users_by_post($post_id)
         {
             global $dUser;

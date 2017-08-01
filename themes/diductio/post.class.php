@@ -244,6 +244,14 @@
             add_rewrite_tag('%username%', '([^&]+)');
             add_rewrite_rule('^(subscription)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
             add_rewrite_rule(
+                '^(subscribers)/([^/]*)/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]',
+                'top');
+            add_rewrite_rule(
+                '^(subscribers)/([^/]*)/page/?([0-9]{1,})/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]', 'top'
+            );
+            add_rewrite_rule(
                 '^(activity)/([^/]*)/?$',
                 'index.php?pagename=$matches[1]&username=$matches[2]',
                 'top');
@@ -259,6 +267,7 @@
                 '^(avtor)/([^/]*)/page/?([0-9]{1,})/?$',
                 'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]', 'top'
             );
+            
         }
 
 	    /**

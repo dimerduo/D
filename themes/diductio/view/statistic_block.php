@@ -7,6 +7,7 @@
 global $st;
 $user_id = $data->user_id;
 $user_statistic = $st->get_user_info($user_id);
+$user_statistic['subscribers'] = count(Did_User::getAllMySubscribers($user_id));
 ?>
 <div id="statistic" class="hentry">
     <?php switch ($data->type):
@@ -94,7 +95,7 @@ $user_statistic = $st->get_user_info($user_id);
                 }
                 ?>
                 <div class="stat-col">
-                    <a href="/people">
+                    <a href="/authors">
                         <span class="label label-important-soft">Люди</span>
                         <span class="label label-important"><?= $st->get_all_users(); ?></span>
                     </a>
@@ -103,6 +104,12 @@ $user_statistic = $st->get_user_info($user_id);
             <?php break; ?>
         <?php case 'peoples': ?>
             <div class="public_statistic row precent-row">
+                <div class="stat-col">
+                    <a href="<?php get_home_url(); ?>/authors">
+                        <span class="label label-important<?php if ( ! is_page('authors')): ?>-soft<?php endif; ?>">Авторы</span>
+                        <span class="label label-important"><?=$data->all_authors;?></span>
+                    </a>
+                </div>
                 <div class="stat-col">
                     <a href="<?php get_home_url(); ?>/people">
                         <span class="label label-important<?php if ( ! is_page('people')): ?>-soft<?php endif; ?>">Все</span>
@@ -125,14 +132,14 @@ $user_statistic = $st->get_user_info($user_id);
             <?php break; ?>
         <?php case('personal-area'):
             global $dUser;
-            $subscription_count = $dUser->getSubscriptionsCount($user_id);
+            $subscription_count = count(Did_User::getUserSubscription($user_id));
             $comment_count      = $dUser->get_comments_count($user_id);
             ?>
 
             <div class="public_statistic row precent-row">
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="<?= $data->progress_url; ?>">
-                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription') || $GLOBALS['page_template'] == 'my_posts' ): ?>label-soft<?php endif; ?>">Общее</span>
+                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription') || is_page('subscribers')  || $GLOBALS['page_template'] == 'my_posts' ): ?>label-soft<?php endif; ?>">Общее</span>
                         <span class="label label-success"><?= $data->all_my_knowledges ?></span>
                     </a>
                 </div>
@@ -154,6 +161,13 @@ $user_statistic = $st->get_user_info($user_id);
                         <span
                             class="label label-success <?php if ( ! is_page('subscription')): ?>label-soft<?php endif; ?>"">Подписки</span>
                         <span class="label label-success"><?= $subscription_count; ?></span>
+                    </a>
+                </div>
+                <div class="stat-col" style="margin-right: 11px;">
+                    <a href="/subscribers<?= $data->custom_url; ?>">
+                        <span
+                            class="label label-success <?php if ( ! is_page('subscribers')): ?>label-soft<?php endif; ?>"">Подписчики</span>
+                        <span class="label label-success"><?=$user_statistic['subscribers']; ?></span>
                     </a>
                 </div>
                 <?php

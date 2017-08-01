@@ -13,6 +13,7 @@
     }
     
     $post_statistic = $st->get_course_info($post->ID);
+    $post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
     $active_users   = $post_statistic['active_users'];
     $done_users     = $post_statistic['done_users'];
     if ($active_users) {

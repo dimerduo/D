@@ -35,7 +35,8 @@
                                 ->orderBy('value', 'desc')
                                 ->max();
         
-        
+                            $user_statistic['author'] = Did_User::getAllMyPosts($user_id);
+                            
                             ?>
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">

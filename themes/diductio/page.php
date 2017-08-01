@@ -10,6 +10,7 @@
  * @subpackage Twenty_Fifteen
  * @since Twenty Fifteen 1.0
  */
+print_r("tst");exit;
 get_header();
 ?>
 
