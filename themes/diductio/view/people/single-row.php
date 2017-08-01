@@ -8,6 +8,10 @@
     <div class="avatar">
         <div class="image"><?=get_avatar($author_info->user_email, 96); ?></div>
         <div class="person-desription">
+            <?php if($author_info->inner_passing_rating > 0): ?>
+                <span class="label <?php if($author_info->inner_passing_rating > 99):?>label-success<?php else:?>label-danger<?php endif;?> single_stat" data-toggle="tooltip" data-placement="top" title="Общая оценка системы"><?=$author_info->inner_passing_rating;?>%</span>
+            <?php endif; ?>
+            
             <h1 class="entry-title inline">
                 <?php if($enable_link): ?>
                     <a class="personal-area-link"  href="<?= get_site_url(); ?>/people/<?= $author_info->user_nicename ?>">

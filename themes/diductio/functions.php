@@ -599,7 +599,7 @@ class WP_Widget_Meta_Mod extends
             $user_ID = get_current_user_id();
             $user_statistic = $st->get_user_info($user_ID);
             $comments_count = $dUser->get_comments_count($user_ID);
-            $subscription_count = $dUser->getSubscriptionsCount($user_ID);
+            $subscription_count = count(Did_User::getUserSubscription($user_id));
             $progress_percent = $st->get_knowledges($user_ID, 'active');
             $percent = 0;
             if ($progress_percent) {
@@ -986,7 +986,7 @@ function my_scripts_method()
 }
 
 // (15) Вывод прогресса в "Мои курсы"
-function diductio_add_progress($post_id, $uid = false, $render = true)
+function    diductio_add_progress($post_id, $uid = false, $render = true)
 {
     global $wpdb;
     
@@ -1548,6 +1548,7 @@ $GLOBALS['comment'] = $comment; ?>
             if (0 !== strpos($class, 'Did_')) {
                 return;
             }
+            
             
             $path = __DIR__ . '/' . 'classes' . '/' . str_replace('Did_', '', $class) . '.class' . '.php';
             if (!file_exists($path)) {

@@ -4,15 +4,13 @@
      * Данный шаблон страницы выводит подписки пользователя
     */
     global $wp_roles, $wp_query;
-
-    if ($wp_query->query_vars['username']) {
-        $username       = $wp_query->query_vars['username'];
+    if (get_query_var('username')) {
+        $username       = get_query_var('username');
         $user_data      = get_user_by('slug', $username);
         $logged_user_id = $user_data->ID;
     } else {
         $logged_user_id = get_current_user_id();
     }
-
     $subscriber_list = get_user_meta($logged_user_id, 'subscribe_to');
     $roles           = array();
     foreach ($wp_roles->roles as $rKey => $rvalue) {
@@ -21,8 +19,7 @@
 
     if ( ! empty($subscriber_list)) {
         $subscriber_list = $subscriber_list[0];
-
-
+        
         $count_args       = array(
             'role__in' => $roles,
             'fields'   => 'all_with_meta',
@@ -31,7 +28,6 @@
         );
         $user_count_query = new WP_User_Query($count_args);
         $user_count       = $user_count_query->get_results();
-        // print_r($user_count);
         // count the number of users found in the query
         $total_users = $user_count ? count($user_count) : 1;
     } else {
