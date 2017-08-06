@@ -325,11 +325,12 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			$sql .= "AND `post_id` = '{$post_id}'";
 			$progress        = $wpdb->get_row( $sql );
 			$checked_lessons = explode( ',', $progress->checked_lessons );
-
+            $isMine = Did_Posts::isPostInMyCabinet($user_id, $post_id);
+            
 			if ( in_array( $ids['accourdion_count'], $checked_lessons ) ) {
 				$checkbox_attr = "checked='checked' disabled='disabled'";
 			}
-			if ( is_user_logged_in() ) {
+			if ( is_user_logged_in() && $isMine ) {
 				$checkbox_html = "<div class='col-md-1' style='height:0;'><div style='height: 22px;' class='checkbox'>
    <input type='checkbox'
    class='accordion-checkbox'

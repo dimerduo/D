@@ -144,4 +144,23 @@ class Did_Posts
         return $data;
     }
     
+    /**
+     * Checking does provided post is in the cabinet of the provided user
+     * Метод проверяет наличие поста в личном кабинете пользователя
+     *
+     * @param  int $user_id
+     * @param  int $post_id
+     * @return bool
+     */
+    public static function isPostInMyCabinet($user_id, $post_id)
+    {
+        global $wpdb;
+        
+        $table = Diductio::getInstance()->settings['stat_table'];
+        $sql = "SELECT `id` FROM `{$table}` WHERE `user_id` = {$user_id} AND `post_id` = {$post_id} ";
+        $result = $wpdb->get_results($sql, ARRAY_A);
+        
+        return !empty($result);
+    }
+    
 }

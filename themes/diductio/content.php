@@ -53,12 +53,13 @@
 			$sql  = "SELECT `checked_lessons` FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
 			$sql .= "AND `post_id` = '{$post->ID}'";
 			$progress = $wpdb->get_row($sql);
-
+		    $isMine = Did_Posts::isPostInMyCabinet($user_id, $post->ID);
+		    
 			if($progress->checked_lessons) {
 				$checkbox_attr = "checked='checked' disabled='disabled'";
 			}
 		?>
-		 <?php if(is_user_logged_in()): ?>
+		 <?php if(is_user_logged_in() && $isMine): ?>
 			 <div class="col-md-1 col-xs-2" style="height: 0;">
 					<div style="height: 22px;" class="checkbox inline">
 						<input id="checkbox-<?=$post->ID;?>" type="checkbox" class="accordion-checkbox" data-accordion-count="1" data-post-id="<?=$post->ID;?>" <?=$checkbox_attr?> >

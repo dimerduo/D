@@ -7,6 +7,7 @@
      * @since      Twenty Fifteen 1.0
      */
     global $wp_roles, $post, $dUser, $st, $dPost;
+    
     $roles = array();
     foreach ($wp_roles->roles as $rKey => $rvalue) {
         $roles[] = $rKey;
