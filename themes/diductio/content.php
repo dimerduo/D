@@ -99,7 +99,7 @@
 						<span class="label label-success label-soft">Проходят</span>
 						<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
 						<?php if($post_statistic['overdue_users']): ?>
-							<span class="label label-danger"><?=$post_statistic['overdue_users'];?></span>
+							<span data-toggle="tooltip" data-placement="top" title="Просрочили" class="label label-danger"><?=$post_statistic['overdue_users'];?></span>
 						<?php endif; ?>
 						<?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] != 100): ?>
 							<span class="label label-success"><?=$post_statistic['total_progress'];?> %</span>

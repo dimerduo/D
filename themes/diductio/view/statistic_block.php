@@ -139,7 +139,7 @@ $user_statistic['subscribers'] = count(Did_User::getAllMySubscribers($user_id));
             <div class="public_statistic row precent-row">
                 <div class="stat-col" style="margin-right: 11px;">
                     <a href="<?= $data->progress_url; ?>">
-                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription') || is_page('subscribers')  || $GLOBALS['page_template'] == 'my_posts' ): ?>label-soft<?php endif; ?>">Общее</span>
+                        <span class="label label-success <?php if ( is_page('activity') || is_page('subscription') || is_page('subscribers') || is_page('group') || $GLOBALS['page_template'] == 'my_posts' ): ?>label-soft<?php endif; ?>">Общее</span>
                         <span class="label label-success"><?= $data->all_my_knowledges ?></span>
                     </a>
                 </div>
@@ -154,6 +154,13 @@ $user_statistic['subscribers'] = count(Did_User::getAllMySubscribers($user_id));
                         <span
                             class="label label-success <?php if ( ! is_page('activity')): ?>label-soft<?php endif; ?>">Активность</span>
                         <span class="label label-success"><?= $comment_count; ?></span>
+                    </a>
+                </div>
+                <div class="stat-col" style="margin-right: 11px;">
+                    <a href="/group<?= $data->custom_url; ?>">
+                        <span
+                            class="label label-success <?php if ( ! is_page('group')): ?>label-soft<?php endif; ?>">Группа</span>
+                        <span class="label label-success"><?=count(Did_User::getReciprocalSubscriptions($user_id)); ?></span>
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
