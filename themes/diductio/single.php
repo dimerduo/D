@@ -14,6 +14,7 @@
     
     $post_statistic = $st->get_course_info($post->ID);
     $post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
+    $post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
     $active_users   = $post_statistic['active_users'];
     $done_users     = $post_statistic['done_users'];
     if ($active_users) {
@@ -45,6 +46,12 @@
             <div class="stat-col">
                 <span class="label label-success label-soft">Проходят</span>
                 <span class="label label-success"><?= $post_statistic['in_progress']; ?></span>
+                <?php if($post_statistic['overdue_users']): ?>
+                    <span data-toggle="tooltip" data-placement="bottom" title="Просрочили" class="label label-danger"><?=$post_statistic['overdue_users'];?></span>
+                <?php endif; ?>
+                <?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] != 100): ?>
+                    <span data-toggle="tooltip" data-placement="bottom" title="Общий прогресс" class="label label-success"><?=$post_statistic['total_progress'];?> %</span>
+                <?php endif; ?>
                 <div class="inline profile_avatars">
                     <?php
                         // User Loop
@@ -71,6 +78,9 @@
             <div class="stat-col">
                 <span class="label label-success label-soft">Прошли</span>
                 <span class="label label-success"><?= $post_statistic['done']; ?></span>
+                <?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] == 100): ?>
+                    <span data-toggle="tooltip" data-placement="bottom" title="Общий прогресс" class="label label-success"><?=$post_statistic['total_progress'];?> %</span>
+                <?php endif; ?>
                 <div class="inline profile_avatars">
                     <?php
                         // User Loop
