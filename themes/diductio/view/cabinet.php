@@ -36,9 +36,7 @@
                     $passed_rating = Did_Posts::getPassedPostRating(get_the_ID(), $user_id);
                 }
                 $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
-                $on_knowledge = $passing_date['undone_title']
-                    ? '<span class="on-knowldedge"> На этапе: ' . $passing_date['undone_title'] . '</span>'
-                    : '';
+               
                 ?>
                 <li>
                     <?php if($passed_rating): ?>
@@ -53,7 +51,6 @@
                     </a>
                     <?= $passing_string; ?>
                     <?= diductio_add_progress(get_the_ID(), $user_id, false); ?>
-                    <?= $on_knowledge; ?>
                 </li>
                 <?php unset($passed_rating); ?>
             <?php endwhile; ?>

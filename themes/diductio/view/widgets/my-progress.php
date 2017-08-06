@@ -24,10 +24,8 @@
         <div>
             <a class="link-style-1" href="<?=$link;?>"><?=$knowledge->post_title;?></a>
         </div>
-        <?php if($pass_info['undone_title']):
-            $stoped_on = $GLOBALS['dPost']->get_accordion_element_title($knowledge->ID, $pass_info['first_undone']);
-            ?>
-            <div class="progress-on">На этапе: <?=$stoped_on;?></div>
+        <?php if($pass_info['undone_title']): ?>
+            <!-- <div class="progress-on">На этапе:</div> -->
         <?php endif; ?>
     </li>
     <?php endforeach; ?>
