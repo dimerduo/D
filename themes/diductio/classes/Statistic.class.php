@@ -88,6 +88,10 @@ class Did_Statistic
             $post_work_time = get_post_meta($post['post_id'], 'work_time')[0];
             $totalWorkTime += $post_work_time;
             $time_stamp = end(explode(',', $post['checked_at']));
+            if (!$time_stamp) {
+                continue;
+            }
+            
             $last_checked = new DateTime();
             $last_checked->setTimestamp($time_stamp);
             $created_at = new DateTime($post['created_at']);
@@ -105,6 +109,29 @@ class Did_Statistic
         }
         
         return round($totalRating, 1);
+    }
+    
+    public static function addedBy($post_id, $user_id)
+    {
+        $self = new Self();
+        $info = [];
+        $stat_row = $self->getStatisticRow($post_id, $user_id);
+        if ($stat_row && $stat_row['added_by']) {
+            $info  = get_userdata($stat_row['added_by']);
+        }
+        
+        return $info;
+    }
+    
+    public function getStatisticRow($post_id, $user_id)
+    {
+        global $wpdb;
+        
+        $table = Diductio::getInstance()->settings['stat_table'];
+        $sql = "SELECT * FROM `{$table}` WHERE `user_id` = {$user_id} AND `post_id` = {$post_id}";
+        $result = $wpdb->get_row($sql, ARRAY_A);
+        
+        return $result;
     }
     
 }

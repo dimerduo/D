@@ -1390,6 +1390,7 @@ $GLOBALS['comment'] = $comment; ?>
                 'update_at' => "NOW()",
                 'lessons_count' => 1,
                 'checked_lessons' => 0,
+                'added_by' => $current_user->ID
             ),
             array(
                 '%d',
@@ -1397,6 +1398,7 @@ $GLOBALS['comment'] = $comment; ?>
                 '%s',
                 '%d',
                 '%s',
+                '%d',
             )
         );
     }

@@ -30,6 +30,7 @@
                 $author_id = get_the_author_meta('ID'); ?>
                 <?php
                 $passing_date = $dPost->get_passing_info_by_post($user_id, get_the_ID());
+                $added_by = Did_Statistic::addedBy(get_the_ID(), $user_id);
                 $percent = $GLOBALS['st']->get_user_progress_by_post(get_the_ID(), $user_id);
                 
                 if ($percent == 100) {
@@ -51,6 +52,13 @@
                     </a>
                     <?= $passing_string; ?>
                     <?= diductio_add_progress(get_the_ID(), $user_id, false); ?>
+                    <?php if ($added_by && $added_by->ID != get_current_user_id()): ?>
+                        <div class="progress-on">
+                            <a href="<?= get_site_url(); ?>/people/<?= $added_by->user_nicename ?>">
+                                <?=$added_by->display_name?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </li>
                 <?php unset($passed_rating); ?>
             <?php endwhile; ?>

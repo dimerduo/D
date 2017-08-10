@@ -358,6 +358,7 @@
                 }
             }
             
+            
             return $result;
         }
 
@@ -400,7 +401,7 @@
                 if ($passing_info['first_undone']) {
                     $tmp_title          = $this->get_accordion_element_title($item['post_id'],
                         $passing_info['first_undone']);
-//                    $tmpPost->stoped_on = "На этапе: " . $tmp_title;
+                    $tmpPost->stoped_on = "На этапе: " . $tmp_title;
                 }
                 $post_array[] = $tmpPost;
             }

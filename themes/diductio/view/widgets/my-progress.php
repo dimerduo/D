@@ -18,14 +18,18 @@
     </li>
     <?php foreach ($knowledges as $knowledge):
         $pass_info = $GLOBALS['dPost']->get_passing_info_by_post($user_ID, $knowledge->ID);
-        $link = get_permalink($knowledge->ID);
+        $added_by = Did_Statistic::addedBy($knowledge->ID, $user_ID);
         ?>
     <li class="widget-my-project-list">
         <div>
             <a class="link-style-1" href="<?=$link;?>"><?=$knowledge->post_title;?></a>
         </div>
-        <?php if($pass_info['undone_title']): ?>
-            <!-- <div class="progress-on">На этапе:</div> -->
+        <?php if ($added_by && $added_by->ID != get_current_user_id()): ?>
+            <div class="progress-on">
+                <a href="<?= get_site_url(); ?>/people/<?= $added_by->user_nicename ?>">
+                    <?=$added_by->display_name?>
+                </a>
+            </div>
         <?php endif; ?>
     </li>
     <?php endforeach; ?>

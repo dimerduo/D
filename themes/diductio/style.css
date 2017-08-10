@@ -7130,3 +7130,8 @@ small.is_author {
     margin-right: 5px;
     font-weight: 200;
 }
+
+.progress-on a {
+    font-size: 14px;
+    color: #36f;
+}
