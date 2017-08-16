@@ -1,5 +1,25 @@
 var $ = jQuery;
 
+var diductioClass = function () {
+    var self = this;
+
+    this.sendAjax = function (action, data) {
+        $.ajax({
+            type: 'POST',
+            url: diductioObject.ajax_path,
+            data: {
+                action: action,
+                data: data
+            },
+            success: function (response) {
+                return response;
+            },
+            dataType: 'json'
+        });
+    };
+};
+var diductio = new diductioClass();
+
 $(document).ready(function () {
     $('input.accordion-checkbox').click(function (event) {
         lessonElemChecked(event.target)
@@ -20,6 +40,10 @@ $(document).ready(function () {
         $(this).parent().find('i').toggleClass('glyphicon-plus glyphicon-minus');
         $(this).toggleText('Развернуть', 'Свернуть');
         $('.rest-users').slideToggle(600);
+    });
+
+    $('.remove-user').click(function(){
+        removeUser(event.target);
     });
 });
 
@@ -43,6 +67,7 @@ function lessonElemChecked(obj) {
         url: diductioObject.child_theme_url + '/requests.php',
         data: {'post_id': post_id, 'checked_elements': checked_elements, 'lessons_count': lessons_count},
         success: function (data) {
+
         }
     });
 }
@@ -178,3 +203,19 @@ jQuery.fn.extend({
         });
     }
 });
+
+function removeUser(obj)
+{
+    var user_id = $(obj).data('userid');
+    var $checkbox = $(obj).parents('.accordion-content').find('.accordion-checkbox');
+    var post_id = $checkbox.data('post-id');
+    var accordion_element = $checkbox.data('accordion-count');
+    var data  = {
+        "user_id": user_id,
+        "post_id": post_id,
+        "accordion_element": accordion_element
+    };
+    diductio.sendAjax('removeLessonPartFromUser', data);
+}
+
+

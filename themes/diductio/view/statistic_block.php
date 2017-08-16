@@ -144,7 +144,7 @@ $user_statistic['subscribers'] = count(Did_User::getAllMySubscribers($user_id));
                     </a>
                 </div>
                 <div class="stat-col" style="margin-right: 11px;">
-                    <a href="/avtor/<?= $data->to_all_authors_post; ?>">
+                    <a href="/avtor/<?= $data->custom_url; ?>">
                         <span class="label label-success <?php if ( $GLOBALS['page_template'] !== 'my_posts'): ?>label-soft<?php endif; ?>">Автор</span>
                         <span class="label label-success"><?= $data->allMyPosts; ?></span>
                     </a>

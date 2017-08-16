@@ -26,6 +26,7 @@
         </div>
         <?php if ($added_by && $added_by->ID != get_current_user_id()): ?>
             <div class="progress-on">
+                Вам добавил:
                 <a href="<?= get_site_url(); ?>/people/<?= $added_by->user_nicename ?>">
                     <?=$added_by->display_name?>
                 </a>

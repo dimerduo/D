@@ -437,6 +437,7 @@ Diductio::gi()->post = $dPost;
 Diductio::gi()->user = $dUser;
 Diductio::gi()->statistic = $st;
 
+
 if (is_admin()) {
     $file_name = 'admin.class.php';
     $admin_file = get_template_directory() . DIRECTORY_SEPARATOR . $file_name;
@@ -986,7 +987,7 @@ function my_scripts_method()
 }
 
 // (15) Вывод прогресса в "Мои курсы"
-function    diductio_add_progress($post_id, $uid = false, $render = true)
+function diductio_add_progress($post_id, $uid = false, $render = true)
 {
     global $wpdb;
     
@@ -1390,7 +1391,7 @@ $GLOBALS['comment'] = $comment; ?>
                 'update_at' => "NOW()",
                 'lessons_count' => 1,
                 'checked_lessons' => 0,
-                'added_by' => $current_user->ID
+                'added_by' => $current_user->ID,
             ),
             array(
                 '%d',
@@ -1560,5 +1561,7 @@ $GLOBALS['comment'] = $comment; ?>
             require $path;
         }
     );
-    
-    ?>
+    //init ajax
+    $Did_static = new Did_Statistic();
+    $Did_static->initAjax();
+?>

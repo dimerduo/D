@@ -283,6 +283,7 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			$this->item_count ++;
 
 			$ids = $this->get_accordion_id( $id );
+            
 			// (19) Добавление чекбокса в аккордеон
 			global $wpdb, $dUser;
 			$post_id              = $ids['post_id'];
@@ -346,14 +347,14 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 				$checkbox_html = "";
 			}
 
-			//Render accordion passed users block
+			// render accordion passed users block
 			$passed_users = "<div class='passed_users profile_avatars'>";
             foreach ($accordion_part_users as $acc_user) {
-
-                //user info
+                
+                // user info
                 $acc_user_info = $dUser->getUserData($acc_user);
-				$passed_users .= "<div class='inline profile'>";
-				$passed_users .= "<a href='{$acc_user_info['user_link']}'>";
+                $passed_users .= "<div class='inline profile'>";
+                $passed_users .= "<a href='{$acc_user_info['user_link']}'>";
 				$passed_users .= $acc_user_info['avatar'];
 				$passed_users .= '<span class="profile-nicename">'. $acc_user_info['username'] .'</span>';
 				$passed_users .= "</a>";
@@ -362,6 +363,7 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
                 if($passed_date) {
                     $passed_users .='<span class="passed-in">' .  $passed_date . '</span>';
                 }
+                $passed_users .= "<span class='remove-user' data-userId='{$acc_user_info['user_id']}'>X</span>";
 				$passed_users .= "</div>";
 			}
 			$passed_users .= "</div>";
