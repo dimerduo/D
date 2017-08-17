@@ -19,12 +19,13 @@
     <?php foreach ($knowledges as $knowledge):
         $pass_info = $GLOBALS['dPost']->get_passing_info_by_post($user_ID, $knowledge->ID);
         $added_by = Did_Statistic::addedBy($knowledge->ID, $user_ID);
+            
         ?>
     <li class="widget-my-project-list">
         <div>
             <a class="link-style-1" href="<?=$link;?>"><?=$knowledge->post_title;?></a>
         </div>
-        <?php if ($added_by && $added_by->ID != get_current_user_id()): ?>
+        <?php if ($added_by && $added_by->ID != $user_ID): ?>
             <div class="progress-on">
                 Вам добавил:
                 <a href="<?= get_site_url(); ?>/people/<?= $added_by->user_nicename ?>">
