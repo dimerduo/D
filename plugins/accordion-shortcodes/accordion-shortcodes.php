@@ -272,6 +272,8 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 		 * Accordion item shortcode
 		 */
 		public function accordion_item_shortcode( $atts, $content = null ) {
+            global $current_user, $post;
+            
 			extract( shortcode_atts( array(
 				'title' => '',
 				'id'    => '',
@@ -363,7 +365,11 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
                 if($passed_date) {
                     $passed_users .='<span class="passed-in">' .  $passed_date . '</span>';
                 }
-                $passed_users .= "<span class='remove-user' data-userId='{$acc_user_info['user_id']}'>X</span>";
+                
+                if (is_user_logged_in() && $current_user->ID == $post->post_author)  {
+                    $passed_users .= "<span class='remove-user' data-userId='{$acc_user_info['user_id']}'>X</span>";
+                }
+                
 				$passed_users .= "</div>";
 			}
 			$passed_users .= "</div>";

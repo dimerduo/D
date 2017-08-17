@@ -3,7 +3,7 @@ var $ = jQuery;
 var diductioClass = function () {
     var self = this;
 
-    this.sendAjax = function (action, data) {
+    this.sendAjax = function (action, data, callback) {
         $.ajax({
             type: 'POST',
             url: diductioObject.ajax_path,
@@ -12,7 +12,7 @@ var diductioClass = function () {
                 data: data
             },
             success: function (response) {
-                return response;
+                callback(response);
             },
             dataType: 'json'
         });
@@ -215,7 +215,9 @@ function removeUser(obj)
         "post_id": post_id,
         "accordion_element": accordion_element
     };
-    diductio.sendAjax('removeLessonPartFromUser', data);
+    diductio.sendAjax('removeLessonPartFromUser', data, function (response) {
+        location.reload();
+    });
 }
 
 

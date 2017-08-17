@@ -141,12 +141,27 @@ class Did_Statistic
      */
     public function removeLessonPartFromUser()
     {
+        global $wpdb;
+        
+        $table_name = Diductio::gi()->settings['stat_table'];
         $user_id = $_POST['data']['user_id'];
         $post_id = $_POST['data']['post_id'];
         $accordion_elem = $_POST['data']['accordion_element'];
         $stat_row = $this->getStatisticRow($post_id, $user_id);
-        $checked = $stat_row['checked_lessons'];
-        $checked_at = $stat_row['checked_at'];
+        $checked = explode(',', $stat_row['checked_lessons']);
+        $checked_at = explode(',', $stat_row['checked_at']);
+        $key = array_search($accordion_elem, $checked);
+        if (isset($key)) {
+            unset($checked[$key]);
+            unset($checked_at[$key]);
+            $checked_string = implode(',', $checked);
+            $checked_at_string = implode(',', $checked_at);
+            $sql = "UPDATE `{$table_name}` SET `checked_lessons` = '{$checked_string}', ";
+            $sql .= "`checked_at` = '{$checked_at_string}' WHERE `id` = {$stat_row['id']}";
+            $wpdb->query($sql);
+            echo 1;
+        }
+        
         wp_die();
     }
     
