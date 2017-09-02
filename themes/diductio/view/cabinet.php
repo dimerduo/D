@@ -8,7 +8,7 @@
     <div class="avatar ">
         <div class="col-sm-12 col-md-2"><?= get_avatar($author_info->user_email, 96); ?></div>
         <div class="user-info col-sm-12 col-md-10">
-            <span class="label <?php if($author_info->inner_passing_rating > 99):?>label-success<?php else:?>label-danger<?php endif;?> single_stat" data-toggle="tooltip" data-placement="top" title="Общая оценка системы"><?=$author_info->inner_passing_rating;?>%</span>
+            <?php if($author_info->inner_passing_rating): ?><span class="label <?php if($author_info->inner_passing_rating > 99):?>label-success<?php else:?>label-danger<?php endif;?> single_stat" data-toggle="tooltip" data-placement="top" title="Общая оценка системы"><?=$author_info->inner_passing_rating;?>%</span><?php endif;?>
             <h1 class="entry-title inline">
                 <?= $author_info->data->display_name; ?>
             </h1>
