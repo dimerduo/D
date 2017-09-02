@@ -42,7 +42,7 @@ $(document).ready(function () {
         $('.rest-users').slideToggle(600);
     });
 
-    $('.remove-user').click(function(){
+    $('.remove-user').click(function(event){
         removeUser(event.target);
     });
 });
