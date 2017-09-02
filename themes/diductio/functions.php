@@ -617,7 +617,7 @@ class WP_Widget_Meta_Mod extends
             if ($post_ids) {
                 $qry = array(
                     'posts_per_page' => 5,
-                    'limit' => 5,
+                    'limit' => 20,
                     'orderby' => 'ID',
                     'post__in' => $post_ids,
                 );
