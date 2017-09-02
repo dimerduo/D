@@ -7149,3 +7149,8 @@ small.is_author {
 .remove-user:hover {
     cursor: pointer;
 }
+
+.label-short {
+    padding: .1em .3em .15em !important;
+    font-weight: 200;
+}

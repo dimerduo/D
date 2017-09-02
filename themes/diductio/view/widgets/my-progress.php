@@ -12,14 +12,18 @@
         <a href="/progress">
             Мой прогресс
             <div style='float: right; margin-right: 0;' class='stat-col'>
-                <span class='label label-success label-soft'><?=$user_statistic['in_progress'];?></span>
+                <span class='label label-success label-soft label-short' data-toggle="tooltip" data-placement="top" title="Активных"><?=$user_statistic['in_progress'];?></span>
+                <?php if($user_statistic['overdue_tasks'] > 0): ?>
+                    <span class="label label-danger label-short" data-toggle="tooltip" data-placement="top" title="Просроченных"><?=$user_statistic['overdue_tasks'];?></span>
+                <?php endif; ?>
             </div>
+            
         </a>
     </li>
     <?php foreach ($knowledges as $knowledge):
         $pass_info = $GLOBALS['dPost']->get_passing_info_by_post($user_ID, $knowledge->ID);
         $added_by = Did_Statistic::addedBy($knowledge->ID, $user_ID);
-            
+        $link = get_permalink($knowledge->ID);
         ?>
     <li class="widget-my-project-list">
         <div>
