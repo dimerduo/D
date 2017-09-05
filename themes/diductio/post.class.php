@@ -260,6 +260,14 @@
                 'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]', 'top'
             );
             add_rewrite_rule(
+                '^(group)/([^/]*)/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]',
+                'top');
+            add_rewrite_rule(
+                '^(group)/([^/]*)/page/?([0-9]{1,})/?$',
+                'index.php?pagename=$matches[1]&username=$matches[2]&paged=$matches[3]', 'top'
+            );
+            add_rewrite_rule(
                 '^(avtor)/([^/]*)/?$',
                 'index.php?pagename=$matches[1]&username=$matches[2]',
                 'top');
@@ -349,6 +357,7 @@
                     $result['undone_title'] = $this->get_accordion_element_title($post_id, $result['first_undone']);
                 }
             }
+            
             
             return $result;
         }

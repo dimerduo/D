@@ -88,6 +88,10 @@ class Did_Statistic
             $post_work_time = get_post_meta($post['post_id'], 'work_time')[0];
             $totalWorkTime += $post_work_time;
             $time_stamp = end(explode(',', $post['checked_at']));
+            if (!$time_stamp) {
+                continue;
+            }
+            
             $last_checked = new DateTime();
             $last_checked->setTimestamp($time_stamp);
             $created_at = new DateTime($post['created_at']);
@@ -105,6 +109,69 @@ class Did_Statistic
         }
         
         return round($totalRating, 1);
+    }
+    
+    public static function addedBy($post_id, $user_id)
+    {
+        $self = new Self();
+        $info = [];
+        $stat_row = $self->getStatisticRow($post_id, $user_id);
+        if ($stat_row && $stat_row['added_by']) {
+            $info  = get_userdata($stat_row['added_by']);
+        }
+        
+        return $info;
+    }
+    
+    public function getStatisticRow($post_id, $user_id)
+    {
+        global $wpdb;
+        
+        $table = Diductio::getInstance()->settings['stat_table'];
+        $sql = "SELECT * FROM `{$table}` WHERE `user_id` = {$user_id} AND `post_id` = {$post_id}";
+        $result = $wpdb->get_row($sql, ARRAY_A);
+        
+        return $result;
+    }
+    
+    /**
+     * Remove lesson part from post
+     * Удаляет элемент аккордиона из статистической таблицы (снимает "готово" у пользователя)
+     *
+     */
+    public function removeLessonPartFromUser()
+    {
+        global $wpdb;
+        
+        $table_name = Diductio::gi()->settings['stat_table'];
+        $user_id = $_POST['data']['user_id'];
+        $post_id = $_POST['data']['post_id'];
+        $accordion_elem = $_POST['data']['accordion_element'];
+        $stat_row = $this->getStatisticRow($post_id, $user_id);
+        $checked = explode(',', $stat_row['checked_lessons']);
+        $checked_at = explode(',', $stat_row['checked_at']);
+        $key = array_search($accordion_elem, $checked);
+        if (isset($key)) {
+            unset($checked[$key]);
+            unset($checked_at[$key]);
+            $checked_string = implode(',', $checked);
+            $checked_at_string = implode(',', $checked_at);
+            $sql = "UPDATE `{$table_name}` SET `checked_lessons` = '{$checked_string}', ";
+            $sql .= "`checked_at` = '{$checked_at_string}' WHERE `id` = {$stat_row['id']}";
+            $wpdb->query($sql);
+            echo 1;
+        }
+        
+        wp_die();
+    }
+    
+    /**
+     * Init Ajax function of the statistic class
+     */
+    public function initAjax()
+    {
+        add_action('wp_ajax_nopriv_removeLessonPartFromUser', array($this, 'removeLessonPartFromUser'));
+        add_action('wp_ajax_removeLessonPartFromUser', array($this, 'removeLessonPartFromUser'));
     }
     
 }

@@ -93,11 +93,14 @@
             add_action('all-peoples-header', function () {
                 $this->renderHeaderStatistic('peoples');
             });
-            add_action('people-studying-header', function () {
-                $this->renderHeaderStatistic('peoples');
-            });
-
+            
             //personal area statistic
+            add_action('progress-page-header', function () {
+                $this->renderHeaderStatistic('personal-area');
+            });
+            add_action('page-group-header', function () {
+                $this->renderHeaderStatistic('personal-area');
+            });
             add_action('progress-page-header', function () {
                 $this->renderHeaderStatistic('personal-area');
             });
