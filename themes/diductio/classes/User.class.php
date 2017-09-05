@@ -76,13 +76,37 @@ class Did_User
     public static function getUserSubscription($user_id)
     {
         $subscriber_list = get_user_meta($user_id, 'subscribe_to')[0];
-        foreach ($subscriber_list as $key => $user) {
-            $user_exist = get_userdata($user);
-            if(!$user_exist) {
-                unset($subscriber_list[$key]);
+        if($subscriber_list) {
+            foreach ($subscriber_list as $key => $user) {
+                $user_exist = get_userdata($user);
+                if(!$user_exist) {
+                    unset($subscriber_list[$key]);
+                }
+            }
+            
+            return $subscriber_list;
+        }
+        return [];
+    }
+    
+    /**
+     * Getting reciprocal subscriptions
+     * Получаем взаимные подписки пользователя
+     *
+     * @param  int   $user_id - User ID
+     * @return array          - List of the reciprocal subscriptions
+     */
+    public static function getReciprocalSubscriptions($user_id)
+    {
+        $following = Did_User::getAllMySubscribers($user_id);
+        $followers = Did_User::getUserSubscription($user_id);
+        $result = array();
+        foreach ($following as $user) {
+            if(in_array($user['ID'], $followers)) {
+                $result[] = $user['ID'];
             }
         }
         
-        return $subscriber_list;
+        return $result;
     }
 }

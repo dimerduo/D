@@ -53,12 +53,13 @@
 			$sql  = "SELECT `checked_lessons` FROM `$table_name` WHERE `user_id` = '{$user_id}' ";
 			$sql .= "AND `post_id` = '{$post->ID}'";
 			$progress = $wpdb->get_row($sql);
-
+		    $isMine = Did_Posts::isPostInMyCabinet($user_id, $post->ID);
+		    
 			if($progress->checked_lessons) {
 				$checkbox_attr = "checked='checked' disabled='disabled'";
 			}
 		?>
-		 <?php if(is_user_logged_in()): ?>
+		 <?php if(is_user_logged_in() && $isMine): ?>
 			 <div class="col-md-1 col-xs-2" style="height: 0;">
 					<div style="height: 22px;" class="checkbox inline">
 						<input id="checkbox-<?=$post->ID;?>" type="checkbox" class="accordion-checkbox" data-accordion-count="1" data-post-id="<?=$post->ID;?>" <?=$checkbox_attr?> >
@@ -99,7 +100,7 @@
 						<span class="label label-success label-soft">Проходят</span>
 						<span class="label label-success"><?=$post_statistic['in_progress'];?></span>
 						<?php if($post_statistic['overdue_users']): ?>
-							<span class="label label-danger"><?=$post_statistic['overdue_users'];?></span>
+							<span data-toggle="tooltip" data-placement="top" title="Просрочили" class="label label-danger"><?=$post_statistic['overdue_users'];?></span>
 						<?php endif; ?>
 						<?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] != 100): ?>
 							<span class="label label-success"><?=$post_statistic['total_progress'];?> %</span>

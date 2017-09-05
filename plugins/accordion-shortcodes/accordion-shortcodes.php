@@ -272,6 +272,8 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 		 * Accordion item shortcode
 		 */
 		public function accordion_item_shortcode( $atts, $content = null ) {
+            global $current_user, $post;
+            
 			extract( shortcode_atts( array(
 				'title' => '',
 				'id'    => '',
@@ -283,6 +285,7 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			$this->item_count ++;
 
 			$ids = $this->get_accordion_id( $id );
+            
 			// (19) Добавление чекбокса в аккордеон
 			global $wpdb, $dUser;
 			$post_id              = $ids['post_id'];
@@ -325,11 +328,12 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 			$sql .= "AND `post_id` = '{$post_id}'";
 			$progress        = $wpdb->get_row( $sql );
 			$checked_lessons = explode( ',', $progress->checked_lessons );
-
+            $isMine = Did_Posts::isPostInMyCabinet($user_id, $post_id);
+            
 			if ( in_array( $ids['accourdion_count'], $checked_lessons ) ) {
 				$checkbox_attr = "checked='checked' disabled='disabled'";
 			}
-			if ( is_user_logged_in() ) {
+			if ( is_user_logged_in() && $isMine ) {
 				$checkbox_html = "<div class='col-md-1' style='height:0;'><div style='height: 22px;' class='checkbox'>
    <input type='checkbox'
    class='accordion-checkbox'
@@ -345,14 +349,14 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
 				$checkbox_html = "";
 			}
 
-			//Render accordion passed users block
+			// render accordion passed users block
 			$passed_users = "<div class='passed_users profile_avatars'>";
             foreach ($accordion_part_users as $acc_user) {
-
-                //user info
+                
+                // user info
                 $acc_user_info = $dUser->getUserData($acc_user);
-				$passed_users .= "<div class='inline profile'>";
-				$passed_users .= "<a href='{$acc_user_info['user_link']}'>";
+                $passed_users .= "<div class='inline profile'>";
+                $passed_users .= "<a href='{$acc_user_info['user_link']}'>";
 				$passed_users .= $acc_user_info['avatar'];
 				$passed_users .= '<span class="profile-nicename">'. $acc_user_info['username'] .'</span>';
 				$passed_users .= "</a>";
@@ -361,6 +365,11 @@ if ( ! class_exists( 'Accordion_Shortcodes' ) ) :
                 if($passed_date) {
                     $passed_users .='<span class="passed-in">' .  $passed_date . '</span>';
                 }
+                
+                if (is_user_logged_in() && $current_user->ID == $post->post_author)  {
+                    $passed_users .= "<span class='remove-user' data-userId='{$acc_user_info['user_id']}'>X</span>";
+                }
+                
 				$passed_users .= "</div>";
 			}
 			$passed_users .= "</div>";

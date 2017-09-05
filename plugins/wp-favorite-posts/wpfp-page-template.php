@@ -39,9 +39,7 @@
 
             $passing_date = $GLOBALS['dPost']->get_passing_info_by_post($author_id, get_the_ID());
             $passing_string = "<span class='passing_date'>" . $passing_date['date_string'] . "</span>";
-            $on_knowledge = $passing_date['undone_title']
-                ?  '<span class="on-knowldedge"> На этапе: ' . $passing_date['undone_title'] . '</span>'
-                : '';
+            
 
             $li  = "<li>";
                 $li .= "<a href='" . get_permalink() . "'";
@@ -55,7 +53,7 @@
                 //Progress bar
                 $li .= diductio_add_progress(get_the_ID(), $user_id, false);
                 //Show on what knowledge user is now
-                $li .= $on_knowledge;
+//                $li .= $on_knowledge;
             $li .="</li>";
 
             echo $li;
