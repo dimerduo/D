@@ -592,10 +592,10 @@ function getMyPostCount()
 
 function suggestUsers()
 {
-	global $st, $post;
+	global $st, $post, $current_user;
 	if (is_user_logged_in()) {
 		$suggesting_users = getSuggestingUsers(get_current_user_id(), $post->ID);
-        pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st'));
+        pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st', 'post', 'current_user'));
 	}
 }
 
@@ -618,6 +618,12 @@ function suggest_me_user()
 		$exclude[] = $user;
 	}
 	
+	// exclude first
+    $exclude_ids = implode(array_map(function($item){
+        return $item['id'];
+    }, $exclude), ',');
+    $sql = "DELETE FROM `wp_user_add_info` WHERE `user_id` IN ({$exclude_ids}) AND `post_id` = {$post_id}  ";
+    $wpdb->query($sql);
 	// include
 	$already_subscribed = getUsersByPost($post_id);
 	foreach ($include as $user) {

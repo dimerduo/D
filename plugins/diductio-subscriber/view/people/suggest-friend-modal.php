@@ -20,9 +20,8 @@
                     <?php if($suggesting_users): ?>
                         <?php foreach ($suggesting_users as $user):
                             $Did_Categories = new Did_Categories();
-        
+                            
                             $user_id = $user->ID;
-        
                             $author_info = get_userdata($user_id);
                             $author_info->inner_passing_rating = Did_Statistic::getSummOfTheInnerRatingByUser($user_id);
                             $user_statistic = $st->get_user_info($user_id);
@@ -42,7 +41,7 @@
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">
                                     <div id="user-selecting" class="col-md-1">
-                                        <input <?php if($user->is_selected): ?> checked="checked" disabled="disabled" <?php endif;?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
+                                        <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?><?php if($current_user->ID != $post->post_author): ?>disabled="disabled"<?php endif; ?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
                                     </div>
                                     <?php view(
                                         'people.single-row',
