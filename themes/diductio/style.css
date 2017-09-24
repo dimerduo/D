@@ -1806,7 +1806,7 @@ a.post-thumbnail:focus {
     color: rgba(51, 51, 51, 0.7);
     font-family: "Noto Sans", sans-serif;
     font-size: 12px;
-    font-size: 1.2rem;
+    font-size: 0.938em !important;
     line-height: 1.5;
     padding: 3.8461% 7.6923%;
 }
@@ -6071,6 +6071,7 @@ a.remove-parent {
 }
 
 .wpfp-span li {
+    margin-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -6624,6 +6625,7 @@ iframe {
 
 /* Стилизация футера */
 .entry-footer {
+    font-size: 15px !important;
     padding: 2% 5%;
 }
 
