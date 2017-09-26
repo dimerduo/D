@@ -1,7 +1,8 @@
 var suggestToUserClass = function () {
 
     /**
-     * @type {suggestToUser}
+     * 
+     * @type {suggestToUserClass}
      */
     var self = this;
 
@@ -19,18 +20,14 @@ var suggestToUserClass = function () {
 
     };
 
-    this.sendAjax = function (url, data) {
-
+    this.sendAjax = function (data, callback) {
+        var url = diductioObject.ajax_path;
         $.ajax({
             type: 'POST',
             url: url,
-            data: {
-                action: "suggestUsers",
-                users: data
-            },
+            data: data,
             success: function (result) {
-                $('#suggestUser').modal('toggle');
-                window.location.reload();
+                callback(result);
             },
             dataType: 'json'
         });
@@ -40,31 +37,36 @@ var suggestToUserClass = function () {
      *
      */
     this.init = function(){
-        // save
-
+        $('#save-subscribers').click(function(){
+            self.save($(this));
+        });
     };
 
-    this.save = function () {
+    this.save = function (target) {
         var users = [];
+        $(target).text('Подождите...');
 
         // collect data
         $(".suggested-user").each(function(){
             var user = {};
-
             user.id = $(this).data('user');
-            user.alreadyHas = false;
-
-            if ($(this).is(':checked')) {
-                user.alreadyHas = true;
-            }
-
+            user.wasChecked = $(this).data('haschecked') == 1;
+            user.alreadyHas = $(this).is(':checked') == 1;
             users.push(user);
         });
-
+        var data =  {
+            action: "suggestUsers",
+            users: users,
+            postid: $('#postid').val()
+        };
 
         // send ajax
         if(users) {
-            var response = self.sendAjax(diductioObject.ajax_path, users);
+            self.sendAjax(data, function () {
+                $('#suggestUser').modal('toggle');
+                window.location.reload();
+                $(target).text('Сохранить');
+            });
         }
     };
 };

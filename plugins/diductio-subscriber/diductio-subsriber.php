@@ -7,6 +7,7 @@ Author: Aleksey Novikov
 */
 register_activation_hook( __FILE__ , 'sbscr_install' );
 add_action('wp_ajax_subscribe', 'subscribe');
+add_action('subscriber_added', 'onSubscriberAdded', 2, 2);
 add_action('wp_ajax_tag_subscribe', 'tag_subscribe');
 add_action('wp_ajax_сategory_subscribe', 'category_subscribe');
 add_action('wp_enqueue_scripts', 'load_scripts', 99);
@@ -604,30 +605,35 @@ function suggest_me_user()
     global $dPost, $wpdb;
     
     $url     = wp_get_referer();
-	$post_id = url_to_postid( $url );
+	$post_id = url_to_postid($url);
 	
 	$users = $_POST['users'];
 	$include = $exclude = [];
 	
 	foreach ($users as $user) {
-		if($user['alreadyHas'] == 'true') {
+		if($user['alreadyHas'] == 'true' && $user['wasChecked'] == 'false') {
 			$include[] = $user;
 			continue;
 		}
 		
-		$exclude[] = $user;
+		if($user['alreadyHas'] == 'false' && $user['wasChecked'] == 'true') {
+			$exclude[] = $user;
+		}
 	}
 	
+	
 	// exclude first
-    $exclude_ids = implode(array_map(function($item){
-        return $item['id'];
-    }, $exclude), ',');
-    $sql = "DELETE FROM `wp_user_add_info` WHERE `user_id` IN ({$exclude_ids}) AND `post_id` = {$post_id}  ";
-    $wpdb->query($sql);
+	$exclude_ids = implode(array_map(function ($item) {
+		return $item['id'];
+	}, $exclude), ',');
+	$sql = "DELETE FROM `wp_user_add_info` WHERE `user_id` IN ({$exclude_ids}) AND `post_id` = {$post_id}  ";
+	$wpdb->query($sql);
+	
 	// include
 	$already_subscribed = getUsersByPost($post_id);
 	foreach ($include as $user) {
 		if (!in_array($user['id'], $already_subscribed)) {
+			do_action('subscriber_added', $user, $post_id);
 			add_post_to_statistic($post_id, $user['id']);
 			$dPost->addToFavorite($post_id, $user['id']);
 		}
@@ -695,6 +701,29 @@ function getUsersByPost($post_id)
 	
 	return $users;
 }
+
+function onSubscriberAdded($user, $post_id)
+{
+	
+	$subject = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['subject'];
+	$message = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['body'];
+	
+	$user_info = get_user_by('id', $user['id']);
+	$post_url = get_permalink($post_id);
+	$post_name = get_the_title($post_id);
+	$user_email = 'Novikov_9292@mail.ru'; //$user_info->user_email;
+	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+	$find = array('{post_link}', '{user_link}');
+	$replace = array(
+		sprintf("<a href='%s'>%s</a>", $post_url, $post_name),
+		sprintf("<a href='%s'>%s</a>", $user_link, $user_info->display_name)
+	);
+	$message = str_replace($find, $replace, $message);
+	
+	$headers = array('Content-Type: text/html; charset=UTF-8');
+	$res = wp_mail($user_email, $subject, $message, $headers);
+}
+
 function subscriber_init()
 {
 	add_action('wp_ajax_nopriv_suggestUsers', 'suggest_me_user');

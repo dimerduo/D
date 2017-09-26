@@ -10,6 +10,7 @@
 <!-- Modal -->
 <div class="modal fade bs-example-modal-lg" id="suggestUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
+        <input type="hidden" id="postid" value="<?=$post->ID?>">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -41,7 +42,7 @@
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">
                                     <div id="user-selecting" class="col-md-1">
-                                        <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?><?php if($current_user->ID != $post->post_author): ?>disabled="disabled"<?php endif; ?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
+                                        <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?><?php if($current_user->ID != $post->post_author): ?>disabled="disabled"<?php endif; ?> data-hasChecked="<?php if($user->is_selected): ?>1<?php else: ?>0<?php endif; ?>" id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
                                     </div>
                                     <?php view(
                                         'people.single-row',
@@ -68,7 +69,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button onclick="suggestToUser.save()" type="button" class="btn btn-primary">Сохранить</button>
+                <button id="save-subscribers" type="button" class="btn btn-primary">Сохранить</button>
             </div>
         </div>
     </div>
