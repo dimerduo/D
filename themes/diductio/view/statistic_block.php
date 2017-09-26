@@ -14,7 +14,7 @@ $user_statistic['subscribers'] = count(Did_User::getAllMySubscribers($user_id));
         case 'knowledge': ?>
             <div class="public_statistic row">
                 <div class="stat-col">
-                    <a href="<?= get_site_url(); ?>">
+                    <a href="/all">
                         <span class="label label-success
                         <?php if ( ! is_front_page()): ?>
                         label-soft
