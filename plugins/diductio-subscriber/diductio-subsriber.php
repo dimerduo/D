@@ -711,7 +711,7 @@ function onSubscriberAdded($user, $post_id)
 	$user_info = get_user_by('id', $user['id']);
 	$post_url = get_permalink($post_id);
 	$post_name = get_the_title($post_id);
-	$user_email = 'Novikov_9292@mail.ru'; //$user_info->user_email;
+	$user_email = $user_info->user_email;
 	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
 	$find = array('{post_link}', '{user_link}');
 	$replace = array(
