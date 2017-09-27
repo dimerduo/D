@@ -613,18 +613,22 @@ class WP_Widget_Meta_Mod extends
             
             //Get knowledges
             $post_ids = $st->get_knowledges($user_ID, 'active');
+            
+			// get user progress            
+            $post_per_page     = wpfp_get_option("post_per_page");            
             $knowledges = [];
-            if ($post_ids) {
-                $qry = array(
-                    'posts_per_page' => 20,
-                    'limit' => 20,
-                    'orderby' => 'ID',
+            if($post_ids) {
+                $qry = array(                    
+                    'posts_per_page' => $post_per_page,
+                    'orderby' => 'post__in',
+                    'paged' => $page,
                     'post__in' => $post_ids,
+                    'post_status' => array( 'any' )
                 );
                 $knowledges = get_posts($qry, ARRAY_A);
             }
         }
-        view('widgets/my-progress', compact('args', 'title', 'user_ID', 'user_statistic', 'percent', 'knowledges'));
+        view('widgets/my-progress', compact('args', 'title', 'user_ID', 'user_statistic', 'percent', 'knowledges', 'st'));
         echo $args['after_widget'];
     }
     
