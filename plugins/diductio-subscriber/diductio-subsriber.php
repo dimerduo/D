@@ -459,64 +459,69 @@ class Diductio_subsriber extends WP_Widget {
 		//обраезаем массив по колличеству из админки
 		$stream_n = array_slice($stream, 0, $number);
 		unset($stream);
+		
+		if( is_user_logged_in() ){
+		
+			$output .= $args['before_widget'];
+			if ( $title ) {
+				$output .= $args['before_title'] . $title . $args['after_title'];
+			}
+			
+			#stat stream
+			$output .= '<ul id="recentcomments">';
+			if(!$progress && !$comments ) {
+				$output .= '<li class="recentcomments">Ваша лента пуста</li>';
+			} elseif(!is_user_logged_in())
+				$output .= '<li class="recentcomments">Ваша лента пуста</li>';
+			else {
+				if ( is_array($stream_n) && $stream_n ) {
+				  foreach ( (array) $stream_n as $s) {
+						$user_info = get_user_by ('id', $s['user_id']);
+						$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+						
+						$output .= '<li class="recentcomments">';
+						$output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
+						$output .= get_avatar( $user_info->data->user_email, 20 );
+						$output .= "<span>";
+						$output .= $user_info->data->display_name;
+						
+						if($s['content'] === null){
+						  $small_text = "+ прогресс";
+						}else{
+						  $comments_count  = wp_count_comments($s['post_id']);
+						  $approved = $comments_count->approved;
 
-		$output .= $args['before_widget'];
-		if ( $title ) {
-			$output .= $args['before_title'] . $title . $args['after_title'];
+							$small_text = "+ комментарий";
+						}
+
+						$output .= "</span></a><small>". $small_text ."</small></div>";
+						$output .= "<div class='inline comment-content'>";
+						$output .= "<div class='comment-body'>";
+						if($s['content'] != null ){
+						  $output .= excerp_comment(get_comment($s['id'])->comment_content, 67);
+						  $output .= "<a class='link-style-1' href='"
+							. esc_url( get_comment_link( $s['id'] ) ) ."'>&nbsp;#</a><br>";
+						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
+							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
+							. get_the_title( $s['post_id'] ) . '</a>');
+						}else{
+						  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
+							. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
+							. get_the_title( $s['post_id'] ) . '</a>');
+						}
+						$output .= "<span></span></div>";
+						$output .= "</div>";
+						$output .= "</li>";
+					}
+				}
+
+			}
+			$output .= '</ul>';
+
+			##end stream
+		
 		}
 		
-		#stat stream
-		$output .= '<ul id="recentcomments">';
-		if(!$progress && !$comments ) {
-			$output .= '<li class="recentcomments">Ваша лента пуста</li>';
-		} elseif(!is_user_logged_in())
-			$output .= '<li class="recentcomments">Ваша лента пуста</li>';
-		else {
-			if ( is_array($stream_n) && $stream_n ) {
-			  foreach ( (array) $stream_n as $s) {
-					$user_info = get_user_by ('id', $s['user_id']);
-					$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
-					
-					$output .= '<li class="recentcomments">';
-					$output .= "<div class='inline comment-avatar'><a href='{$user_link}'>";
-					$output .= get_avatar( $user_info->data->user_email, 20 );
-					$output .= "<span>";
-					$output .= $user_info->data->display_name;
-					
-					if($s['content'] === null){
-					  $small_text = "+ прогресс";
-					}else{
-					  $comments_count  = wp_count_comments($s['post_id']);
-					  $approved = $comments_count->approved;
-
-						$small_text = "+ комментарий";
-					}
-
-					$output .= "</span></a><small>". $small_text ."</small></div>";
-					$output .= "<div class='inline comment-content'>";
-					$output .= "<div class='comment-body'>";
-					if($s['content'] != null ){
-					  $output .= excerp_comment(get_comment($s['id'])->comment_content, 67);
-					  $output .= "<a class='link-style-1' href='"
-						. esc_url( get_comment_link( $s['id'] ) ) ."'>&nbsp;#</a><br>";
-					  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
-						. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
-						. get_the_title( $s['post_id'] ) . '</a>');
-					}else{
-					  $output .= sprintf( _x( '%1$s', 'widgets' ),' <a class="link-style-1" href="' 
-						. esc_url( get_permalink( $s['post_id'] ) ) . '"> ' 
-						. get_the_title( $s['post_id'] ) . '</a>');
-					}
-					$output .= "<span></span></div>";
-					$output .= "</div>";
-					$output .= "</li>";
-				}
-			}
-
-		}
-		$output .= '</ul>';
-
-		##end stream
 		$output .= $args['after_widget'];
 		echo $output;
 
