@@ -42,7 +42,7 @@
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">
                                     <div id="user-selecting" class="col-md-1">
-                                        <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?><?php if($current_user->ID != $post->post_author): ?>disabled="disabled"<?php endif; ?> data-hasChecked="<?php if($user->is_selected): ?>1<?php else: ?>0<?php endif; ?>" id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
+                                        <input <?php if($user->is_selected): ?> checked="checked" <?php endif;?> data-hasChecked="<?php if($user->is_selected): ?>1<?php else: ?>0<?php endif; ?>" id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
                                     </div>
                                     <?php view(
                                         'people.single-row',
