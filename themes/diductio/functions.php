@@ -1564,6 +1564,6 @@ $GLOBALS['comment'] = $comment; ?>
     );
     //init ajax
     $Did_static = new Did_Statistic();
-    $dCommenst = new Did_comments();
+    $dCommenst = new Did_Comments();
     $Did_static->initAjax();
 ?>
