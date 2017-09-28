@@ -675,6 +675,12 @@ function getSuggestingUsers($user_id, $post_id)
 	return (array)$all_users;
 }
 
+/**
+ * Is provided user has subsribed to me
+ *
+ * @param  WP_User $user - User object
+ * @return bool          - Is user subsribed
+ */
 function isSubsribedToMe($user)
 {
 	$me  = get_current_user_id();
@@ -688,6 +694,12 @@ function isSubsribedToMe($user)
 	return false;
 }
 
+/**
+ * Getting all users from statistic table by Post ID
+ *
+ * @param  int   $post_id - ID of the Post
+ * @return array $result  - Users of the
+ */
 function getUsersByPost($post_id)
 {
 	global $wpdb;
@@ -702,6 +714,12 @@ function getUsersByPost($post_id)
 	return $users;
 }
 
+/**
+ * Fire when someone is adding subsribers to the post
+ *
+ * @param int $user    - User which has been subcribed
+ * @param int $post_id - Post ID
+ */
 function onSubscriberAdded($user, $post_id)
 {
 	
@@ -713,10 +731,19 @@ function onSubscriberAdded($user, $post_id)
 	$post_name = get_the_title($post_id);
 	$user_email = $user_info->user_email;
 	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
-	$find = array('{post_link}', '{user_link}');
+	$post_format = get_post_format($post_id);
+	$translate       = array(
+		'aside'       => 'Знание',
+		'chat'        => 'Голосование',
+		'image'       => 'Тест',
+		'gallery'     => 'Задача',
+		'quote'       => 'Проект',
+	);
+	$find = array('{post_link}', '{user_link}', '{post_format}');
 	$replace = array(
 		sprintf("<a href='%s'>%s</a>", $post_url, $post_name),
-		sprintf("<a href='%s'>%s</a>", $user_link, $user_info->display_name)
+		sprintf("<a href='%s'>%s</a>", $user_link, $user_info->display_name),
+		$translate[$post_format]
 	);
 	$message = str_replace($find, $replace, $message);
 	
@@ -724,6 +751,9 @@ function onSubscriberAdded($user, $post_id)
 	$res = wp_mail($user_email, $subject, $message, $headers);
 }
 
+/**
+ * Hooks subsriber init
+ */
 function subscriber_init()
 {
 	add_action('wp_ajax_nopriv_suggestUsers', 'suggest_me_user');
