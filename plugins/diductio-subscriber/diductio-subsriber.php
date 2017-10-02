@@ -723,7 +723,7 @@ function getUsersByPost($post_id)
  */
 function onSubscriberAdded($user, $post_id)
 {
-	if ($user->ID == get_current_user_id()) {
+	if ($user['id'] == get_current_user_id()) {
 		return false;
 	}
 	
