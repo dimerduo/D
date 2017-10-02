@@ -717,16 +717,21 @@ function getUsersByPost($post_id)
 /**
  * Fire when someone is adding subsribers to the post
  *
- * @param int $user    - User which has been subcribed
+ * @param WP_User     $user - User which has been subcribed
  * @param int $post_id - Post ID
+ * @return bool
  */
 function onSubscriberAdded($user, $post_id)
 {
+	if ($user->ID == get_current_user_id()) {
+		return false;
+	}
 	
 	$subject = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['subject'];
 	$message = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['body'];
+	$current_user = get_current_user_id();
 	
-	$user_info = get_user_by('id', $user['id']);
+	$user_info = get_user_by('id', $current_user);
 	$post_url = get_permalink($post_id);
 	$post_name = get_the_title($post_id);
 	$user_email = $user_info->user_email;
