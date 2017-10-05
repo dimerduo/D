@@ -729,13 +729,15 @@ function onSubscriberAdded($user, $post_id)
 	
 	$subject = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['subject'];
 	$message = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['body'];
-	$current_user = get_current_user_id();
 	
+	$added_to = get_user_by('id', $user['id']);
+	$current_user = get_current_user_id();
 	$user_info = get_user_by('id', $current_user);
+	
 	$post_url = get_permalink($post_id);
 	$post_name = get_the_title($post_id);
-	$user_email = $user_info->user_email;
 	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+	
 	$post_format = get_post_format($post_id);
 	$translate       = array(
 		'aside'       => 'Знание',
@@ -744,6 +746,7 @@ function onSubscriberAdded($user, $post_id)
 		'gallery'     => 'Задача',
 		'quote'       => 'Проект',
 	);
+	
 	$find = array('{post_link}', '{user_link}', '{post_format}');
 	$replace = array(
 		sprintf("<a href='%s'>%s</a>", $post_url, $post_name),
@@ -753,7 +756,7 @@ function onSubscriberAdded($user, $post_id)
 	$message = str_replace($find, $replace, $message);
 	
 	$headers = array('Content-Type: text/html; charset=UTF-8');
-	$res = wp_mail($user_email, $subject, $message, $headers);
+	$res = wp_mail($added_to->user_email, $subject, $message, $headers);
 }
 
 /**
