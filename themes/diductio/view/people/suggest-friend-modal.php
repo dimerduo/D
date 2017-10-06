@@ -40,7 +40,7 @@
                             ?>
                             <div class="col-md-12">
                                 <label style="display: block;" for="user-<?=$user->ID;?>">
-                                    <div id="user-selecting" class="col-md-1">
+                                    <div class="col-md-1 user-selecting">
                                         <input <?php if($user->is_selected): ?> checked="checked" disabled="disabled" <?php endif;?> id="user-<?=$user->ID;?>" data-user="<?=$user->ID;?>" class="suggested-user" type="checkbox" value="test">
                                     </div>
                                     <?php view(
@@ -68,7 +68,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button onclick="suggestToUser.save()" type="button" class="btn btn-primary">Сохранить</button>
+                <button type="button" class="btn btn-primary">Сохранить</button>
             </div>
         </div>
     </div>

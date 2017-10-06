@@ -433,6 +433,7 @@ $diductio->settings = $settings;
 $dPost = new Post();
 $dUser = new User();
 $st = new Statistic;
+
 Diductio::gi()->post = $dPost;
 Diductio::gi()->user = $dUser;
 Diductio::gi()->statistic = $st;
@@ -1572,5 +1573,6 @@ $GLOBALS['comment'] = $comment; ?>
     );
     //init ajax
     $Did_static = new Did_Statistic();
+    $dCommenst = new Did_Comments();
     $Did_static->initAjax();
 ?>

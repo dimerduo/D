@@ -216,7 +216,8 @@ function removeUser(obj)
         "accordion_element": accordion_element
     };
     diductio.sendAjax('removeLessonPartFromUser', data, function (response) {
-        location.reload();
+        $(obj).parents('.accordion').find('.accordion-title').removeClass('black');
+        $(obj).parent().remove();
     });
 }
 

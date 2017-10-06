@@ -7,6 +7,7 @@ Author: Aleksey Novikov
 */
 register_activation_hook( __FILE__ , 'sbscr_install' );
 add_action('wp_ajax_subscribe', 'subscribe');
+add_action('subscriber_added', 'onSubscriberAdded', 2, 2);
 add_action('wp_ajax_tag_subscribe', 'tag_subscribe');
 add_action('wp_ajax_сategory_subscribe', 'category_subscribe');
 add_action('wp_enqueue_scripts', 'load_scripts', 99);
@@ -597,10 +598,10 @@ function getMyPostCount()
 
 function suggestUsers()
 {
-	global $st, $post;
+	global $st, $post, $current_user;
 	if (is_user_logged_in()) {
 		$suggesting_users = getSuggestingUsers(get_current_user_id(), $post->ID);
-        pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st'));
+        pluginView('people.suggest-friend-modal', compact('suggesting_users', 'st', 'post', 'current_user'));
 	}
 }
 
@@ -609,24 +610,35 @@ function suggest_me_user()
     global $dPost, $wpdb;
     
     $url     = wp_get_referer();
-	$post_id = url_to_postid( $url );
+	$post_id = url_to_postid($url);
 	
 	$users = $_POST['users'];
 	$include = $exclude = [];
 	
 	foreach ($users as $user) {
-		if($user['alreadyHas'] == 'true') {
+		if($user['alreadyHas'] == 'true' && $user['wasChecked'] == 'false') {
 			$include[] = $user;
 			continue;
 		}
 		
-		$exclude[] = $user;
+		if($user['alreadyHas'] == 'false' && $user['wasChecked'] == 'true') {
+			$exclude[] = $user;
+		}
 	}
+	
+	
+	// exclude first
+	$exclude_ids = implode(array_map(function ($item) {
+		return $item['id'];
+	}, $exclude), ',');
+	$sql = "DELETE FROM `wp_user_add_info` WHERE `user_id` IN ({$exclude_ids}) AND `post_id` = {$post_id}  ";
+	$wpdb->query($sql);
 	
 	// include
 	$already_subscribed = getUsersByPost($post_id);
 	foreach ($include as $user) {
 		if (!in_array($user['id'], $already_subscribed)) {
+			do_action('subscriber_added', $user, $post_id);
 			add_post_to_statistic($post_id, $user['id']);
 			$dPost->addToFavorite($post_id, $user['id']);
 		}
@@ -668,6 +680,12 @@ function getSuggestingUsers($user_id, $post_id)
 	return (array)$all_users;
 }
 
+/**
+ * Is provided user has subsribed to me
+ *
+ * @param  WP_User $user - User object
+ * @return bool          - Is user subsribed
+ */
 function isSubsribedToMe($user)
 {
 	$me  = get_current_user_id();
@@ -681,6 +699,12 @@ function isSubsribedToMe($user)
 	return false;
 }
 
+/**
+ * Getting all users from statistic table by Post ID
+ *
+ * @param  int   $post_id - ID of the Post
+ * @return array $result  - Users of the
+ */
 function getUsersByPost($post_id)
 {
 	global $wpdb;
@@ -694,6 +718,55 @@ function getUsersByPost($post_id)
 	
 	return $users;
 }
+
+/**
+ * Fire when someone is adding subsribers to the post
+ *
+ * @param WP_User     $user - User which has been subcribed
+ * @param int $post_id - Post ID
+ * @return bool
+ */
+function onSubscriberAdded($user, $post_id)
+{
+	if ($user['id'] == get_current_user_id()) {
+		return false;
+	}
+	
+	$subject = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['subject'];
+	$message = Did_EmailTemplates::POST_ADDED_TO_USERS_CABINET['body'];
+	
+	$added_to = get_user_by('id', $user['id']);
+	$current_user = get_current_user_id();
+	$user_info = get_user_by('id', $current_user);
+	
+	$post_url = get_permalink($post_id);
+	$post_name = get_the_title($post_id);
+	$user_link = get_site_url() . "/people/" . $user_info->data->user_nicename;
+	
+	$post_format = get_post_format($post_id);
+	$translate       = array(
+		'aside'       => 'Знание',
+		'chat'        => 'Голосование',
+		'image'       => 'Тест',
+		'gallery'     => 'Задача',
+		'quote'       => 'Проект',
+	);
+	
+	$find = array('{post_link}', '{user_link}', '{post_format}');
+	$replace = array(
+		sprintf("<a href='%s'>%s</a>", $post_url, $post_name),
+		sprintf("<a href='%s'>%s</a>", $user_link, $user_info->display_name),
+		$translate[$post_format]
+	);
+	$message = str_replace($find, $replace, $message);
+	
+	$headers = array('Content-Type: text/html; charset=UTF-8');
+	$res = wp_mail($added_to->user_email, $subject, $message, $headers);
+}
+
+/**
+ * Hooks subsriber init
+ */
 function subscriber_init()
 {
 	add_action('wp_ajax_nopriv_suggestUsers', 'suggest_me_user');
