@@ -624,7 +624,7 @@ class WP_Widget_Meta_Mod extends
                     'orderby' => 'post__in',
                     'paged' => $page,
                     'post__in' => $post_ids,
-                    'post_status' => array( 'any' )
+                    'post_status' => array('publish', 'private'),
                 );
                 $knowledges = get_posts($qry, ARRAY_A);
             }
