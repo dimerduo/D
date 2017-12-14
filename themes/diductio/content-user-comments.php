@@ -1,70 +1,52 @@
 <?php
-    global $user_comments;
+global $user_comments, $wpdb;
 
+$progress_where = "";
+$comments_where = "";
+if (is_user_logged_in()) {
+    $id = get_current_user_id();
+    $subscriber_list = get_user_meta($id, 'subscribe_to')[0];
+    if ($subscriber_list) {
+        $subscriber_list_string = implode(",", $subscriber_list);
+        $progress_where = "`user_id` IN ({$subscriber_list_string})";
+        $comments_where = "wp_progres.user_id IN ({$subscriber_list_string})";
+    }
+}
+// prepare sql
+$sql
+    = <<<MYSQL
+          SELECT `T2`.`post_title`, `T1`.`update_at`  FROM `wp_user_add_info` as `T1`
+	      LEFT JOIN `wp_posts` AS `T2` ON `T1`.`post_id` = `T2`.`ID`
+          WHERE `user_id` = $id
+          UNION ALL
+          SELECT `T3`.`Comment_ID`, `T3`.`comment_date` FROM `wp_comments` as `T3` WHERE `user_id` = $id
+          ORDER BY `update_at` DESC
+          LIMIT 10
+MYSQL;
+$activities = $wpdb->get_results($sql, ARRAY_A);
+$activity_date = '';
+
+foreach ($activities as $key => $activity) {
+    $activities[$key]['date'] = date('d.m.Y', strtotime($activity['update_at']));
+}
 ?>
-<?php foreach ($user_comments as $comment):
-    $comment_link = esc_url(get_comment_link($comment->comment_ID));
-    $post_link = esc_url(get_permalink($comment->comment_post_ID));
-    ?>
-
-    <article class="post type-post status-publish format-quote hentry">
-        <header class="entry-header">
-            <h2 class="entry-title"><a href="<?=$post_link;?>" rel="bookmark"><?=get_the_title($comment->comment_post_ID);?></a></h2>
-        </header>
-        <div class="entry-content ">
-            <p>
-                <?=$comment->comment_content;?>
-            </p>
-        </div>
-        <footer class="entry-footer">
-            <?php if(!is_single()): ?>
-                <div class="footer-statistic">
-                    <?php
-                    $post_statistic = $GLOBALS['st']->get_course_info($comment->comment_post_ID);
-                    $post_statistic['total_progress'] = Did_Posts::getAllUsersProgress($post->ID);
-                    $post_statistic['overdue_users'] = count(Did_Posts::getOverDueUsers($post->ID));
-                    ?>
-                    <?php if($post_statistic['in_progress'] > 0 ): ?>
-                        <div class="stat-col">
-                            <span class="label label-success label-soft">Проходят</span>
-                            <span class="label label-success"><?=$post_statistic['in_progress'];?></span>
-                            <?php if($post_statistic['overdue_users']): ?>
-                                <span class="label label-danger"><?=$post_statistic['overdue_users'];?></span>
-                            <?php endif; ?>
-                            <?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] != 100): ?>
-                                <span class="label label-success"><?=$post_statistic['total_progress'];?> %</span>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
-                    <?php if($post_statistic['done'] > 0 ): ?>
-                        <div class="stat-col">
-                            <span class="label label-success label-soft">Прошли</span>
-                            <span class="label label-success"><?=$post_statistic['done'];?></span>
-                            <?php if($post_statistic['total_progress'] > 0 && $post_statistic['total_progress'] == 100): ?>
-                                <span class="label label-success"><?=$post_statistic['total_progress'];?> %</span>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
-                    <?php if($post_statistic['les_count']): ?>
-                        <div class="stat-col">
-                            <span class="label label-success label-soft">Частей</span>
-                            <span class="label label-success"><?=$post_statistic['les_count'];?></span>
-                        </div>
-                    <?php endif; ?>
-                    <?php $approved = wp_count_comments( $post->ID )->approved;
-                        if($approved > 0 ): ?>
-                            <div class="stat-col">
-                                <span class="label label-important-soft">Обсуждение</span>
-                                <span class="label label-important"> <?=$approved; ?> </span>
-                            </div>
-                        <?php endif; ?>
-                </div>
+<article class="post type-post status-publish format-quote hentry">
+    
+    <?php foreach ($activities as $activity): ?>
+        <div class="activity entry-content ">
+            <?php if ($activity['date'] !== $activity_date): ?>
+                <span class="date"><?= $activity['date'] ?></span>
+                <?php $activity_date = $activity['date']; ?>
             <?php endif; ?>
+            <div class="">
+                <?=$activity['post_title'];?>
+            </div>
             <?php
-                $post = get_post($comment->comment_post_ID);
-                twentyfifteen_entry_meta();
+            if ($activity['date'] !== $activity_date) {
+            
+            }
             ?>
-            <?php edit_post_link( __( 'Edit', 'diductio' ), '<span class="edit-link">', '</span>' ); ?>
-        </footer><!-- .entry-footer -->
-    </article>
-<?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+
+</article>

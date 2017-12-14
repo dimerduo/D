@@ -2,7 +2,9 @@
 
 class Did_Posts
 {
+    
     /**
+     *
      * @var Did_Statistic
      */
     private $staticClass;
@@ -13,6 +15,27 @@ class Did_Posts
     public function __construct()
     {
         $this->staticClass = new Did_Statistic();
+        
+        /* run post filters */
+        $this->doFilters();
+    }
+    
+    private function doFilters()
+    {
+        add_action('template_redirect', [$this, 'showPrivatePost'], 9);
+    }
+    
+    public function showPrivatePost()
+    {
+        global $wp_query,$wpdb;
+        if (is_404()) {
+            $private = $wpdb->get_row($wp_query->request);
+            $location = wp_login_url($_SERVER["REQUEST_URI"]);
+            if ('private' == $private->post_status) {
+                wp_safe_redirect($location);
+                exit;
+            }
+        }
     }
     
     /**

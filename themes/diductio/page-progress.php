@@ -32,6 +32,7 @@ if($favorite_post_ids) {
         'posts_per_page' => $post_per_page,
         'orderby' => 'post__in',
         'paged' => $page,
+        'post_status' => array('publish', 'private'),
     );
     query_posts($qry);
 }

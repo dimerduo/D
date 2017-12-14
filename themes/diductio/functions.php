@@ -1144,15 +1144,45 @@ add_action('admin_menu', 'remove_menus');
 function init_function()
 {
     global $current_user;
+    register_post_status( 'test_status', array(
+        'label'                     => _x( 'Test Status', 'post status' ),
+        'public'                    => false,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>' ),
+    ));
+    
     wp_get_current_user();
     if (user_can($current_user, "subscriber")) {
         update_user_meta($current_user->ID, 'show_admin_bar_front', 'false');
     }
     add_post_type_support('post', 'custom-fields');
     
+    
 }
 
 add_action('init', 'init_function');
+add_action('admin_footer-edit.php','rudr_status_into_inline_edit');
+function rudr_status_into_inline_edit() { // ultra-simple example
+    echo "<script>
+	jQuery(document).ready( function() {
+		jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"featured\">Featured</option>' );
+	});
+	</script>";
+}
+
+function rudr_display_status_label( $statuses ) {
+    global $post; // we need it to check current post status
+    if( get_query_var( 'post_status' ) != 'featured' ){ // not for pages with all posts of this status
+        if( $post->post_status == 'featured' ){ // если статус поста - Архив
+            return array('Featured'); // returning our status label
+        }
+    }
+    return $statuses; // returning the array with default statuses
+}
+
+add_filter( 'display_post_states', 'rudr_display_status_label' );
 // (28) Модификация личного кабинета end
 
 // (33c) Модификация внешнего вида комментариев

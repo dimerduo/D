@@ -44,32 +44,10 @@
         <header class="page-header">
             <h1 class="entry-title"><?=$title;?></h1>
         </header>
-                <?php
-                    // Include the page content template.
-                    get_template_part('content', 'user-comments');
-                ?>
-
-        <?php
-            $args = array(
-                'format'    => 'page/%#%',
-                'total'     => $pages,
-                'current'   => $page,
-                'show_all'  => false,
-                'end_size'  => 1,
-                'mid_size'  => 2,
-                'prev_next' => true,
-                'prev_text' => __('Previous'),
-                'next_text' => __('Next'),
-                'type'      => 'plain',
-            );
-        ?>
-        <?php if ($user_comments > $per_page): ?>
-            <nav class="navigation pagination custom-page-wrapper" role="navigation">
-                <div class="nav-links custom-pagination">
-                    <?php echo paginate_links($args); ?>
-                </div>
-            </nav>
-        <?php endif; ?>
+            <?php
+                // Include the page content template.
+                get_template_part('content', 'user-comments');
+            ?>
     </main>
 </div>
 
