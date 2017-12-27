@@ -13,6 +13,7 @@ foreach ($wp_roles->roles as $rKey => $rvalue) {
     $roles[] = $rKey;
 }
 
+$post_statistic = $st->get_course_info($post->ID);
 
 
 get_header(); ?>
@@ -20,6 +21,8 @@ get_header(); ?>
 <div id="primary" class="content-area">
     
 	<div id="statistic" class="hentry">
+	
+	<?php do_action('single-after-stat-row') ?>
 	
 	<div id="user-activity" class="row">
 		
@@ -32,6 +35,8 @@ get_header(); ?>
 		$estimated_progress = 0;
 		$estimated_progress_class = '';
 		
+		$work_time = (int)get_post_meta($post->ID, 'work_time', true);
+		
 		if (isset($post_statistic['users_started'][$current_user_id])) {
 			$started = $post_statistic['users_started'][$current_user_id];
 			$now = date_create();
@@ -42,10 +47,10 @@ get_header(); ?>
 			$diff = date_diff($now, $start);
 			$countdown = date_diff($end, $now);
 			
+			
 			$diff_h_in_days = $diff->h > 0
 				? $diff->h / 24
 				: 0;
-			$estimated_progress = 0;
 			
 			if ($work_time) {
 				$estimated_progress = round(
@@ -55,7 +60,6 @@ get_header(); ?>
 					2
 				);
 			}
-			
 			
 			if ($estimated_progress > 0
 				&& $current_user_progress < 100 // Hide estimated progress if user completed all tasks
@@ -110,7 +114,6 @@ get_header(); ?>
 		<?php if (count($posts_users) > 2): ?>
 			<div class="row">
 				<div class="col-md-4 col-md-offset-8 more-users">
-				<?php do_action('single-after-stat-row') ?>
 					<a id="display-more-users" class="link-style-2" href="javascript:void(0);">
 						Развернуть
 					</a>

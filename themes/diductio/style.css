@@ -6988,6 +6988,9 @@ small.is_author {
 
 .more-users {
     text-align: right;
+	position: absolute;
+    top: 5%;
+    right: 2%;
 }
 
 .more-users > a {
